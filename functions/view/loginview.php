@@ -30,21 +30,21 @@
         <img src="../../dist/img/img-01.png" alt="IMG">
       </div>
 
-      <form class="login100-form validate-form">
+      <form class="login100-form validate-form" id="formLogin" name="formLogin">
 					<span class="login100-form-title">
 						Inicia sesión
 					</span>
 
-        <div class="wrap-input100 validate-input">
-          <input class="input100" type="text" name="email" placeholder="Usuario">
+        <div class="wrap-input100">
+          <input class="input100" type="text" name="username" id="username" placeholder="Usuario">
           <span class="focus-input100"></span>
           <span class="symbol-input100">
 							<i class="fa fa-envelope" aria-hidden="true"></i>
 						</span>
         </div>
 
-        <div class="wrap-input100 validate-input">
-          <input class="input100" type="password" name="pass" placeholder="Contraseña">
+        <div class="wrap-input100">
+          <input class="input100" type="password" name="password" id="password" placeholder="Contraseña">
           <span class="focus-input100"></span>
           <span class="symbol-input100">
 							<i class="fa fa-lock" aria-hidden="true"></i>
@@ -86,6 +86,8 @@
 </script>
 <!--===============================================================================================-->
 <script src="../../dist/js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<script src="../../plugins/jquery-validation/jquery.validate.min.js"></script>
 
 <script type="text/javascript">
   $(document).ready(function(){
@@ -122,7 +124,57 @@
     }
     setTimeout(loadimg,4000);
   });
-
 </script>
+
+<script type="text/javascript">
+    $("#formLogin").validate({
+      rules: {
+        username: {
+          required: true
+        },
+        password: {
+          required: true,
+        }
+      },
+      messages: {
+        username: {
+          required: "<p align='center' class='text-danger'> Debes ingresar un nombre de usuario</p>"
+        },
+        password: {
+          required: "<p align='center' class='text-danger'> Debes ingresar una Contraseña</p>"
+        }
+      },
+      submitHandler: function(){
+        var form_data = new FormData();
+        var username = document.getElementById('username');
+        var password = document.getElementById('password');
+
+        form_data.append('username', username.value);
+        form_data.append('accion', 'login');
+        form_data.append('password', password.value);
+        $.ajax({
+          type: "POST",
+          url: "../process/usuarioajax.php",
+          dataType: 'text',  // what to expect back from the PHP script, if anything
+          cache: false,
+          contentType: false,
+          processData: false,
+          data: form_data,
+          success: function(data){
+            if(data == 'ok') {
+                window.location = "dashboardview.php";
+            } else {
+              Swal.fire(
+                "¡Error!",
+                  "Usuario y contraseña incorrectos" + data,
+                "error"
+              );
+            }
+          },
+        });
+      }
+    });
+</script>
+
 </body>
 </html>
