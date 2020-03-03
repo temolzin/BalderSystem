@@ -5,7 +5,7 @@ CREATE DATABASE pensiones;
 USE pensiones;
 
 CREATE TABLE postal (
-  id int(11) NOT NULL,
+  id int(11) primary key auto_increment,
   codigo int(11) DEFAULT NULL,
   colonia varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   municipio varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -35,7 +35,8 @@ CREATE TABLE tipousuario(
 CREATE TABLE tipousuarioprivilegio(
     id_tipo_usuario int primary key auto_increment,
     id_privilegio_usuario int,
-    foreign key (id_privilegio_usuario) references privilegiousuario(id_privilegio_usuario)
+    foreign key (id_privilegio_usuario) references privilegiousuario(id_privilegio_usuario),
+    foreign key (id_tipo_usuario) references tipousuario(id_tipo_usuario)
 );
 
 CREATE TABLE usuario(
@@ -49,7 +50,8 @@ CREATE TABLE usuario(
     email varchar(80),
     telefono varchar(10),
     imagen varchar(255),
-    activo boolean
+    activo boolean,
+    foreign key(id_tipo_usuario) references tipousuario(id_tipo_usuario)
 );
 
 CREATE TABLE tipoconceptotransaccion(
