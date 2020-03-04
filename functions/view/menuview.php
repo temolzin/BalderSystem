@@ -41,6 +41,7 @@ class Menu {
 
     if($active == 'inicio') {
       $activeInicio = "active";
+      $title = "Bienvenido: " . $this->nombreCompleto;
     } elseif ($active == 'clientever'){
 
     }
@@ -73,7 +74,7 @@ class Menu {
               <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
             </li>
             <li class="nav-item d-none d-sm-inline-block">
-              <a href="../../index3.html" class="nav-link">Inicio</a>
+              <a href="dashboardview.php" class="nav-link">Inicio</a>
             </li>
           </ul>
           <!-- Right navbar links -->
@@ -81,7 +82,7 @@ class Menu {
             <li class="nav-item dropdown user-menu">
               <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
                 <img src="'.$this->urlimagen.'" class="user-image img-circle elevation-2" alt="User Image">
-                <span class="d-none d-md-inline">'.$this->nombreMedio.'</span>
+                <span class="d-md-inline">'.$this->nombreMedio.'</span>
               </a>
               <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                 <!-- User image -->
@@ -109,7 +110,7 @@ class Menu {
           <!-- Brand Logo -->
           <a href="dashboardview.php" class="brand-link">
             <img src="../../dist/img/icons/favicon.png"
-                 alt="AdminLTE Logo"
+                 alt="BalderSystem Logo"
                  class="brand-image img-circle elevation-3"
                  style="opacity: .8">
             <span class="brand-text font-weight-light">BalderSystem</span>
@@ -122,6 +123,22 @@ class Menu {
               <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
+                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                  <div class="image">
+                    <img src="'.$this->urlimagen.'" class="img-circle elevation-2" alt="User Image">
+                  </div>
+                  <div class="info">
+                    <a href="#" class="d-block">'.$this->tipousuario.'</a>
+                  </div>
+                </div>
+                <li class="nav-item">
+                  <a href="dashboardview.php" class="nav-link '.$activeInicio.'">
+                    <i class="nav-icon fas fa-home"></i>
+                    <p>
+                      Inicio
+                    </p>
+                  </a>
+                </li>
                 <li class="nav-item has-treeview">
                   <a href="#" class="nav-link">
                     <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -150,14 +167,6 @@ class Menu {
                       </a>
                     </li>
                   </ul>
-                </li>
-                <li class="nav-item">
-                  <a href="../widgets.html" class="nav-link">
-                    <i class="nav-icon fas fa-th"></i>
-                    <p>
-                      Widgets
-                    </p>
-                  </a>
                 </li>
               </ul>
             </nav>
