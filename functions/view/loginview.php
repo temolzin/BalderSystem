@@ -87,7 +87,9 @@
 <!--===============================================================================================-->
 <script src="../../dist/js/main.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<!-- jquery-validation -->
 <script src="../../plugins/jquery-validation/jquery.validate.min.js"></script>
+<script src="../../plugins/jquery-validation/additional-methods.min.js"></script>
 
 <script type="text/javascript">
   $(document).ready(function(){
@@ -138,11 +140,22 @@
       },
       messages: {
         username: {
-          required: "<p align='center' class='text-danger'> Debes ingresar un nombre de usuario</p>"
+          required: "Debes ingresar un nombre de usuario"
         },
         password: {
-          required: "<p align='center' class='text-danger'> Debes ingresar una Contraseña</p>"
+          required: "Debes ingresar una Contraseña"
         }
+      },
+      errorElement: "span",
+      errorPlacement: function (error, element) {
+      error.addClass('invalid-feedback');
+      element.closest('.form-group').append(error);
+      },
+      highlight: function (element, errorClass, validClass) {
+        $(element).addClass('is-invalid');
+      },
+      unhighlight: function (element, errorClass, validClass) {
+        $(element).removeClass('is-invalid');
       },
       submitHandler: function(){
         var form_data = new FormData();

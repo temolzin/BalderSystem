@@ -1,13 +1,18 @@
 <?php
 session_start();
+if(isset($_SESSION['user']) == false) {
+  header('Location: ../../index.php');
+}
 require_once '../controller/conexion.php';
 
 class Menu {
   public $nombreCompleto, $nombreMedio, $nombre, $username, $password, $appat, $apmat, $email, $telefono, $activo, $imagen, $urlimagen, $tipousuario;
   //variable para agregar archivos JS
   public $librerias;
+  public $conex;
   public function __construct()
   {
+    $this->conex = Conexion::getInstance();
     $this->nombreCompleto = $_SESSION['user']['nombrecompleto'];
     $this->nombreMedio = $_SESSION['user']['nombremedio'];
     $this->nombre = $_SESSION['user']['nombre'];
@@ -392,7 +397,9 @@ class Menu {
       <!-- AdminLTE for demo purposes -->
       <script src="../../dist/js/demo.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+      <!-- jquery-validation -->
       <script src="../../plugins/jquery-validation/jquery.validate.min.js"></script>
+      <script src="../../plugins/jquery-validation/additional-methods.min.js"></script>
       '.$this->librerias.'
       </body>
       </html>';

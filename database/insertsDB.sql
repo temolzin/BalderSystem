@@ -1,3 +1,12 @@
+INSERT INTO genero values(
+    1,
+    'Hombre'
+);
+INSERT INTO genero values(
+    2,
+    'Mujer'
+);
+
 INSERT INTO tipousuario values(
     1,
     'Administrador'
@@ -22,4 +31,45 @@ INSERT INTO usuario values(
     '5535092965',
     'foto.png',
     1
+);
+
+INSERT INTO institucionbancaria VALUES (
+    1,
+    'BANAMEX',
+    'Banco Nacional de México S.A'
+);
+INSERT INTO institucionbancaria VALUES (
+    2,
+    'BBVA',
+    'Grupo Financiero BBVA Bancomer'
+);
+INSERT INTO institucionbancaria VALUES (
+    3,
+    'SANTANDER',
+    'Grupo Financiero Santander'
+);
+INSERT INTO institucionbancaria VALUES (
+    4,
+    'HSBC',
+    'Grupo Financiero HSBC'
+);
+INSERT INTO institucionbancaria VALUES (
+    5,
+    'SCOTIABANK',
+    'Scotiabank Inverlat, S.A'
+);
+INSERT INTO institucionbancaria VALUES (
+    6,
+    'BANORTE',
+    'Grupo Financiero Banorte'
+);
+INSERT INTO institucionbancaria VALUES (
+    7,
+    'BANCO AZTECA',
+    'Banco Azteca, S.A'
+);
+INSERT INTO institucionbancaria VALUES (
+    8,
+    'BANJERCITO',
+    'Fuerza Aérea y Armada, Sociedad Nacional de Crédito'
 );
