@@ -4,7 +4,8 @@ require_once '../controller/conexion.php';
 
 class Menu {
   public $nombreCompleto, $nombreMedio, $nombre, $username, $password, $appat, $apmat, $email, $telefono, $activo, $imagen, $urlimagen, $tipousuario;
-
+  //variable para agregar archivos JS
+  public $librerias;
   public function __construct()
   {
     $this->nombreCompleto = $_SESSION['user']['nombrecompleto'];
@@ -28,22 +29,37 @@ class Menu {
     $activeCliente = "";
     $activeClienteVer = "";
     $activeClienteReg = "";
+    $activeUsuario = "";
     $activeUsuarioVer = "";
     $activeUsuarioReg = "";
+    $activeConceptos = "";
     $activeConceptosVer = "";
     $activeConceptosReg = "";
+    $activeDocumento= "";
     $activeDocumentoVer= "";
     $activeDocumentoReg = "";
+    $activePrestamo = "";
     $activePrestamoVer = "";
     $activePrestamoReg = "";
+    $activePension = "";
     $activePensionVer = "";
     $activePensionReg = "";
+    $activeReporte = "";
+    $activeReporteCheckList = "";
+    $activeReporteEstadoCuenta = "";
+    $libraryInicio = "";
 
     if($active == 'inicio') {
       $activeInicio = "active";
       $title = "Bienvenido: " . $this->nombreCompleto;
+      $this->librerias = "<script src=\"../../plugins/chart.js/Chart.min.js\"></script>
+      <script src=\"../../dist/js/pages/dashboard3.js\"></script>";
     } elseif ($active == 'clientever'){
-
+      $activeCliente = 'active';
+      $activeClienteVer = 'active';
+    } elseif ($active == 'clientereg') {
+      $activeCliente = 'active';
+      $activeClienteReg = 'active';
     }
 
     echo '<!DOCTYPE html>
@@ -82,7 +98,7 @@ class Menu {
             <li class="nav-item dropdown user-menu">
               <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
                 <img src="'.$this->urlimagen.'" class="user-image img-circle elevation-2" alt="User Image">
-                <span class="d-md-inline">'.$this->nombreMedio.'</span>
+                <span class="d-md-inline">'.$this->tipousuario.'</span>
               </a>
               <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                 <!-- User image -->
@@ -128,7 +144,7 @@ class Menu {
                     <img src="'.$this->urlimagen.'" class="img-circle elevation-2" alt="User Image">
                   </div>
                   <div class="info">
-                    <a href="#" class="d-block">'.$this->tipousuario.'</a>
+                    <a href="#" class="d-block">'.$this->nombreMedio.'</a>
                   </div>
                 </div>
                 <li class="nav-item">
@@ -140,30 +156,162 @@ class Menu {
                   </a>
                 </li>
                 <li class="nav-item has-treeview">
-                  <a href="#" class="nav-link">
-                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                  <a href="#" class="nav-link '.$activeCliente.'">
+                    <i class="nav-icon fas fa-users"></i>
                     <p>
-                      Dashboard
+                      Clientes
                       <i class="right fas fa-angle-left"></i>
                     </p>
                   </a>
                   <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                      <a href="../../index.html" class="nav-link">
+                    <li class="nav-item '.$activeClienteReg.'">
+                      <a href="registrarclienteview.php" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>Dashboard v1</p>
+                        <p>Registrar Cliente</p>
                       </a>
                     </li>
-                    <li class="nav-item">
-                      <a href="../../index2.html" class="nav-link">
+                    <li class="nav-item '.$activeClienteVer.'">
+                      <a href="consultarclienteview.php" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>Dashboard v2</p>
+                        <p>Ver Clientes</p>
                       </a>
                     </li>
-                    <li class="nav-item">
-                      <a href="../../index3.html" class="nav-link">
+                  </ul>
+                </li>
+                <li class="nav-item has-treeview">
+                  <a href="#" class="nav-link '.$activePension.'">
+                    <i class="nav-icon fas fa-dollar-sign"></i>
+                    <p>
+                      Pensión
+                      <i class="right fas fa-angle-left"></i>
+                    </p>
+                  </a>
+                  <ul class="nav nav-treeview">
+                    <li class="nav-item '.$activePensionReg.'">
+                      <a href="registrarpensionview.php" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>Dashboard v3</p>
+                        <p>Registrar Pension</p>
+                      </a>
+                    </li>
+                    <li class="nav-item '.$activePensionVer.'">
+                      <a href="consultarpensionview.php" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Ver Pensiones</p>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <li class="nav-item has-treeview">
+                  <a href="#" class="nav-link '.$activePrestamo.'">
+                    <i class="nav-icon fas fa-hand-holding-usd"></i>
+                    <p>
+                      Préstamos
+                      <i class="right fas fa-angle-left"></i>
+                    </p>
+                  </a>
+                  <ul class="nav nav-treeview">
+                    <li class="nav-item '.$activePrestamoReg.'">
+                      <a href="registrarprestamoview.php" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Registrar Préstamo</p>
+                      </a>
+                    </li>
+                    <li class="nav-item '.$activePrestamoVer.'">
+                      <a href="consultarprestamoview.php" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Ver Préstamos</p>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <li class="nav-item has-treeview">
+                  <a href="#" class="nav-link '.$activeReporte.'">
+                    <i class="nav-icon fas fa-file-pdf"></i>
+                    <p>
+                      Reportes
+                      <i class="right fas fa-angle-left"></i>
+                    </p>
+                  </a>
+                  <ul class="nav nav-treeview">
+                    <li class="nav-item '.$activeReporteCheckList.'">
+                      <a href="reporteCheckListview.php" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>CheckList</p>
+                      </a>
+                    </li>
+                    <li class="nav-item '.$activeReporteEstadoCuenta.'">
+                      <a href="reporteEstadoCuentaview.php" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Estado de cuenta</p>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <li class="nav-item has-treeview">
+                  <a href="#" class="nav-link '.$activeDocumento.'">
+                    <i class="nav-icon fas fa-folder"></i>
+                    <p>
+                      Documentos
+                      <i class="right fas fa-angle-left"></i>
+                    </p>
+                  </a>
+                  <ul class="nav nav-treeview">
+                    <li class="nav-item '.$activeDocumentoReg.'">
+                      <a href="registrardocumentoview.php" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Registrar Documento</p>
+                      </a>
+                    </li>
+                    <li class="nav-item '.$activeDocumentoVer.'">
+                      <a href="consultardocumentoview.php" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Ver Documentos</p>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <li class="nav-item has-treeview">
+                  <a href="#" class="nav-link '.$activeConceptos.'">
+                    <i class="nav-icon fas fa-cogs"></i>
+                    <p>
+                      Conceptos
+                      <i class="right fas fa-angle-left"></i>
+                    </p>
+                  </a>
+                  <ul class="nav nav-treeview">
+                    <li class="nav-item '.$activeConceptosReg.'">
+                      <a href="registrarconceptoview.php" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Registrar Concepto</p>
+                      </a>
+                    </li>
+                    <li class="nav-item '.$activeConceptosVer.'">
+                      <a href="consultarconceptoview.php" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Ver Conceptos</p>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <li class="nav-item has-treeview">
+                  <a href="#" class="nav-link '.$activeUsuario.'">
+                    <i class="nav-icon fas fa-users-cog"></i>
+                    <p>
+                      Usuarios
+                      <i class="right fas fa-angle-left"></i>
+                    </p>
+                  </a>
+                  <ul class="nav nav-treeview">
+                    <li class="nav-item '.$activeUsuarioReg.'">
+                      <a href="registrarusuarioview.php" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Registrar Usuarios</p>
+                      </a>
+                    </li>
+                    <li class="nav-item '.$activeUsuarioVer.'">
+                      <a href="consultarusuarioview.php" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Ver Usuarios</p>
                       </a>
                     </li>
                   </ul>
@@ -245,6 +393,7 @@ class Menu {
       <script src="../../dist/js/demo.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
       <script src="../../plugins/jquery-validation/jquery.validate.min.js"></script>
+      '.$this->librerias.'
       </body>
       </html>';
   }
