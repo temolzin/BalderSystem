@@ -10,12 +10,15 @@
 
     public function read()
     {
-      $query = "SELECT * FROM cliente";
+      $query = "SELECT * FROM cliente c 
+                INNER JOIN postal p on c.id_postal = p.id 
+                INNER JOIN institucionbancaria ib on c.id_institucion_bancaria = ib.id_institucion_bancaria
+                INNER JOIN genero g on c.id_genero = g.id_genero";
       $objCliente = null;
       foreach ($this->conex->consultar($query) as $key => $value) {
-        $objCliente[] = $value;
+        $objCliente["data"][] = $value;
       }
-      echo $objCliente;
+      echo json_encode($objCliente, JSON_UNESCAPED_UNICODE);
     }
 
     public function insert($data)
@@ -67,7 +70,7 @@
       );
 
       $sentencia = $this->conex->ejecutarAccion("INSERT INTO cliente(id_cliente, id_postal, id_institucion_bancaria, id_genero, 
-                            nombre_cliente, ap_pat, ap_mat, rfc, curp, fecha_nacimiento, estado_nacimiento, clabe, email, 
+                            nombre_cliente, ap_pat, ap_mat, rfc, curp, fecha_nacimiento, estado_nacimiento, clabe_interbancaria, email, 
                             telefono, imagen, calle, noexterior, nointerior, nss, alta_imss, baja_imss, observacion, activo) 
                             VALUES 
                             (null,:idpostal,:idinstitucionbancaria, :idgenero, :nombrecliente,:appat,:apmat,:rfc,:curp,:fechanacimiento,:estadonacimiento,:clabe,:email,:telefono,

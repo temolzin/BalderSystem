@@ -69,5 +69,5 @@
 
   }
   else if($accion == "read") {
-
+    echo $cliente->read();
   }
