@@ -65,13 +65,13 @@
                 <div class="col-6 col-md-4">
                   <div class="form-group">
                     <label for="fechanacimiento">Fecha Nacimiento (*)</label>
-                    <input type="date" name="fechanacimiento" id="fechanacimiento" class="form-control" placeholder="Email">
+                    <input type="date" name="fechanacimiento" id="fechanacimiento" class="form-control" value="" placeholder="Email">
                   </div>
                 </div>
                 <div class="col-6 col-md-4">
                   <div class="form-group">
                     <label for="telefono">Estado Nacimiento (*)</label>
-                    <select class="custom-select" name="estado" id="estado">
+                    <select class="custom-select" name="estadonacimiento" id="estadonacimiento">
                       <?php
                       $query = "select distinct estado from postal";
                       foreach ($menu->conex->consultar($query) as $key => $value) {
@@ -86,13 +86,13 @@
                 <div class="col-6 col-md-6">
                   <div class="form-group">
                     <label for="rfc">RFC (*)</label>
-                    <input type="text" name="rfc" id="rfc" class="form-control" placeholder="RFC">
+                    <input type="text" name="rfc" id="rfc" class="form-control" placeholder="RFC" value="">
                   </div>
                 </div>
                 <div class="col-6 col-md-6">
                   <div class="form-group">
                     <label for="telefono">CURP (*)</label>
-                    <input type="text" id="curp" name="curp" class="form-control" placeholder="CURP">
+                    <input type="text" id="curp" name="curp" class="form-control" placeholder="CURP" value="">
                   </div>
                 </div>
               </div>
@@ -100,13 +100,13 @@
                 <div class="col-6 col-md-6">
                   <div class="form-group">
                     <label for="email">Email (*)</label>
-                    <input type="email" name="email" id="email" class="form-control" placeholder="Email">
+                    <input type="email" name="email" id="email" class="form-control" placeholder="Email" value="">
                   </div>
                 </div>
                 <div class="col-6 col-md-6">
                   <div class="form-group">
                     <label for="telefono">Teléfono</label>
-                    <input type="text" id="telefono" name="telefono" class="form-control" placeholder="Teléfono">
+                    <input type="text" id="telefono" name="telefono" class="form-control" placeholder="Teléfono" value="">
                   </div>
                 </div>
               </div>
@@ -115,19 +115,19 @@
                 <div class="col-12 col-sm-4">
                   <div class="form-group">
                     <label>NSS</label>
-                    <input type="text" class="form-control" id="nss" name="nss" placeholder="Número de Seguridad Social" />
+                    <input type="text" class="form-control" id="nss" name="nss" placeholder="Número de Seguridad Social" value="" />
                   </div>
                 </div>
                 <div class="col-6 col-sm-4">
                   <div class="form-group">
                     <label>Alta IMSS</label>
-                    <input type="date" class="form-control" id="altaimss" name="altaimss" placeholder="Alta IMSS" />
+                    <input type="date" class="form-control" id="altaimss" name="altaimss" placeholder="Alta IMSS" value="" />
                   </div>
                 </div>
                 <div class="col-6 col-sm-4">
                   <div class="form-group">
                     <label>Baja IMSS</label>
-                    <input type="date" class="form-control" id="bajaimss" name="bajaimss" placeholder="Baja IMSS" />
+                    <input type="date" class="form-control" id="bajaimss" name="bajaimss" placeholder="Baja IMSS" value="" />
                   </div>
                 </div>
               </div>
@@ -136,19 +136,19 @@
                 <div class="col-12 col-sm-6">
                   <div class="form-group">
                     <label>Calle</label>
-                    <input type="text" class="form-control" id="calle" name="calle" placeholder="Número de Seguridad Social" />
+                    <input type="text" class="form-control" id="calle" name="calle" placeholder="Número de Seguridad Social" value="" />
                   </div>
                 </div>
                 <div class="col-6 col-sm-3">
                   <div class="form-group">
                     <label>No. Exterior</label>
-                    <input type="number" class="form-control" id="noexterior" name="noexterior" placeholder="No. Exterior" />
+                    <input type="number" value="" class="form-control" id="noexterior" name="noexterior" placeholder="No. Exterior" />
                   </div>
                 </div>
                 <div class="col-6 col-sm-3">
                   <div class="form-group">
                     <label>No. Interior</label>
-                    <input type="number" class="form-control" id="nointerior" name="nointerior" placeholder="No. Interior" />
+                    <input type="number" value="" class="form-control" id="nointerior" name="nointerior" placeholder="No. Interior" />
                   </div>
                 </div>
               </div>
@@ -168,7 +168,7 @@
                 <div class="col-3 col-sm-3">
                   <div class="form-group">
                     <label>Municipio</label>
-                    <input type="text" class="form-control" id="municipiocodigopostal" name="municipiocodigopostal" placeholder="Municipio" disabled/>
+                    <input type="text" value="" class="form-control" id="municipiocodigopostal" name="municipiocodigopostal" placeholder="Municipio" disabled/>
                   </div>
                 </div>
                 <div class="col-12 col-sm-3">
@@ -182,9 +182,8 @@
               <div class="row">
                 <div class="col-6 col-md-6">
                   <div class="form-group">
-                    <label for="email">Banco</label>
+                    <label for="banco">Banco</label>
                     <select class="custom-select" name="banco" id="banco">
-                      <option value="default">Selecciona</option>
                       <?php
                       $query = "select * from institucionbancaria";
                       foreach ($menu->conex->consultar($query) as $key => $value) {
@@ -197,7 +196,7 @@
                 <div class="col-6 col-md-6">
                   <div class="form-group">
                     <label for="clabe">Clabe</label>
-                    <input type="text" id="clabe" name="clabe" class="form-control" placeholder="Clabe Interbancaria">
+                    <input type="text" id="clabe" name="clabe" value="" class="form-control" placeholder="Clabe Interbancaria">
                   </div>
                 </div>
               </div>
@@ -206,7 +205,7 @@
                 <div class="col-12 col-md-12">
                   <div class="form-group">
                     <label for="observacion">Observaciones</label>
-                    <textarea type="text" id="observacion" name="observacion" class="form-control" placeholder="Observaciones"></textarea>
+                    <textarea type="text" id="observacion" name="observacion" value="" class="form-control" placeholder="Observaciones"></textarea>
                   </div>
                 </div>
               </div>
@@ -240,23 +239,51 @@
     $.validator.setDefaults({
       submitHandler: function () {
         var form_data = new FormData();
-        var imagen = $('#imagenAuditor').prop('files')[0];
+        var imagen = $('#imagen').prop('files')[0];
+        var idpostal = document.getElementById('colonia');
+        var idbanco = document.getElementById('banco');
+        var idgenero = document.getElementById('genero');
         var nombre = document.getElementById('nombre');
-        var apPat = document.getElementById('apPat');
-        var apMat = document.getElementById('apMat');
+        var apPat = document.getElementById('appat');
+        var apMat = document.getElementById('apmat');
+        var rfc = document.getElementById('rfc');
+        var curp = document.getElementById('curp');
+        var fechanacimiento = document.getElementById('fechanacimiento');
+        var estadonacimiento = document.getElementById('estadonacimiento');
+        var clabe = document.getElementById('clabe');
         var email = document.getElementById('email');
-        var username = document.getElementById('username');
         var telefono = document.getElementById('telefono');
-        var password = document.getElementById('password');
+        var calle = document.getElementById('calle');
+        var noexterior = document.getElementById('noexterior');
+        var nointerior = document.getElementById('nointerior');
+        var nss = document.getElementById('nss');
+        var altaimss = document.getElementById('altaimss');
+        var bajaimss = document.getElementById('bajaimss');
+        var observacion = document.getElementById('observacion');
 
         form_data.append('imagen', imagen);
-        form_data.append('username', username.value);
+        form_data.append('idpostal', idpostal.value);
+        form_data.append('idbanco', idbanco.value);
+        form_data.append('idgenero', idgenero.value);
         form_data.append('nombre', nombre.value);
-        form_data.append('apPat', apPat.value);
-        form_data.append('apMat', apMat.value);
+        form_data.append('appat', apPat.value);
+        form_data.append('apmat', apMat.value);
+        form_data.append('rfc', rfc.value);
+        form_data.append('curp', curp.value);
+        form_data.append('fechanacimiento', fechanacimiento.value);
+        form_data.append('estadonacimiento', estadonacimiento.value);
+        form_data.append('clabe', clabe.value);
         form_data.append('email', email.value);
         form_data.append('telefono', telefono.value);
-        form_data.append('password', password.value);
+        form_data.append('calle', calle.value);
+        form_data.append('noexterior', noexterior.value);
+        form_data.append('nointerior', nointerior.value);
+        form_data.append('nss', nss.value);
+        form_data.append('altaimss', altaimss.value);
+        form_data.append('bajaimss', bajaimss.value);
+        form_data.append('observacion', observacion.value);
+        form_data.append('accion', 'insert');
+
         $.ajax({
           type: "POST",
           url: "../process/clienteajax.php",
@@ -313,12 +340,20 @@
           required: true,
           email: true,
         },
-        password: {
-          required: true,
-          minlength: 5
-        },
         clabe: {
           minlength: 18
+        },
+        calle: {
+          required: true
+        },
+        noexterior: {
+          required: true
+        },
+        codigopostal: {
+          required: true
+        },
+        colonia: {
+          required: true
         }
       },
       messages: {
@@ -347,12 +382,20 @@
           required: "Ingresa email",
           email: "Ingresa una dirección de email correcta"
         },
-        password: {
-          required: "Please provide a password",
-          minlength: "Your password must be at least 5 characters long"
-        },
         clabe: {
           minlength: "La Clabe debe tener 18 dígitos"
+        },
+        calle: {
+          required: "Ingresa la calle del domicilio",
+        },
+        noexterior: {
+          required: "Ingresa el número exterior",
+        },
+        codigopostal: {
+          required: "Ingresa un número postal",
+        },
+        colonia: {
+          required: "Selecciona una colonia",
         }
       },
       errorElement: 'span',
@@ -370,30 +413,41 @@
   });
 
   var direccionbycodigopostal = function () {
-    $("#codigopostal").keypress(function (e) {
-      if(e.which == 13) {
+    $("#codigopostal").on("keydown keypress keyup",function (e) {
+      if(e.which == 9 || e.which == 13) {
         $('#colonia').html("");
         $.ajax({
           type: "POST",
           url: "../process/codigopostalajax.php",
-          data:{codigopostal  : document.getElementById("codigopostal").value,
-                accion : "read"},
-          success: function (data) {
-            console.log(data);
-            data = JSON.parse(data);
-            console.log(data);
-            $('#estadocodigopostal').val(data[0].estado);
-            $('#municipiocodigopostal').val(data[0].municipio);
-
-            $('#colonia').prop('disabled', false);
-            for (var i=0; i < data.length; i++) {
-              $('#colonia').append("<option value='" + data[i].id + "' >" + data[i]['colonia'] + "</option>");
-            }
-          }, error: function(XMLHttpRequest, textStatus, errorThrown) {
-            alert("Status: " + textStatus); alert("Error: " + errorThrown);
+          data: {
+            codigopostal: document.getElementById("codigopostal").value,
+            accion: "read"
           }
+        }).done(function (data) {
+          try {
+            data = JSON.parse(data);
+          } catch (e) {
+            Swal.fire(
+              "¡Error!", "No se encuentra el código postal", "error"
+            );
+          }
+          $('#estadocodigopostal').val(data[0].estado);
+          $('#municipiocodigopostal').val(data[0].municipio);
+
+          $('#colonia').prop('disabled', false);
+          $.each(data, function (i, row) {
+            $('#colonia').append("<option value='" + data[i].id + "' >" + data[i]['colonia'] + "</option>");
+          });
         });
       }
     });
   }
+
+</script>
+<script>
+  // Add the following code if you want the name of the file appear on select
+  $(".custom-file-input").on("change", function() {
+    var fileName = $(this).val().split("\\").pop();
+    $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+  });
 </script>

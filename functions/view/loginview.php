@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <title>Balder System</title>
   <meta charset="UTF-8">
@@ -179,7 +179,7 @@
             } else {
               Swal.fire(
                 "¡Error!",
-                  "Usuario y contraseña incorrectos" + data,
+                  "Usuario y contraseña incorrectos",
                 "error"
               );
             }

@@ -20,25 +20,13 @@
 
     public function insert($data)
     {
-      $imagen = $_FILES["imagen"];
-      $nombreImagen = $imagen["name"];
-      $tipoImagen = $imagen["type"];
-      $carpetaImagen = "../../img/images/";
-      $ruta_provisional = $imagen["tmp_name"];
-
-      if ($tipoImagen != 'image/jpg' && $tipoImagen != 'image/jpeg' && $tipoImagen != 'image/png' && $tipoImagen != 'image/gif')       {
-        echo 'El archivo no es una imagen';
-      }
-      else {
-        copy($ruta_provisional, $carpetaImagen.$nombreImagen);
-      }
-
+      $imagen = $data['imagen'];
       $idpostal = $data['idpostal'];
       $idbanco = $data['idbanco'];
       $idgenero = $data['idgenero'];
       $nombre = $data['nombre'];
-      $apPat = $data['apPat'];
-      $apMat = $data['apMat'];
+      $apPat = $data['appat'];
+      $apMat = $data['apmat'];
       $rfc = $data['rfc'];
       $curp = $data['curp'];
       $fechanacimiento = $data['fechanacimiento'];
@@ -68,7 +56,7 @@
         ':clabe' => $clabe,
         ':email' => $email,
         ':telefono' => $telefono,
-        ':imagen' => $nombreImagen,
+        ':imagen' => $imagen,
         ':calle' => $calle,
         ':noexterior' => $noexterior,
         ':nointerior' => $nointerior,

@@ -109,7 +109,7 @@ CREATE TABLE cliente(
     foreign key (id_postal) references postal(id),
     foreign key (id_institucion_bancaria) references institucionbancaria(id_institucion_bancaria),
     foreign key (id_genero) references genero(id_genero)
-);
+)AUTO_INCREMENT = 1000000;
 
 CREATE TABLE documentocliente(
     id_documento int,
