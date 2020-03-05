@@ -400,6 +400,7 @@ class Menu {
       <!-- jquery-validation -->
       <script src="../../plugins/jquery-validation/jquery.validate.min.js"></script>
       <script src="../../plugins/jquery-validation/additional-methods.min.js"></script>
+      <script src="../../dist/js/validaciones.js"></script>
       '.$this->librerias.'
       </body>
       </html>';

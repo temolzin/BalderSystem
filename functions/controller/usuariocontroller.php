@@ -10,7 +10,12 @@
 
     public function read()
     {
-      // TODO: Implement read() method.
+      $query = "SELECT * FROM usuario u INNER JOIN tipousuario tu ON u.id_tipo_usuario = tu.id_tipo_usuario";
+      $objUsuario = null;
+      foreach ($this->conex->consultar($query) as $key => $value) {
+        $objUsuario[] = $value;
+      }
+      echo $objUsuario;
     }
 
     public function insert($data)

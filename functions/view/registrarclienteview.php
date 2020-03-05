@@ -131,38 +131,50 @@
                   </div>
                 </div>
               </div>
+              <hr class="bg-gradient-cyan">
               <div class="row">
-                <div class="col-6 col-md-6">
+                <div class="col-12 col-sm-6">
                   <div class="form-group">
-                    <label for="email">Email (*)</label>
-                    <input type="email" name="email" id="email" class="form-control" placeholder="Email">
+                    <label>Calle</label>
+                    <input type="text" class="form-control" id="calle" name="calle" placeholder="Número de Seguridad Social" />
                   </div>
                 </div>
-                <div class="col-6 col-md-6">
+                <div class="col-6 col-sm-3">
                   <div class="form-group">
-                    <label for="telefono">Teléfono</label>
-                    <input type="text" id="telefono" name="telefono" class="form-control" placeholder="Teléfono">
+                    <label>No. Exterior</label>
+                    <input type="number" class="form-control" id="noexterior" name="noexterior" placeholder="No. Exterior" />
+                  </div>
+                </div>
+                <div class="col-6 col-sm-3">
+                  <div class="form-group">
+                    <label>No. Interior</label>
+                    <input type="number" class="form-control" id="nointerior" name="nointerior" placeholder="No. Interior" />
                   </div>
                 </div>
               </div>
-              <hr class="bg-gradient-indigo">
               <div class="row">
-                <div class="col-12 col-sm-4">
+                <div class="col-6 col-sm-3">
                   <div class="form-group">
-                    <label>NSS</label>
-                    <input type="text" class="form-control" id="nss" name="nss" placeholder="Número de Seguridad Social" />
+                    <label>Código postal </label>
+                    <input type="text" id="codigopostal" name="codigopostal" onkeypress="return soloNumeros(this);" maxlength="5" class="form-control" placeholder="Código Postal" />
                   </div>
                 </div>
-                <div class="col-6 col-sm-4">
+                <div class="col-3 col-sm-3">
                   <div class="form-group">
-                    <label>Alta IMSS</label>
-                    <input type="date" class="form-control" id="altaimss" name="altaimss" placeholder="Alta IMSS" />
+                    <label>Estado</label>
+                    <input type="text" class="form-control" id="estadocodigopostal" name="estadocodigopostal" placeholder="Estado" disabled/>
                   </div>
                 </div>
-                <div class="col-6 col-sm-4">
+                <div class="col-3 col-sm-3">
                   <div class="form-group">
-                    <label>Baja IMSS</label>
-                    <input type="date" class="form-control" id="bajaimss" name="bajaimss" placeholder="Baja IMSS" />
+                    <label>Municipio</label>
+                    <input type="text" class="form-control" id="municipiocodigopostal" name="municipiocodigopostal" placeholder="Municipio" disabled/>
+                  </div>
+                </div>
+                <div class="col-12 col-sm-3">
+                  <div class="form-group">
+                    <label>Colonia</label>
+                    <select class="custom-select" disabled id="colonia" name="colonia"></select>
                   </div>
                 </div>
               </div>
@@ -222,6 +234,9 @@
   ?>
 <script type="text/javascript">
   $(document).ready(function () {
+
+    direccionbycodigopostal();
+
     $.validator.setDefaults({
       submitHandler: function () {
         var form_data = new FormData();
@@ -285,6 +300,15 @@
         apmat: {
           required: true
         },
+        rfc: {
+          required: true
+        },
+        curp: {
+          required: true
+        },
+        fechanacimiento: {
+          required: true
+        },
         email: {
           required: true,
           email: true,
@@ -309,6 +333,15 @@
         },
         apmat: {
           required: "Ingresa apellido materno"
+        },
+        rfc: {
+          required: "Ingresa RFC"
+        },
+        curp: {
+          required: "Ingresa CURP"
+        },
+        fechanacimiento: {
+          required: "Ingresa Fecha de Nacimiento"
         },
         email: {
           required: "Ingresa email",
@@ -335,4 +368,32 @@
       }
     });
   });
+
+  var direccionbycodigopostal = function () {
+    $("#codigopostal").keypress(function (e) {
+      if(e.which == 13) {
+        $('#colonia').html("");
+        $.ajax({
+          type: "POST",
+          url: "../process/codigopostalajax.php",
+          data:{codigopostal  : document.getElementById("codigopostal").value,
+                accion : "read"},
+          success: function (data) {
+            console.log(data);
+            data = JSON.parse(data);
+            console.log(data);
+            $('#estadocodigopostal').val(data[0].estado);
+            $('#municipiocodigopostal').val(data[0].municipio);
+
+            $('#colonia').prop('disabled', false);
+            for (var i=0; i < data.length; i++) {
+              $('#colonia').append("<option value='" + data[i].id + "' >" + data[i]['colonia'] + "</option>");
+            }
+          }, error: function(XMLHttpRequest, textStatus, errorThrown) {
+            alert("Status: " + textStatus); alert("Error: " + errorThrown);
+          }
+        });
+      }
+    });
+  }
 </script>
