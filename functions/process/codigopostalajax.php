@@ -2,10 +2,14 @@
   require_once '../controller/codigopostalcontroller.php';
 
   $objCodigopostal = new Postal();
-  $codigopostal = $_POST['codigopostal'];
   $accion = $_POST['accion'];
 
-  if($accion == 'read'){
+  if($accion == 'readByCodigoPostal') {
+    $codigopostal = $_POST['codigopostal'];
     echo $objCodigopostal->readbycodigopostal($codigopostal);
+  }
+  if($accion == 'readByIdPostal') {
+    $idpostal = $_POST['idpostal'];
+    echo $objCodigopostal->readbyidpostal($idpostal);
   }
 

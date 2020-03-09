@@ -20,7 +20,7 @@
               <div class="row">
                 <div class="col-12 col-sm-12">
                   <div class="form-group">
-                    <label>Imagen (*)</label>
+                    <label>Foto del cliente (*)</label>
                     <div class="custom-file">
                       <input type="file" accept="image/*" class="custom-file-input" name="imagen" id="imagen" lang="es">
                       <label class="custom-file-label" for="imagen">Selecciona Imagen</label>
@@ -135,13 +135,13 @@
               <div class="row">
                 <div class="col-12 col-sm-6">
                   <div class="form-group">
-                    <label>Calle</label>
+                    <label>Calle (*)</label>
                     <input type="text" class="form-control" id="calle" name="calle" placeholder="Número de Seguridad Social" value="" />
                   </div>
                 </div>
                 <div class="col-6 col-sm-3">
                   <div class="form-group">
-                    <label>No. Exterior</label>
+                    <label>No. Exterior (*)</label>
                     <input type="number" value="" class="form-control" id="noexterior" name="noexterior" placeholder="No. Exterior" />
                   </div>
                 </div>
@@ -155,7 +155,7 @@
               <div class="row">
                 <div class="col-6 col-sm-3">
                   <div class="form-group">
-                    <label>Código postal </label>
+                    <label>Código postal (*) </label>
                     <input type="text" id="codigopostal" name="codigopostal" onkeypress="return soloNumeros(this);" maxlength="5" class="form-control" placeholder="Código Postal" />
                   </div>
                 </div>
@@ -173,7 +173,7 @@
                 </div>
                 <div class="col-12 col-sm-3">
                   <div class="form-group">
-                    <label>Colonia</label>
+                    <label>Colonia (*)</label>
                     <select class="custom-select" disabled id="colonia" name="colonia"></select>
                   </div>
                 </div>
@@ -421,7 +421,7 @@
           url: "../process/codigopostalajax.php",
           data: {
             codigopostal: document.getElementById("codigopostal").value,
-            accion: "read"
+            accion: "readByCodigoPostal"
           }
         }).done(function (data) {
           try {

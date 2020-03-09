@@ -41,4 +41,13 @@
       }
       echo json_encode($objpostal);
     }
+
+    public function readbyidpostal($idpostal) {
+      $query = "SELECT * FROM postal WHERE id = '" . $idpostal . "'";
+      $objpostal = null;
+      foreach ($this->conex->consultar($query) as $key => $value) {
+        $objpostal[] = $value;
+      }
+      echo json_encode($objpostal);
+    }
   }

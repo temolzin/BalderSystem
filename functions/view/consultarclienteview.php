@@ -50,7 +50,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-          <a href="../process/logout.php" class="btn btn-danger">Eliminar</a>
+          <button class="btn btn-danger">Eliminar</button>
         </div>
       </div>
     </div>
@@ -72,6 +72,21 @@
             <form role="form" id="form" name="form">
               <div class="card-body">
                 <div class="row">
+                  <div class="col-sm-12">
+                    <!-- Profile Image -->
+                    <div class="card card-warning card-outline">
+                      <div class="card-body box-profile">
+                        <div class="text-center">
+                          <img class="profile-user-img img-fluid img-circle"
+                               src="../../dist/img/user4-128x128.jpg"
+                               alt="User profile picture" id="imagenperfil" name="imagenperfil">
+                        </div>
+                      </div>
+                    </div>
+                    <!-- /.card-body -->
+                  </div>
+                </div>
+                <div class="row">
                   <div class="col-12 col-sm-12">
                     <label>Foto del cliente</label>
                     <div class="form-group input-group">
@@ -89,7 +104,7 @@
                   <div class="col-12 col-sm-12">
                     <div class="form-group">
                       <label>ID</label>
-                      <input type="text" class="form-control" id="id" name="id" placeholder="ID" disabled />
+                      <input type="text" class="form-control" id="idActualizar" name="idActualizar" placeholder="ID" disabled />
                     </div>
                   </div>
                 </div>
@@ -200,13 +215,13 @@
                 <div class="row">
                   <div class="col-12 col-sm-6">
                     <div class="form-group">
-                      <label>Calle</label>
+                      <label>Calle (*)</label>
                       <input type="text" class="form-control" id="calle" name="calle" placeholder="Número de Seguridad Social" value="" />
                     </div>
                   </div>
                   <div class="col-6 col-sm-3">
                     <div class="form-group">
-                      <label>No. Exterior</label>
+                      <label>No. Exterior (*)</label>
                       <input type="number" value="" class="form-control" id="noexterior" name="noexterior" placeholder="No. Exterior" />
                     </div>
                   </div>
@@ -220,7 +235,7 @@
                 <div class="row">
                   <div class="col-6 col-sm-3">
                     <div class="form-group">
-                      <label>Código postal </label>
+                      <label>Código postal (*)</label>
                       <input type="text" id="codigopostal" name="codigopostal" onkeypress="return soloNumeros(this);" maxlength="5" class="form-control" placeholder="Código Postal" />
                     </div>
                   </div>
@@ -238,7 +253,7 @@
                   </div>
                   <div class="col-12 col-sm-3">
                     <div class="form-group">
-                      <label>Colonia</label>
+                      <label>Colonia (*)</label>
                       <select class="custom-select" disabled id="colonia" name="colonia"></select>
                     </div>
                   </div>
@@ -275,6 +290,7 @@
                   </div>
                 </div>
               </div>
+              <input type="hidden" id="activo" name="activo" />
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                 <button type="submit" class="btn btn-warning">Actualizar</button>
@@ -288,6 +304,8 @@
 <script type="text/javascript">
   $(document).ready(function () {
     mostrarRegistros();
+    enviarFormulario();
+    direccionbycodigopostal();
   });
 
   var idiomaDataTable = {
@@ -333,8 +351,9 @@
         {data:"rfc"},
         {data:"curp"},
         {data:"fecha_nacimiento"},
-        {data:null, "defaultContent": "<button class='editar btn btn-primary'  data-toggle='modal' data-target='#modalActualizar'><i class=\"fa fa-edit\"></i></button>	" +
-            "<button class='eliminar btn btn-danger' data-toggle='modal' data-target='#modalEliminar' ><i class=\"far fa-trash-alt\"></i></button>"}
+        {data:null, "defaultContent": "<button class='consultar btn btn-info'><i class=\"fas fa-search\"></i></button> " +
+            "<button class='editar btn btn-primary'  data-toggle='modal' data-target='#modalActualizar'><i class=\"fa fa-edit\"></i></button>	" +
+            "<button class='eliminar btn btn-danger' data-toggle='modal' data-target='#modalEliminar'><i class=\"far fa-trash-alt\"></i></button>" }
       ],
       responsive: true,
       language: idiomaDataTable
@@ -345,9 +364,262 @@
   var obtenerdatosDT = function (table) {
     $('#tablaDT tbody').on('click', '.editar', function() {
       var data = table.row(this).data();
-      // var id = $("idActualizar").val(data.id_cliente);
+      console.log(data);
+      var idpostal = direccionbyidpostal(data.id_postal);
+      $('#imagenperfil').attr("src","../../upload/images/client/"+data.imagen);
+      var id_cliente = $("#idActualizar").val(data.id_cliente);
+      var id_institucion_interbancaria = $("#banco option[value='"+ data.id_institucion_interbancaria +"']").attr("selected",true);
+      var id_genero = $("#genero option[value='"+ data.id_genero +"']").attr("selected",true);
+      var nombre_cliente = $("#nombre").val(data.nombre_cliente);
+      var appat = $("#appat").val(data.ap_pat);
+      var apmat = $("#apmat").val(data.ap_mat);
+      var rfc = $("#rfc").val(data.rfc);
+      var curp = $("#curp").val(data.curp);
+      var fecha_nacimiento = $("#fechanacimiento").val(data.fecha_nacimiento);
+      var estado_nacimiento = $("#estadonacimiento").val(data.estado_nacimiento);
+      var email = $("#email").val(data.email);
+      var telefono = $("#telefono").val(data.telefono);
+      var calle = $("#calle").val(data.calle);
+      var noexterior = $("#noexterior").val(data.noexterior);
+      var nointerior = $("#nointerior").val(data.nointerior);
+      var nss = $("#nss").val(data.nss);
+      var altaimss = $("#altaimss").val(data.alta_imss);
+      var bajaimss = $("#bajaimss").val(data.baja_imss);
+      var clabe = $("#clabe").val(data.clabe_interbancaria);
+      var observacion = $("#observacion").val(data.observacion);
+      var activo = $("#activo").val(data.activo);
 
     });
+  }
+
+  var enviarFormulario = function () {
+
+    $.validator.setDefaults({
+      submitHandler: function () {
+        var form_data = new FormData();
+        var idpostal = document.getElementById('colonia');
+        var idbanco = document.getElementById('banco');
+        var idgenero = document.getElementById('genero');
+        var nombre = document.getElementById('nombre');
+        var apPat = document.getElementById('appat');
+        var apMat = document.getElementById('apmat');
+        var rfc = document.getElementById('rfc');
+        var curp = document.getElementById('curp');
+        var fechanacimiento = document.getElementById('fechanacimiento');
+        var estadonacimiento = document.getElementById('estadonacimiento');
+        var clabe = document.getElementById('clabe');
+        var email = document.getElementById('email');
+        var telefono = document.getElementById('telefono');
+        var calle = document.getElementById('calle');
+        var noexterior = document.getElementById('noexterior');
+        var nointerior = document.getElementById('nointerior');
+        var nss = document.getElementById('nss');
+        var altaimss = document.getElementById('altaimss');
+        var bajaimss = document.getElementById('bajaimss');
+        var observacion = document.getElementById('observacion');
+        var activo = document.getElementById('activo');
+
+        form_data.append('idpostal', idpostal.value);
+        form_data.append('idbanco', idbanco.value);
+        form_data.append('idgenero', idgenero.value);
+        form_data.append('nombre', nombre.value);
+        form_data.append('appat', apPat.value);
+        form_data.append('apmat', apMat.value);
+        form_data.append('rfc', rfc.value);
+        form_data.append('curp', curp.value);
+        form_data.append('fechanacimiento', fechanacimiento.value);
+        form_data.append('estadonacimiento', estadonacimiento.value);
+        form_data.append('clabe', clabe.value);
+        form_data.append('email', email.value);
+        form_data.append('telefono', telefono.value);
+        form_data.append('calle', calle.value);
+        form_data.append('noexterior', noexterior.value);
+        form_data.append('nointerior', nointerior.value);
+        form_data.append('nss', nss.value);
+        form_data.append('altaimss', altaimss.value);
+        form_data.append('bajaimss', bajaimss.value);
+        form_data.append('observacion', observacion.value);
+        form_data.append('activo', activo.value);
+        form_data.append('accion', 'update');
+
+        $.ajax({
+          type: "POST",
+          url: "../process/clienteajax.php",
+          dataType: 'text',  // what to expect back from the PHP script, if anything
+          cache: false,
+          contentType: false,
+          processData: false,
+          data: form_data,
+          success: function(data){
+            if(data == 'ok') {
+              Swal.fire(
+                "¡Éxito!",
+                "El cliente ha sido actualizado de manera correcta",
+                "success"
+              ).then(function() {
+                window.location = "consultarclienteview.php";
+              })
+            } else {
+              Swal.fire(
+                "¡Error!",
+                "Ha ocurrido un error al actualizar el cliente. " + data,
+                "error"
+              );
+            }
+          },
+        });
+      }
+    });
+    $('#form').validate({
+      rules: {
+        nombre: {
+          required: true
+        },
+        appat: {
+          required: true
+        },
+        apmat: {
+          required: true
+        },
+        rfc: {
+          required: true
+        },
+        curp: {
+          required: true
+        },
+        fechanacimiento: {
+          required: true
+        },
+        email: {
+          required: true,
+          email: true,
+        },
+        clabe: {
+          minlength: 18
+        },
+        calle: {
+          required: true
+        },
+        noexterior: {
+          required: true
+        },
+        codigopostal: {
+          required: true
+        },
+        colonia: {
+          required: true
+        }
+      },
+      messages: {
+        nombre: {
+          required: "Ingresa un nombre"
+        },
+        appat: {
+          required: "Ingresa apellido paterno"
+        },
+        apmat: {
+          required: "Ingresa apellido materno"
+        },
+        rfc: {
+          required: "Ingresa RFC"
+        },
+        curp: {
+          required: "Ingresa CURP"
+        },
+        fechanacimiento: {
+          required: "Ingresa Fecha de Nacimiento"
+        },
+        email: {
+          required: "Ingresa email",
+          email: "Ingresa una dirección de email correcta"
+        },
+        clabe: {
+          minlength: "La Clabe debe tener 18 dígitos"
+        },
+        calle: {
+          required: "Ingresa la calle del domicilio",
+        },
+        noexterior: {
+          required: "Ingresa el número exterior",
+        },
+        codigopostal: {
+          required: "Ingresa un número postal",
+        },
+        colonia: {
+          required: "Selecciona una colonia",
+        }
+      },
+      errorElement: 'span',
+      errorPlacement: function (error, element) {
+        error.addClass('invalid-feedback');
+        element.closest('.form-group').append(error);
+      },
+      highlight: function (element, errorClass, validClass) {
+        $(element).addClass('is-invalid');
+      },
+      unhighlight: function (element, errorClass, validClass) {
+        $(element).removeClass('is-invalid');
+      }
+    });
+  }
+
+  var direccionbycodigopostal = function () {
+    $("#codigopostal").on("keydown keypress keyup",function (e) {
+      if(e.which == 9 || e.which == 13) {
+        $('#colonia').html("");
+        $.ajax({
+          type: "POST",
+          url: "../process/codigopostalajax.php",
+          data: {
+            codigopostal: document.getElementById("codigopostal").value,
+            accion: "readByCodigoPostal"
+          }
+        }).done(function (data) {
+          try {
+            data = JSON.parse(data);
+          } catch (e) {
+            Swal.fire(
+              "¡Error!", "No se encuentra el código postal", "error"
+            );
+          }
+          $('#estadocodigopostal').val(data[0].estado);
+          $('#municipiocodigopostal').val(data[0].municipio);
+
+          $('#colonia').prop('disabled', false);
+          $.each(data, function (i, row) {
+            $('#colonia').append("<option value='" + data[i].id + "' >" + data[i]['colonia'] + "</option>");
+          });
+        });
+      }
+    });
+  }
+
+  var direccionbyidpostal = function (idpostal) {
+        $('#colonia').html("");
+        $.ajax({
+          type: "POST",
+          url: "../process/codigopostalajax.php",
+          data: {
+            idpostal: idpostal,
+            accion: "readByIdPostal"
+          }
+        }).done(function (data) {
+          try {
+            data = JSON.parse(data);
+          } catch (e) {
+            Swal.fire(
+              "¡Error!", "No se encuentra el código postal", "error"
+            );
+          }
+          $('#codigopostal').val(data[0].codigo);
+          $('#estadocodigopostal').val(data[0].estado);
+          $('#municipiocodigopostal').val(data[0].municipio);
+
+          $('#colonia').prop('disabled', false);
+          $.each(data, function (i, row) {
+            $('#colonia').append("<option value='" + data[i].id + "' >" + data[i]['colonia'] + "</option>");
+          });
+        });
   }
 
 </script>
