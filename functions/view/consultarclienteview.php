@@ -48,10 +48,13 @@
         <div class="modal-body">
           ¿Estás seguro de eliminar este registro?
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-          <button class="btn btn-danger">Eliminar</button>
-        </div>
+        <form method="post" id="formEliminar" name="formEliminar">
+          <div class="modal-footer">
+            <input type="hidden" id="idEliminar" name="idEliminar" value="">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button type="button" id="btnEliminar" name="btnEliminar" class="btn btn-danger">Eliminar</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -77,8 +80,7 @@
                     <div class="card card-warning card-outline">
                       <div class="card-body box-profile">
                         <div class="text-center">
-                          <img class="profile-user-img img-fluid img-circle"
-                               src="../../dist/img/user4-128x128.jpg"
+                          <img style="height: 100px;" class="profile-user-img img-fluid img-circle" src=""
                                alt="User profile picture" id="imagenperfil" name="imagenperfil">
                         </div>
                       </div>
@@ -91,7 +93,7 @@
                     <label>Foto del cliente</label>
                     <div class="form-group input-group">
                       <div class="input-group-prepend">
-                        <button class="btn btn-warning" style="z-index: 0;" id="btnSubirImagen" name="btnSubirImagen">Subir</button>
+                        <button class="btn btn-warning" style="z-index: 0;" id="btnSubirImagen" type="button" name="btnSubirImagen">Subir</button>
                       </div>
                       <div class="custom-file">
                         <input type="file" accept="image/*" class="custom-file-input" name="imagen" id="imagen" lang="es">
@@ -276,7 +278,7 @@
                   <div class="col-6 col-md-6">
                     <div class="form-group">
                       <label for="clabe">Clabe</label>
-                      <input type="text" id="clabe" name="clabe" value="" class="form-control" placeholder="Clabe Interbancaria">
+                      <input type="text" id="clabe" name="clabe" value="" maxlength="18" class="form-control" placeholder="Clabe Interbancaria">
                     </div>
                   </div>
                 </div>
@@ -306,6 +308,8 @@
     mostrarRegistros();
     enviarFormulario();
     direccionbycodigopostal();
+    subirImagen();
+    eliminarRegistro();
   });
 
   var idiomaDataTable = {
@@ -362,9 +366,15 @@
   }
 
   var obtenerdatosDT = function (table) {
+    $('#tablaDT tbody').on('click', '.eliminar', function() {
+      var data = table.row(this).data();
+      var idcliente = $('#idEliminar').val(data.id_cliente);
+    });
     $('#tablaDT tbody').on('click', '.editar', function() {
       var data = table.row(this).data();
-      console.log(data);
+      if(data.imagen == null) {
+        data.imagen = "sinimagen.jpg";
+      }
       var idpostal = direccionbyidpostal(data.id_postal);
       $('#imagenperfil').attr("src","../../upload/images/client/"+data.imagen);
       var id_cliente = $("#idActualizar").val(data.id_cliente);
@@ -392,8 +402,82 @@
     });
   }
 
-  var enviarFormulario = function () {
+  //PARA SUBIR SOLAMENTE LA IMAGEN
+  var subirImagen = function() {
+    $('#btnSubirImagen').on("click", subirImagen);
+    function subirImagen() {
+      var imagen = document.getElementById('imagen');
+      if(imagen.value == "") {
+        Swal.fire(
+          "¡Cuidado!",
+          "Debes seleccionar una imagen para actualizar",
+          "warning"
+        );
+      } else {
+        var form_data = new FormData();
+        var idCliente = document.getElementById('idActualizar');
+        var imagen = $('#imagen').prop('files')[0];
+        form_data.append('idcliente', idCliente.value);
+        form_data.append('imagen', imagen);
+        form_data.append('accion','actualizarImagen');
+        $.ajax({
+          type: "POST",
+          url: "../process/clienteajax.php",
+          dataType: 'text',  // what to expect back from the PHP script, if anything
+          cache: false,
+          contentType: false,
+          processData: false,
+          data: form_data,
+          success: function(data) {
+            if(data == 'ok') {
+              Swal.fire(
+                "¡Éxito!",
+                "La imagen fue actualizada correctamente",
+                "success"
+              ).then(function() {
+                window.location = "consultarclienteview.php";
+              });
+            } else {
+              Swal.fire(
+                "¡Error!",
+                "Ha ocurrido un error al actualizar la imagen: " + data,
+                "error"
+              )
+            }
+          }
+        });
+      }
+    }
+  }
 
+  var eliminarRegistro = function() {
+    $("#btnEliminar").click(function () {
+      $.ajax({
+        type: "POST",
+        url: "../process/clienteajax.php",
+        data: {"accion":"delete", "idcliente": $('#idEliminar').val()},
+        success: function(data) {
+          if(data == 'ok') {
+            Swal.fire(
+              "¡Éxito!",
+              "El cliente ha sido eliminado de manera correcta",
+              "success"
+            ).then(function() {
+              window.location = "consultarclienteview.php";
+            });
+          } else {
+            Swal.fire(
+              "¡Error!",
+              "Ha ocurrido un error al eliminar el cliente. " + data,
+              "error"
+            );
+          }
+        }
+      });
+    });
+  }
+
+  var enviarFormulario = function () {
     $.validator.setDefaults({
       submitHandler: function () {
         var form_data = new FormData();
@@ -417,7 +501,7 @@
         var altaimss = document.getElementById('altaimss');
         var bajaimss = document.getElementById('bajaimss');
         var observacion = document.getElementById('observacion');
-        var activo = document.getElementById('activo');
+        var idcliente = document.getElementById('idActualizar');
 
         form_data.append('idpostal', idpostal.value);
         form_data.append('idbanco', idbanco.value);
@@ -439,7 +523,7 @@
         form_data.append('altaimss', altaimss.value);
         form_data.append('bajaimss', bajaimss.value);
         form_data.append('observacion', observacion.value);
-        form_data.append('activo', activo.value);
+        form_data.append('idcliente', idcliente.value);
         form_data.append('accion', 'update');
 
         $.ajax({
@@ -621,5 +705,11 @@
           });
         });
   }
+
+  // Add the following code if you want the name of the file appear on select
+  $(".custom-file-input").on("change", function() {
+    var fileName = $(this).val().split("\\").pop();
+    $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+  });
 
 </script>

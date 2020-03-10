@@ -13,7 +13,8 @@
       $query = "SELECT * FROM cliente c 
                 INNER JOIN postal p on c.id_postal = p.id 
                 INNER JOIN institucionbancaria ib on c.id_institucion_bancaria = ib.id_institucion_bancaria
-                INNER JOIN genero g on c.id_genero = g.id_genero";
+                INNER JOIN genero g on c.id_genero = g.id_genero
+                WHERE activo = 1";
       $objCliente = null;
       foreach ($this->conex->consultar($query) as $key => $value) {
         $objCliente["data"][] = $value;
@@ -83,14 +84,95 @@
       }
     }
 
-    public function delete($data)
+    public function delete($id)
     {
-      // TODO: Implement delete() method.
+      $valoresEliminar = array(
+        ':idcliente' => $id,
+      );
+      $sentencia = $this->conex->ejecutarAccion("UPDATE cliente SET activo = 0 WHERE id_cliente = :idcliente", $valoresEliminar);
+
+      if($sentencia) {
+        echo 'ok';
+      } else {
+        echo 'error';
+      }
     }
 
-    public function update($id)
+    public function update($data)
     {
-      // TODO: Implement update() method.
+      $idpostal = $data['idpostal'];
+      $idbanco = $data['idbanco'];
+      $idgenero = $data['idgenero'];
+      $nombre = $data['nombre'];
+      $apPat = $data['appat'];
+      $apMat = $data['apmat'];
+      $rfc = $data['rfc'];
+      $curp = $data['curp'];
+      $fechanacimiento = $data['fechanacimiento'];
+      $estadonacimiento = $data['estadonacimiento'];
+      $clabe = $data['clabe'];
+      $email = $data['email'];
+      $telefono = $data['telefono'];
+      $calle = $data['calle'];
+      $noexterior = $data['noexterior'];
+      $nointerior = $data['nointerior'];
+      $nss = $data['nss'];
+      $altaimss = $data['altaimss'];
+      $bajaimss = $data['bajaimss'];
+      $observacion = $data['observacion'];
+      $idcliente = $data['idcliente'];
+
+      $valoresActualizar = array(
+        ':idcliente' => $idcliente,
+        ':idpostal' => $idpostal,
+        ':idinstitucionbancaria' => $idbanco,
+        ':idgenero' => $idgenero,
+        ':nombrecliente' => $nombre,
+        ':appat' => $apPat,
+        ':apmat' => $apMat,
+        ':rfc' => $rfc,
+        ':curp' => $curp,
+        ':fechanacimiento' => $fechanacimiento,
+        ':estadonacimiento' => $estadonacimiento,
+        ':clabe' => $clabe,
+        ':email' => $email,
+        ':telefono' => $telefono,
+        ':calle' => $calle,
+        ':noexterior' => $noexterior,
+        ':nointerior' => $nointerior,
+        ':nss' => $nss,
+        ':altaimss' => $altaimss,
+        ':bajaimss' => $bajaimss,
+        ':observacion' => $observacion
+      );
+
+      $sentencia = $this->conex->ejecutarAccion("UPDATE cliente SET id_cliente=:idcliente,id_postal=:idpostal,
+                                                id_institucion_bancaria=:idinstitucionbancaria,id_genero=:idgenero,nombre_cliente=:nombrecliente,
+                                                ap_pat=:appat,ap_mat=:apmat,rfc=:rfc,curp=:curp,fecha_nacimiento=:fechanacimiento,estado_nacimiento=:estadonacimiento,
+                                                email=:email,telefono=:telefono,calle=:calle,noexterior=:noexterior,nointerior=:nointerior,nss=:nss,alta_imss=:altaimss,
+                                                baja_imss=:bajaimss,clabe_interbancaria=:clabe,observacion=:observacion WHERE id_cliente = :idcliente", $valoresActualizar);
+
+      if($sentencia) {
+        echo 'ok';
+      } else {
+        echo 'error';
+      }
+    }
+
+    public function updateimagen($data)
+    {
+      $imagen = $data['imagen'];
+      $valoresActualizar = array(
+        ":imagen" => $imagen,
+        ":idcliente" => $data['idcliente']
+      );
+      $sentencia = $this->conex->ejecutarAccion("UPDATE cliente SET imagen = :imagen WHERE id_cliente = :idcliente", $valoresActualizar);
+
+      if($sentencia) {
+        echo 'ok';
+      } else {
+        echo 'error';
+      }
     }
 
   }
