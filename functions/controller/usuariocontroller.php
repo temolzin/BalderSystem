@@ -10,17 +10,48 @@
 
     public function read()
     {
-      $query = "SELECT * FROM usuario u INNER JOIN tipousuario tu ON u.id_tipo_usuario = tu.id_tipo_usuario";
+      session_start();
+      $query = "SELECT * FROM usuario u INNER JOIN tipousuario tu ON u.id_tipo_usuario = tu.id_tipo_usuario where username not in ('" . $_SESSION['user']['username'] . "')";
       $objUsuario = null;
       foreach ($this->conex->consultar($query) as $key => $value) {
-        $objUsuario[] = $value;
+        $objUsuario['data'][] = $value;
       }
-      echo $objUsuario;
+      echo json_encode($objUsuario, JSON_UNESCAPED_UNICODE);
     }
 
     public function insert($data)
     {
-      // TODO: Implement insert() method.
+      $imagen = $data['imagen'];
+      $idtipousuario = $data['idtipousuario'];
+      $nombre = $data['nombre'];
+      $apPat = $data['appat'];
+      $apMat = $data['apmat'];
+      $email = $data['email'];
+      $telefono = $data['telefono'];
+      $username = $data['username'];
+      $password = $data['password'];
+
+      $valoresInsertar = array(
+        ':idtipousuario' => $idtipousuario,
+        ':nombrecliente' => $nombre,
+        ':appat' => $apPat,
+        ':apmat' => $apMat,
+        ':email' => $email,
+        ':telefono' => $telefono,
+        ':imagen' => $imagen,
+        ':username' => $username,
+        ':password' => $password
+      );
+
+      $sentencia = $this->conex->ejecutarAccion("INSERT INTO usuario(id_tipo_usuario, username, password, nombre, 
+                                                ap_pat, ap_mat, email, telefono, imagen, activo) VALUES (
+                                                :idtipousuario,:username,:password,:nombrecliente,:appat,:apmat,:email,:telefono,:imagen,1)", $valoresInsertar);
+
+      if($sentencia) {
+        echo 'ok';
+      } else {
+        echo 'error';
+      }
     }
 
     public function delete($data)
@@ -33,6 +64,9 @@
       // TODO: Implement update() method.
     }
 
+    /*
+     * Método para iniciar sesión
+     */
     public function readbyidandpass($id, $pass) {
       session_start();
       $query = "SELECT * FROM usuario u INNER JOIN tipousuario tu ON u.id_tipo_usuario = tu.id_tipo_usuario WHERE username = '" . $id . "' and password = '" . $pass ."'";
@@ -44,5 +78,19 @@
       $_SESSION['user']['nombrecompleto'] = $_SESSION['user']['nombre'] . " " . $_SESSION['user']['ap_pat'] . " " . $_SESSION['user']['ap_mat'];
       $_SESSION['user']['nombremedio'] = $_SESSION['user']['nombre'] . " " . $_SESSION['user']['ap_pat'];
       echo 'ok';
+    }
+
+    /*
+     * Método para ver si el usuario existe en la base de datos
+     */
+    public function readByUserName($username)
+    {
+      $query = "SELECT * FROM usuario where username = '" . $username . "'";
+      $objUsuario = null;
+      if($this->conex->consultar($query)) {
+        echo "false";
+      } else {
+        echo "true";
+      }
     }
   }

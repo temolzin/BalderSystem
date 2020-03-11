@@ -77,6 +77,12 @@ class Menu {
     } elseif ($active == 'conceptover') {
       $activeConceptos = 'active';
       $activeConceptosVer = 'active';
+    } elseif ($active == 'usuarioreg') {
+      $activeUsuario = 'active';
+      $activeUsuarioReg = 'active';
+    } elseif ($active == 'usuariover') {
+      $activeUsuario = 'active';
+      $activeUsuarioVer = 'active';
     }
 
     echo '<!DOCTYPE html>
@@ -322,14 +328,14 @@ class Menu {
                     </p>
                   </a>
                   <ul class="nav nav-treeview">
-                    <li class="nav-item '.$activeUsuarioReg. '">
-                      <a href="usuarioregistrarview.php" class="nav-link">
+                    <li class="nav-item">
+                      <a href="usuarioregistrarview.php" class="nav-link '.$activeUsuarioReg. '">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Registrar Usuarios</p>
                       </a>
                     </li>
-                    <li class="nav-item ' .$activeUsuarioVer. '">
-                      <a href="usuarioconsultarview.php" class="nav-link">
+                    <li class="nav-item">
+                      <a href="usuarioconsultarview.php" class="nav-link ' .$activeUsuarioVer. '">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Ver Usuarios</p>
                       </a>

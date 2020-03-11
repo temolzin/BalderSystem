@@ -1,20 +1,99 @@
 <?php
-  require_once '../controller/usuariocontroller.php';
-  $usuario = new Usuario();
-  $accion = $_POST['accion'];
+require_once '../controller/usuariocontroller.php';
+$usuario = new Usuario();
+$accion = $_POST['accion'];
 
-  if($accion == "insert") {
+if($accion == "insert") {
+  $imagen = $_FILES["imagen"];
+  $nombreImagen = $imagen["name"];
+  $tipoImagen = $imagen["type"];
+  $carpetaImagen = "../../upload/images/user/";
+  $ruta_provisional = $imagen["tmp_name"];
 
+  if ($tipoImagen != 'image/jpg' && $tipoImagen != 'image/jpeg' && $tipoImagen != 'image/png' && $tipoImagen != 'image/gif')       {
+    echo 'El archivo no es una imagen';
   }
-  else if($accion == "update") {
+  else {
+    copy($ruta_provisional, $carpetaImagen.$nombreImagen);
+  }
+  $idtipousuario = $_POST['idtipousuario'];
+  $nombre = $_POST['nombre'];
+  $appat = $_POST['appat'];
+  $apmat = $_POST['apmat'];
+  $email = $_POST['email'];
+  $telefono = $_POST['telefono'];
+  $username = $_POST['nombreusuario'];
+  $password = $_POST['pass'];
 
-  }
-  else if($accion == "delete") {
+  $data = array(
+    'imagen' => $nombreImagen,
+    'idtipousuario' => $idtipousuario,
+    'nombre' => $nombre,
+    'appat' => $appat,
+    'apmat' => $apmat,
+    'email' => $email,
+    'telefono' => $telefono,
+    'username' => $username,
+    'password' => $password
+  );
+  $usuario->insert($data);
+}
+else if($accion == "update") {
+  $idusuario = $_POST['idusuario'];
+  $idtipousuario = $_POST['idtipousuario'];
+  $nombre = $_POST['nombre'];
+  $appat = $_POST['appat'];
+  $apmat = $_POST['apmat'];
+  $email = $_POST['email'];
+  $telefono = $_POST['telefono'];
+  $username = $_POST['nombreusuario'];
+  $password = $_POST['pass'];
 
-  }
-  else if($accion == "read") {
+  $data = array(
+    'idusuario' => $idusuario,
+    'idtipousuario' => $idtipousuario,
+    'nombre' => $nombre,
+    'appat' => $appat,
+    'apmat' => $apmat,
+    'email' => $email,
+    'telefono' => $telefono,
+    'username' => $username,
+    'password' => $password
+  );
+  $usuario->insert($data);
+}
+else if($accion == 'actualizarImagen') {
+  $idusuario = $_POST['idusuario'];
+  $imagen = $_FILES["imagen"];
+  $nombreImagen = $imagen["name"];
+  $tipoImagen = $imagen["type"];
+  $carpetaImagen = "../../upload/images/client/";
+  $ruta_provisional = $imagen["tmp_name"];
 
+  if ($tipoImagen != 'image/jpg' && $tipoImagen != 'image/jpeg' && $tipoImagen != 'image/png' && $tipoImagen != 'image/gif')       {
+    echo 'El archivo no es una imagen';
   }
-  else if($accion == "login") {
-    echo $usuario->readbyidandpass($_POST['username'], $_POST['password']);
+  else {
+    copy($ruta_provisional, $carpetaImagen.$nombreImagen);
   }
+
+  $data = array(
+    "imagen" => $nombreImagen,
+    "idusuario" => $idusuario
+  );
+  $usuario->updateimagen($data);
+}
+else if($accion == "delete") {
+  $id = $_POST['idusuario'];
+  echo $usuario->delete($id);
+}
+else if($accion == "read") {
+  echo $usuario->read();
+}
+else if($accion == "validarUsername") {
+  $username1 = $_POST['username'];
+  echo $usuario->readByUserName($username1);
+}
+else if($accion == "login") {
+  echo $usuario->readbyidandpass($_POST['username'], $_POST['password']);
+}
