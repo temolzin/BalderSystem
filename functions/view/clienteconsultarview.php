@@ -292,7 +292,6 @@
                   </div>
                 </div>
               </div>
-              <input type="hidden" id="activo" name="activo" />
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                 <button type="submit" class="btn btn-warning">Actualizar</button>
@@ -435,7 +434,7 @@
                 "La imagen fue actualizada correctamente",
                 "success"
               ).then(function() {
-                window.location = "consultarclienteview.php";
+                window.location = "clienteconsultarview.php";
               });
             } else {
               Swal.fire(
@@ -463,7 +462,7 @@
               "El cliente ha sido eliminado de manera correcta",
               "success"
             ).then(function() {
-              window.location = "consultarclienteview.php";
+              window.location = "clienteconsultarview.php";
             });
           } else {
             Swal.fire(
@@ -541,7 +540,7 @@
                 "El cliente ha sido actualizado de manera correcta",
                 "success"
               ).then(function() {
-                window.location = "consultarclienteview.php";
+                window.location = "clienteconsultarview.php";
               })
             } else {
               Swal.fire(

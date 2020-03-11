@@ -65,6 +65,12 @@ class Menu {
     } elseif ($active == 'clientereg') {
       $activeCliente = 'active';
       $activeClienteReg = 'active';
+    } elseif ($active == 'documentoreg') {
+      $activeDocumento = 'active';
+      $activeDocumentoReg = 'active';
+    } elseif ($active == 'documentover') {
+      $activeDocumento = 'active';
+      $activeDocumentoVer = 'active';
     }
 
     echo '<!DOCTYPE html>
@@ -163,7 +169,7 @@ class Menu {
                   </a>
                 </li>
                 <li class="nav-item has-treeview">
-                  <a href="#" class="nav-link '.$activeCliente.'">
+                  <a href="#" class="nav-link '.$activeCliente. '">
                     <i class="nav-icon fas fa-users"></i>
                     <p>
                       Clientes
@@ -172,13 +178,13 @@ class Menu {
                   </a>
                   <ul class="nav nav-treeview">
                     <li class="nav-item">
-                      <a href="registrarclienteview.php" class="nav-link '.$activeClienteReg.'">
+                      <a href="clienteregistrarview.php" class="nav-link ' .$activeClienteReg. '">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Registrar Cliente</p>
                       </a>
                     </li>
                     <li class="nav-item">
-                      <a href="consultarclienteview.php" class="nav-link '.$activeClienteVer.'">
+                      <a href="clienteconsultarview.php" class="nav-link ' .$activeClienteVer.'">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Ver Clientes</p>
                       </a>
@@ -263,14 +269,14 @@ class Menu {
                     </p>
                   </a>
                   <ul class="nav nav-treeview">
-                    <li class="nav-item '.$activeDocumentoReg.'">
-                      <a href="registrardocumentoview.php" class="nav-link">
+                    <li class="nav-item">
+                      <a href="documentoregistrarview.php" class="nav-link '.$activeDocumentoReg. '">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Registrar Documento</p>
                       </a>
                     </li>
-                    <li class="nav-item '.$activeDocumentoVer.'">
-                      <a href="consultardocumentoview.php" class="nav-link">
+                    <li class="nav-item">
+                      <a href="documentoconsultarview.php" class="nav-link ' .$activeDocumentoVer. '">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Ver Documentos</p>
                       </a>
@@ -278,7 +284,7 @@ class Menu {
                   </ul>
                 </li>
                 <li class="nav-item has-treeview">
-                  <a href="#" class="nav-link '.$activeConceptos.'">
+                  <a href="#" class="nav-link ' .$activeConceptos.'">
                     <i class="nav-icon fas fa-cogs"></i>
                     <p>
                       Conceptos
@@ -286,14 +292,14 @@ class Menu {
                     </p>
                   </a>
                   <ul class="nav nav-treeview">
-                    <li class="nav-item '.$activeConceptosReg.'">
-                      <a href="registrarconceptoview.php" class="nav-link">
+                    <li class="nav-item '.$activeConceptosReg. '">
+                      <a href="conceptoregistrarview.php" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Registrar Concepto</p>
                       </a>
                     </li>
-                    <li class="nav-item '.$activeConceptosVer.'">
-                      <a href="consultarconceptoview.php" class="nav-link">
+                    <li class="nav-item ' .$activeConceptosVer. '">
+                      <a href="conceptoconsultarview.php" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Ver Conceptos</p>
                       </a>
@@ -301,7 +307,7 @@ class Menu {
                   </ul>
                 </li>
                 <li class="nav-item has-treeview">
-                  <a href="#" class="nav-link '.$activeUsuario.'">
+                  <a href="#" class="nav-link ' .$activeUsuario.'">
                     <i class="nav-icon fas fa-users-cog"></i>
                     <p>
                       Usuarios
@@ -309,14 +315,14 @@ class Menu {
                     </p>
                   </a>
                   <ul class="nav nav-treeview">
-                    <li class="nav-item '.$activeUsuarioReg.'">
-                      <a href="registrarusuarioview.php" class="nav-link">
+                    <li class="nav-item '.$activeUsuarioReg. '">
+                      <a href="usuarioregistrarview.php" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Registrar Usuarios</p>
                       </a>
                     </li>
-                    <li class="nav-item '.$activeUsuarioVer.'">
-                      <a href="consultarusuarioview.php" class="nav-link">
+                    <li class="nav-item ' .$activeUsuarioVer. '">
+                      <a href="usuarioconsultarview.php" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Ver Usuarios</p>
                       </a>
