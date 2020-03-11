@@ -73,3 +73,31 @@ INSERT INTO institucionbancaria VALUES (
     'BANJERCITO',
     'Fuerza Aérea y Armada, Sociedad Nacional de Crédito'
 );
+
+INSERT INTO modulo VALUES(
+    1,
+    'Pensión',
+    'Módulo de pensiones',
+    1
+);
+INSERT INTO modulo VALUES(
+    2,
+    'Préstamo',
+    'Módulo de préstamos',
+    1
+);
+
+INSERT INTO tipoconceptotransaccion VALUES(
+    1,
+    'Cargo',
+    '-',
+    'Cargos para los clientes',
+    1
+);
+INSERT INTO tipoconceptotransaccion VALUES(
+    2,
+    'Abono',
+    '+',
+    'Abono para los clientes',
+    1
+);

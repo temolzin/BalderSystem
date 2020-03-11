@@ -359,8 +359,13 @@
             "<button class='eliminar btn btn-danger' data-toggle='modal' data-target='#modalEliminar'><i class=\"far fa-trash-alt\"></i></button>" }
       ],
       responsive: true,
-      language: idiomaDataTable
+      language: idiomaDataTable,
+      lengthChange: true,
+      buttons: ['copy','excel','csv','pdf','colvis'],
+      dom: 'Bfltip'
     });
+
+    table.buttons().container().appendTo('#tablaDT_wrapper .col-md-6:eq(0)');
     obtenerdatosDT(table);
   }
 

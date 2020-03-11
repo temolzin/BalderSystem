@@ -71,6 +71,12 @@ class Menu {
     } elseif ($active == 'documentover') {
       $activeDocumento = 'active';
       $activeDocumentoVer = 'active';
+    } elseif ($active == 'conceptoreg') {
+      $activeConceptos = 'active';
+      $activeConceptosReg = 'active';
+    } elseif ($active == 'conceptover') {
+      $activeConceptos = 'active';
+      $activeConceptosVer = 'active';
     }
 
     echo '<!DOCTYPE html>
@@ -90,6 +96,7 @@ class Menu {
         <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
         <link rel="stylesheet" href="../../plugins/datatables-bs4/css/dataTables.bootstrap4.css">
         <link rel="stylesheet" href="../../plugins/datatables-responsive/css/responsive.bootstrap4.css">
+        <link rel="stylesheet" href="../../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
         <!-- Google Font: Source Sans Pro -->
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
       </head>
@@ -223,14 +230,14 @@ class Menu {
                     </p>
                   </a>
                   <ul class="nav nav-treeview">
-                    <li class="nav-item '.$activePrestamoReg.'">
-                      <a href="registrarprestamoview.php" class="nav-link">
+                    <li class="nav-item">
+                      <a href="registrarprestamoview.php" class="nav-link '.$activePrestamoReg.'">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Registrar Préstamo</p>
                       </a>
                     </li>
-                    <li class="nav-item '.$activePrestamoVer.'">
-                      <a href="consultarprestamoview.php" class="nav-link">
+                    <li class="nav-item">
+                      <a href="consultarprestamoview.php" class="nav-link '.$activePrestamoVer.'">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Ver Préstamos</p>
                       </a>
@@ -292,14 +299,14 @@ class Menu {
                     </p>
                   </a>
                   <ul class="nav nav-treeview">
-                    <li class="nav-item '.$activeConceptosReg. '">
-                      <a href="conceptoregistrarview.php" class="nav-link">
+                    <li class="nav-item">
+                      <a href="conceptoregistrarview.php" class="nav-link  '.$activeConceptosReg. '">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Registrar Concepto</p>
                       </a>
                     </li>
-                    <li class="nav-item ' .$activeConceptosVer. '">
-                      <a href="conceptoconsultarview.php" class="nav-link">
+                    <li class="nav-item ">
+                      <a href="conceptoconsultarview.php" class="nav-link ' .$activeConceptosVer. '">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Ver Conceptos</p>
                       </a>
@@ -414,6 +421,14 @@ class Menu {
       <script src="../../plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
       <script src="../../plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
       <script src="../../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+      <script src="../../plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+      <script src="../../plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+      <script src="../../plugins/jszip/jszip.min.js"></script>
+      <script src="../../plugins/pdfmake/pdfmake.min.js"></script>
+      <script src="../../plugins/pdfmake/vfs_fonts.js"></script>
+      <script src="../../plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+      <script src="../../plugins/datatables-buttons/js/buttons.print.min.js"></script>
+      <script src="../../plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
       '.$this->librerias.'
       </body>
       </html>';
