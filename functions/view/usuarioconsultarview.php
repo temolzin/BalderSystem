@@ -164,7 +164,7 @@
                   <div class="col-6 col-md-6">
                     <div class="form-group">
                       <label for="telefono">Teléfono</label>
-                      <input type="text" id="telefono" name="telefono" class="form-control" placeholder="Teléfono" value="">
+                      <input type="text" id="telefono" name="telefono" class="form-control" placeholder="Teléfono" value="" onkeypress="return soloNumeros(this);" maxlength="10">
                     </div>
                   </div>
                 </div>
@@ -246,15 +246,12 @@
   }
 
   var obtenerdatosDT = function (table) {
-    $('#tablaDT tbody').on('click', '.eliminar', function() {
+    $('#tablaDT tbody').on('click', 'tr', function() {
       var data = table.row(this).data();
-      var idusuario = $('#idEliminar').val(data.id_usuario);
-    });
-    $('#tablaDT tbody').on('click', '.editar', function() {
-      var data = table.row(this).data();
-      if(data.imagen == null) {
+      if(typeof data.imagen == "undefined") {
         data.imagen = "sinimagen.jpg";
       }
+      var idusuarioEliminar = $('#idEliminar').val(data.id_usuario);
       $('#imagenperfil').attr("src","../../upload/images/user/"+data.imagen);
       var id_usuario = $("#idActualizar").val(data.id_usuario);
       var idtipousuario= $("#tipousuario option[value='"+ data.id_tipo_usuario +"']").attr("selected",true);
@@ -407,33 +404,15 @@
         apmat: {
           required: true
         },
-        rfc: {
+        nombreusuario: {
           required: true
         },
-        curp: {
-          required: true
-        },
-        fechanacimiento: {
+        pass: {
           required: true
         },
         email: {
           required: true,
           email: true,
-        },
-        clabe: {
-          minlength: 18
-        },
-        calle: {
-          required: true
-        },
-        noexterior: {
-          required: true
-        },
-        codigopostal: {
-          required: true
-        },
-        colonia: {
-          required: true
         }
       },
       messages: {
@@ -446,33 +425,15 @@
         apmat: {
           required: "Ingresa apellido materno"
         },
-        rfc: {
-          required: "Ingresa RFC"
-        },
-        curp: {
-          required: "Ingresa CURP"
-        },
-        fechanacimiento: {
-          required: "Ingresa Fecha de Nacimiento"
+        nombreusuario: {
+          required: "Ingresa un nombre de usuario"
         },
         email: {
           required: "Ingresa email",
           email: "Ingresa una dirección de email correcta"
         },
-        clabe: {
-          minlength: "La Clabe debe tener 18 dígitos"
-        },
-        calle: {
-          required: "Ingresa la calle del domicilio",
-        },
-        noexterior: {
-          required: "Ingresa el número exterior",
-        },
-        codigopostal: {
-          required: "Ingresa un número postal",
-        },
-        colonia: {
-          required: "Selecciona una colonia",
+        pass: {
+          required: "Ingresa una contraseña",
         }
       },
       errorElement: 'span',

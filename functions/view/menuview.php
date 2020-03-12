@@ -6,13 +6,14 @@ if(isset($_SESSION['user']) == false) {
 require_once '../controller/conexion.php';
 
 class Menu {
-  public $nombreCompleto, $nombreMedio, $nombre, $username, $password, $appat, $apmat, $email, $telefono, $activo, $imagen, $urlimagen, $tipousuario;
+  public $idusuario, $nombreCompleto, $nombreMedio, $nombre, $username, $password, $appat, $apmat, $email, $telefono, $activo, $imagen, $urlimagen, $tipousuario, $idtipousuario;
   //variable para agregar archivos JS
   public $librerias;
   public $conex;
   public function __construct()
   {
     $this->conex = Conexion::getInstance();
+    $this->idusuario = $_SESSION['user']['id_usuario'];
     $this->nombreCompleto = $_SESSION['user']['nombrecompleto'];
     $this->nombreMedio = $_SESSION['user']['nombremedio'];
     $this->nombre = $_SESSION['user']['nombre'];
@@ -26,6 +27,7 @@ class Menu {
     $this->imagen = $_SESSION['user']['imagen'];
     $this->urlimagen = "../../upload/images/user/" . $_SESSION['user']['imagen'];
     $this->tipousuario = $_SESSION['user']['nombre_tipo_usuario'];
+    $this->idtipousuario = $_SESSION['user']['id_tipo_usuario'];
   }
 
   function header($active, $title) {
@@ -52,7 +54,6 @@ class Menu {
     $activeReporte = "";
     $activeReporteCheckList = "";
     $activeReporteEstadoCuenta = "";
-    $libraryInicio = "";
 
     if($active == 'inicio') {
       $activeInicio = "active";
@@ -83,6 +84,12 @@ class Menu {
     } elseif ($active == 'usuariover') {
       $activeUsuario = 'active';
       $activeUsuarioVer = 'active';
+    } elseif ($active == 'pensionreg') {
+      $activePension = 'active';
+      $activePensionReg = 'active';
+    } elseif ($active == 'pensionver') {
+      $activePension = 'active';
+      $activePensionVer = 'active';
     }
 
     echo '<!DOCTYPE html>
@@ -138,7 +145,7 @@ class Menu {
                 </li>
                 <!-- Menu Footer-->
                 <li class="user-footer">
-                  <a href="#" class="btn btn-default btn-flat">Perfil</a>
+                  <a href="#" class="btn btn-default btn-flat" data-toggle="modal" data-target="#modalActualizarPerfil">Perfil</a>
                   <a href="#" class="btn btn-default btn-flat float-right" data-toggle="modal" data-target="#modallogout">Cerrar sesión</a>
                 </li>
               </ul>
@@ -213,14 +220,14 @@ class Menu {
                     </p>
                   </a>
                   <ul class="nav nav-treeview">
-                    <li class="nav-item '.$activePensionReg.'">
-                      <a href="registrarpensionview.php" class="nav-link">
+                    <li class="nav-item">
+                      <a href="pensionregistrarview.php" class="nav-link '.$activePensionReg.'">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Registrar Pension</p>
                       </a>
                     </li>
-                    <li class="nav-item '.$activePensionVer.'">
-                      <a href="consultarpensionview.php" class="nav-link">
+                    <li class="nav-item">
+                      <a href="pensionconsultarview.php" class="nav-link '.$activePensionVer.'">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Ver Pensiones</p>
                       </a>
@@ -385,11 +392,137 @@ class Menu {
               </div>
             </div>
           </div>
+          
+          <!-- Modal Actualizar PERFIL-->
+          <div class="modal fade" id="modalActualizarPerfil" tabindex="-1" role="dialog" aria-labelledby="ModalActualizar" aria-hidden="true">
+            <div class="modal-dialog " role="document">
+              <div class="modal-content">
+                <div class="card-blue">
+                  <div class="card-header">
+                    <h3 class="card-title">Perfil <small> &nbsp; (*) Campos requeridos</small></h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <!-- /.card-header -->
+                  <!-- form start -->
+                  <form role="form" id="formPerfil" name="formPerfil">
+                    <input type="hidden" id="idActualizarPerfil" name="idActualizarPerfil" value="'.$this->idusuario.'"/>
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <!-- Profile Image -->
+                          <div class="card card-blue card-outline">
+                            <div class="card-body box-profile">
+                              <div class="text-center">
+                                <img style="height: 100px;" class="profile-user-img img-fluid img-circle" src="'.$this->urlimagen.'"
+                                     alt="User profile picture" id="Perfilimagenperfil" name="Perfilimagenperfil">
+                              </div>
+                            </div>
+                          </div>
+                          <!-- /.card-body -->
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-12 col-sm-12">
+                          <label>Foto del usuario</label>
+                          <div class="form-group input-group">
+                            <div class="input-group-prepend">
+                              <button class="btn btn-warning" style="z-index: 0;" id="btnSubirImagenPerfil" type="button" name="btnSubirImagenPerfil">Subir</button>
+                            </div>
+                            <div class="custom-file">
+                              <input type="file" accept="image/*" class="custom-file-input" name="imagenPerfil" id="imagenPerfil" lang="es">
+                              <label class="custom-file-label" for="imagen">Selecciona Imagen</label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <hr class="bg-gradient-orange">
+                      <div class="row">
+                        <div class="col-12 col-md-12">
+                          <div class="form-group">
+                            <label for="tipousuario">Tipo Usuario (*)</label>
+                            <select class="custom-select" name="tipousuarioPerfil" id="tipousuarioPerfil">
+                     ';
+                              $query = "select * from tipousuario";
+                              foreach ($this->conex->consultar($query) as $key => $value) {
+                                if($this->idtipousuario == $value['id_tipo_usuario']) {
+                                  echo '<option selected value="'.$value['id_tipo_usuario'].'">' . $value['nombre_tipo_usuario'] . '</option>';
+                                } else {
+                                  echo '<option value="'.$value['id_tipo_usuario'].'">' . $value['nombre_tipo_usuario'] . '</option>';
+                                }
+                              }
+                     echo '
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-6 col-md-6">
+                          <div class="form-group">
+                            <label for="username">Nombre de usuario (*)</label>
+                            <input type="text" class="form-control" id="nombreusuarioPerfil" name="nombreusuarioPerfil" placeholder="Nombre de Usuario" value="'.$this->username.'"/>
+                          </div>
+                        </div>
+                        <div class="col-6 col-md-6">
+                          <div class="form-group">
+                            <label for="genero">Contraseña (*)</label>
+                            <input type="password" class="form-control" id="passPerfil" name="passPerfil" placeholder="Contraseña" value="'.$this->password.'" />
+                          </div>
+                        </div>
+                      </div>
+                      <hr class="bg-gradient-orange">
+                      <div class="row">
+                        <div class="col-12 col-sm-4">
+                          <div class="form-group">
+                            <label>Nombre (*)</label>
+                            <input type="text" class="form-control" id="nombrePerfil" name="nombrePerfil" placeholder="Nombre" value="'.$this->nombre.'"/>
+                          </div>
+                        </div>
+                        <div class="col-6 col-sm-4">
+                          <div class="form-group">
+                            <label>Apellido Paterno (*)</label>
+                            <input type="text" class="form-control" id="appatPerfil" name="appatPerfil" placeholder="Apellido Paterno" value="'.$this->appat.'"/>
+                          </div>
+                        </div>
+                        <div class="col-6 col-sm-4">
+                          <div class="form-group">
+                            <label>Apellido Materno (*)</label>
+                            <input type="text" class="form-control" id="apmatPerfil" name="apmatPerfil" placeholder="Apellido Materno" value="'.$this->apmat.'"/>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-6 col-md-6">
+                          <div class="form-group">
+                            <label for="email">Email (*)</label>
+                            <input type="email" name="emailPerfil" id="emailPerfil" class="form-control" placeholder="Email" value="'.$this->email.'">
+                          </div>
+                        </div>
+                        <div class="col-6 col-md-6">
+                          <div class="form-group">
+                            <label for="telefono">Teléfono</label>
+                            <input type="text" id="telefonoPerfil" name="telefonoPerfil" class="form-control" placeholder="Teléfono" maxlength="10" onkeypress="return soloNumeros(this)" value="'.$this->telefono.'">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                      <button type="submit" class="btn btn-primary">Actualizar</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+       
           <section class="content">';
   }
 
   function footer() {
-    echo '  </section>
+    echo ' </section>
           <!-- /.content -->
         </div>
         <!-- /.content-wrapper -->
@@ -436,6 +569,179 @@ class Menu {
       <script src="../../plugins/datatables-buttons/js/buttons.print.min.js"></script>
       <script src="../../plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
       '.$this->librerias.'
+      
+      <script type="text/javascript">
+        $(document).ready(function () {
+          enviarFormularioPerfil();
+          subirImagenPerfil();
+        });
+         //PARA SUBIR SOLAMENTE LA IMAGEN
+        var subirImagenPerfil = function() {
+          $(\'#btnSubirImagenPerfil\').on("click", subirImagen);
+          function subirImagen() {
+            var imagen = document.getElementById(\'imagenPerfil\');
+            if(imagen.value == "") {
+              Swal.fire(
+                "¡Cuidado!",
+                "Debes seleccionar una imagen para actualizar",
+                "warning"
+              );
+            } else {
+              var form_data = new FormData();
+              var idUsuario = document.getElementById(\'idActualizarPerfil\');
+              var imagen = $(\'#imagenPerfil\').prop(\'files\')[0];
+              form_data.append(\'idusuario\', idUsuario.value);
+              form_data.append(\'imagen\', imagen);
+              form_data.append(\'accion\',\'actualizarImagen\');
+              form_data.append(\'perfilUsuario\',\'perfilUsuario\');
+              $.ajax({
+                type: "POST",
+                url: "../process/usuarioajax.php",
+                dataType: \'text\',  // what to expect back from the PHP script, if anything
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: form_data,
+                success: function(data) {
+                  if(data == \'ok\') {
+                    Swal.fire(
+                      "¡Éxito!",
+                      "La imagen fue actualizada correctamente",
+                      "success"
+                    ).then(function() {
+                      $("#modalActualizarPerfil").modal("hide");
+                      location.reload();
+                    });
+                  } else {
+                    Swal.fire(
+                      "¡Error!",
+                      "Ha ocurrido un error al actualizar la imagen: " + data,
+                      "error"
+                    )
+                  }
+                }
+              });
+            }
+          }
+        }
+        var enviarFormularioPerfil = function () {
+          $.validator.setDefaults({
+            submitHandler: function () {
+              var form_data = new FormData();
+              var idtipousuario = document.getElementById(\'tipousuarioPerfil\');
+              var nombre = document.getElementById(\'nombrePerfil\');
+              var apPat = document.getElementById(\'appatPerfil\');
+              var apMat = document.getElementById(\'apmatPerfil\');
+              var email = document.getElementById(\'emailPerfil\');
+              var telefono = document.getElementById(\'telefonoPerfil\');
+              var username = document.getElementById(\'nombreusuarioPerfil\');
+              var password = document.getElementById(\'passPerfil\');
+              var idusuario = document.getElementById(\'idActualizarPerfil\');
+      
+              form_data.append(\'idtipousuario\', idtipousuario.value);
+              form_data.append(\'nombre\', nombre.value);
+              form_data.append(\'appat\', apPat.value);
+              form_data.append(\'apmat\', apMat.value);
+              form_data.append(\'email\', email.value);
+              form_data.append(\'telefono\', telefono.value);
+              form_data.append(\'idusuario\', idusuario.value);
+              form_data.append(\'nombreusuario\', username.value);
+              form_data.append(\'pass\', password.value);
+              form_data.append(\'accion\', \'update\');
+              form_data.append(\'perfilUsuario\',\'perfilUsuario\');
+      
+              $.ajax({
+                type: "POST",
+                url: "../process/usuarioajax.php",
+                dataType: \'text\',  // what to expect back from the PHP script, if anything
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: form_data,
+                success: function(data){
+                  if(data == \'ok\') {
+                    Swal.fire(
+                      "¡Éxito!",
+                      "Tu perfil ha sido actualizado de manera correcta",
+                      "success"
+                    ).then(function() {
+                      $("#modalActualizarPerfil").modal("hide");
+                      location.reload();
+                    })
+                  } else {
+                    Swal.fire(
+                      "¡Error!",
+                      "Ha ocurrido un error al actualizar tu perfil. " + data,
+                      "error"
+                    );
+                  }
+                },
+              });
+            }
+          });
+          $(\'#formPerfil\').validate({
+            rules: {
+              nombrePerfil: {
+                required: true
+              },
+              appatPerfil: {
+                required: true
+              },
+              apmatPerfil: {
+                required: true
+              },
+              nombreusuarioPerfil: {
+                required: true
+              },
+              passPerfil: {
+                required: true
+              },
+              emailPerfil: {
+                required: true,
+                email: true,
+              }
+            },
+            messages: {
+              nombrePerfil: {
+                required: "Ingresa un nombre"
+              },
+              appatPerfil: {
+                required: "Ingresa apellido paterno"
+              },
+              apmatPerfil: {
+                required: "Ingresa apellido materno"
+              },
+              nombreusuarioPerfil: {
+                required: "Ingresa un nombre de usuario"
+              },
+              emailPerfil: {
+                required: "Ingresa email",
+                email: "Ingresa una dirección de email correcta"
+              },
+              passPerfil: {
+                required: "Ingresa una contraseña",
+              }
+            },
+            errorElement: \'span\',
+            errorPlacement: function (error, element) {
+              error.addClass(\'invalid-feedback\');
+              element.closest(\'.form-group\').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+              $(element).addClass(\'is-invalid\');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+              $(element).removeClass(\'is-invalid\');
+            }
+          });
+        }
+        // Add the following code if you want the name of the file appear on select
+        $(".custom-file-input").on("change", function() {
+          var fileName = $(this).val().split("//").pop();
+          $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+      </script>
+            
       </body>
       </html>';
   }

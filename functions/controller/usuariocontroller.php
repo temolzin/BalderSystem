@@ -148,4 +148,20 @@
         echo "true";
       }
     }
+
+    /*
+ * Método para ActualizarPerfil
+ */
+    public function readbyid($id) {
+      session_start();
+      $query = "SELECT * FROM usuario u INNER JOIN tipousuario tu ON u.id_tipo_usuario = tu.id_tipo_usuario WHERE id_usuario = '" . $id . "'";
+
+      foreach ($this->conex->consultar($query) as $key => $value) {
+        $_SESSION['user'] = $value;
+      }
+      //Se agregan la sesión al ingresar datos correctos
+      $_SESSION['user']['nombrecompleto'] = $_SESSION['user']['nombre'] . " " . $_SESSION['user']['ap_pat'] . " " . $_SESSION['user']['ap_mat'];
+      $_SESSION['user']['nombremedio'] = $_SESSION['user']['nombre'] . " " . $_SESSION['user']['ap_pat'];
+    }
+
   }

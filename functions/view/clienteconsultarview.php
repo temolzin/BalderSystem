@@ -370,15 +370,12 @@
   }
 
   var obtenerdatosDT = function (table) {
-    $('#tablaDT tbody').on('click', '.eliminar', function() {
+    $('#tablaDT tbody').on('click', 'tr', function() {
       var data = table.row(this).data();
-      var idcliente = $('#idEliminar').val(data.id_cliente);
-    });
-    $('#tablaDT tbody').on('click', '.editar', function() {
-      var data = table.row(this).data();
-      if(data.imagen == null) {
+      if(typeof data.imagen == "undefined") {
         data.imagen = "sinimagen.jpg";
       }
+      var idclienteEliminar = $('#idEliminar').val(data.id_cliente);
       var idpostal = direccionbyidpostal(data.id_postal);
       $('#imagenperfil').attr("src","../../upload/images/client/"+data.imagen);
       var id_cliente = $("#idActualizar").val(data.id_cliente);
