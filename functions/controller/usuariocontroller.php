@@ -11,7 +11,7 @@
     public function read()
     {
       session_start();
-      $query = "SELECT * FROM usuario u INNER JOIN tipousuario tu ON u.id_tipo_usuario = tu.id_tipo_usuario where username not in ('" . $_SESSION['user']['username'] . "')";
+      $query = "SELECT * FROM usuario u INNER JOIN tipousuario tu ON u.id_tipo_usuario = tu.id_tipo_usuario where username not in ('temolzin','" . $_SESSION['user']['username'] . "') and activo = 1";
       $objUsuario = null;
       foreach ($this->conex->consultar($query) as $key => $value) {
         $objUsuario['data'][] = $value;
@@ -54,14 +54,69 @@
       }
     }
 
-    public function delete($data)
+    public function delete($id)
     {
-      // TODO: Implement delete() method.
+      $valoresActualizar = array(
+        ":idusuario" => $id
+      );
+      $sentencia = $this->conex->ejecutarAccion("UPDATE usuario SET activo = 0 WHERE id_usuario = :idusuario", $valoresActualizar);
+
+      if($sentencia) {
+        echo 'ok';
+      } else {
+        echo 'error';
+      }
     }
 
-    public function update($id)
+    public function update($data)
     {
-      // TODO: Implement update() method.
+      $idtipousuario = $data['idtipousuario'];
+      $idusuario = $data['idusuario'];
+      $nombre = $data['nombre'];
+      $apPat = $data['appat'];
+      $apMat = $data['apmat'];
+      $email = $data['email'];
+      $telefono = $data['telefono'];
+      $username = $data['username'];
+      $password = $data['password'];
+
+      $valoresActualizar = array(
+        ':idtipousuario' => $idtipousuario,
+        ':idusuario' => $idusuario,
+        ':nombre' => $nombre,
+        ':appat' => $apPat,
+        ':apmat' => $apMat,
+        ':email' => $email,
+        ':telefono' => $telefono,
+        ':username' => $username,
+        ':password' => $password
+      );
+
+      $sentencia = $this->conex->ejecutarAccion("UPDATE usuario SET id_tipo_usuario=:idtipousuario,username=:username,password=:password,
+                                                        nombre=:nombre,ap_pat=:appat,ap_mat=:apmat,email=:email,telefono=:telefono 
+                                                        WHERE id_usuario = :idusuario", $valoresActualizar);
+
+      if($sentencia) {
+        echo 'ok';
+      } else {
+        echo 'error';
+      }
+    }
+
+    public function updateimagen($data)
+    {
+      $imagen = $data['imagen'];
+      $valoresActualizar = array(
+        ":imagen" => $imagen,
+        ":idusuario" => $data['idusuario']
+      );
+      $sentencia = $this->conex->ejecutarAccion("UPDATE usuario SET imagen = :imagen WHERE id_usuario = :idusuario", $valoresActualizar);
+
+      if($sentencia) {
+        echo 'ok';
+      } else {
+        echo 'error';
+      }
     }
 
     /*

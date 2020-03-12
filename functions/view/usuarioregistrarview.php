@@ -53,7 +53,7 @@
                 </div>
                 <div class="col-6 col-md-6">
                   <div class="form-group">
-                    <label for="genero">Password (*)</label>
+                    <label for="genero">Contraseña (*)</label>
                     <input type="password" class="form-control" id="pass" name="pass" placeholder="Contraseña" />
                   </div>
                 </div>

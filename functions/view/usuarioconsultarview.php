@@ -61,7 +61,7 @@
 
   <!-- Modal Actualizar-->
   <div class="modal fade" id="modalActualizar" tabindex="-1" role="dialog" aria-labelledby="ModalActualizar" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog " role="document">
         <div class="modal-content">
           <div class="card-warning">
             <div class="card-header">
@@ -73,11 +73,29 @@
             <!-- /.card-header -->
             <!-- form start -->
             <form role="form" id="form" name="form">
+              <input type="hidden" id="idActualizar" name="idActualizar"/>
               <div class="card-body">
                 <div class="row">
+                  <div class="col-sm-12">
+                    <!-- Profile Image -->
+                    <div class="card card-warning card-outline">
+                      <div class="card-body box-profile">
+                        <div class="text-center">
+                          <img style="height: 100px;" class="profile-user-img img-fluid img-circle" src=""
+                               alt="User profile picture" id="imagenperfil" name="imagenperfil">
+                        </div>
+                      </div>
+                    </div>
+                    <!-- /.card-body -->
+                  </div>
+                </div>
+                <div class="row">
                   <div class="col-12 col-sm-12">
-                    <div class="form-group">
-                      <label>Foto del usuario (*)</label>
+                    <label>Foto del usuario</label>
+                    <div class="form-group input-group">
+                      <div class="input-group-prepend">
+                        <button class="btn btn-warning" style="z-index: 0;" id="btnSubirImagen" type="button" name="btnSubirImagen">Subir</button>
+                      </div>
                       <div class="custom-file">
                         <input type="file" accept="image/*" class="custom-file-input" name="imagen" id="imagen" lang="es">
                         <label class="custom-file-label" for="imagen">Selecciona Imagen</label>
@@ -104,13 +122,13 @@
                 <div class="row">
                   <div class="col-6 col-md-6">
                     <div class="form-group">
-                      <label for="username">Username (*)</label>
+                      <label for="username">Nombre de usuario (*)</label>
                       <input type="text" class="form-control" id="nombreusuario" name="nombreusuario" placeholder="Nombre de Usuario" />
                     </div>
                   </div>
                   <div class="col-6 col-md-6">
                     <div class="form-group">
-                      <label for="genero">Password (*)</label>
+                      <label for="genero">Contraseña (*)</label>
                       <input type="password" class="form-control" id="pass" name="pass" placeholder="Contraseña" />
                     </div>
                   </div>
@@ -152,8 +170,9 @@
                 </div>
               </div>
               <!-- /.card-body -->
-              <div class="card-footer">
-                <button type="submit" class="btn btn-primary">Registrar</button>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-warning">Actualizar</button>
               </div>
             </form>
       </div>
@@ -236,30 +255,16 @@
       if(data.imagen == null) {
         data.imagen = "sinimagen.jpg";
       }
-      var idpostal = direccionbyidpostal(data.id_postal);
-      $('#imagenperfil').attr("src","../../upload/images/client/"+data.imagen);
+      $('#imagenperfil').attr("src","../../upload/images/user/"+data.imagen);
       var id_usuario = $("#idActualizar").val(data.id_usuario);
-      var id_institucion_interbancaria = $("#banco option[value='"+ data.id_institucion_interbancaria +"']").attr("selected",true);
-      var id_genero = $("#genero option[value='"+ data.id_genero +"']").attr("selected",true);
-      var nombre_usuario = $("#nombre").val(data.nombre_usuario);
+      var idtipousuario= $("#tipousuario option[value='"+ data.id_tipo_usuario +"']").attr("selected",true);
+      var nombre = $("#nombre").val(data.nombre);
       var appat = $("#appat").val(data.ap_pat);
       var apmat = $("#apmat").val(data.ap_mat);
-      var rfc = $("#rfc").val(data.rfc);
-      var curp = $("#curp").val(data.curp);
-      var fecha_nacimiento = $("#fechanacimiento").val(data.fecha_nacimiento);
-      var estado_nacimiento = $("#estadonacimiento").val(data.estado_nacimiento);
+      var username = $("#nombreusuario").val(data.username);
+      var pass = $("#pass").val(data.password);
       var email = $("#email").val(data.email);
       var telefono = $("#telefono").val(data.telefono);
-      var calle = $("#calle").val(data.calle);
-      var noexterior = $("#noexterior").val(data.noexterior);
-      var nointerior = $("#nointerior").val(data.nointerior);
-      var nss = $("#nss").val(data.nss);
-      var altaimss = $("#altaimss").val(data.alta_imss);
-      var bajaimss = $("#bajaimss").val(data.baja_imss);
-      var clabe = $("#clabe").val(data.clabe_interbancaria);
-      var observacion = $("#observacion").val(data.observacion);
-      var activo = $("#activo").val(data.activo);
-
     });
   }
 
@@ -276,9 +281,9 @@
         );
       } else {
         var form_data = new FormData();
-        var idCliente = document.getElementById('idActualizar');
+        var idUsuario = document.getElementById('idActualizar');
         var imagen = $('#imagen').prop('files')[0];
-        form_data.append('idusuario', idCliente.value);
+        form_data.append('idusuario', idUsuario.value);
         form_data.append('imagen', imagen);
         form_data.append('accion','actualizarImagen');
         $.ajax({
@@ -342,49 +347,25 @@
     $.validator.setDefaults({
       submitHandler: function () {
         var form_data = new FormData();
-        var idpostal = document.getElementById('colonia');
-        var idbanco = document.getElementById('banco');
-        var idgenero = document.getElementById('genero');
+        var idtipousuario = document.getElementById('tipousuario');
         var nombre = document.getElementById('nombre');
         var apPat = document.getElementById('appat');
         var apMat = document.getElementById('apmat');
-        var rfc = document.getElementById('rfc');
-        var curp = document.getElementById('curp');
-        var fechanacimiento = document.getElementById('fechanacimiento');
-        var estadonacimiento = document.getElementById('estadonacimiento');
-        var clabe = document.getElementById('clabe');
         var email = document.getElementById('email');
         var telefono = document.getElementById('telefono');
-        var calle = document.getElementById('calle');
-        var noexterior = document.getElementById('noexterior');
-        var nointerior = document.getElementById('nointerior');
-        var nss = document.getElementById('nss');
-        var altaimss = document.getElementById('altaimss');
-        var bajaimss = document.getElementById('bajaimss');
-        var observacion = document.getElementById('observacion');
+        var username = document.getElementById('nombreusuario');
+        var password = document.getElementById('pass');
         var idusuario = document.getElementById('idActualizar');
 
-        form_data.append('idpostal', idpostal.value);
-        form_data.append('idbanco', idbanco.value);
-        form_data.append('idgenero', idgenero.value);
+        form_data.append('idtipousuario', idtipousuario.value);
         form_data.append('nombre', nombre.value);
         form_data.append('appat', apPat.value);
         form_data.append('apmat', apMat.value);
-        form_data.append('rfc', rfc.value);
-        form_data.append('curp', curp.value);
-        form_data.append('fechanacimiento', fechanacimiento.value);
-        form_data.append('estadonacimiento', estadonacimiento.value);
-        form_data.append('clabe', clabe.value);
         form_data.append('email', email.value);
         form_data.append('telefono', telefono.value);
-        form_data.append('calle', calle.value);
-        form_data.append('noexterior', noexterior.value);
-        form_data.append('nointerior', nointerior.value);
-        form_data.append('nss', nss.value);
-        form_data.append('altaimss', altaimss.value);
-        form_data.append('bajaimss', bajaimss.value);
-        form_data.append('observacion', observacion.value);
         form_data.append('idusuario', idusuario.value);
+        form_data.append('nombreusuario', username.value);
+        form_data.append('pass', password.value);
         form_data.append('accion', 'update');
 
         $.ajax({
