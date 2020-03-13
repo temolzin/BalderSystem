@@ -90,6 +90,12 @@ class Menu {
     } elseif ($active == 'pensionver') {
       $activePension = 'active';
       $activePensionVer = 'active';
+    } elseif ($active == 'prestamoreg') {
+      $activePrestamo = 'active';
+      $activePrestamoReg = 'active';
+    } elseif ($active == 'prestamover') {
+      $activePrestamo = 'active';
+      $activePrestamoVer = 'active';
     }
 
     echo '<!DOCTYPE html>
@@ -248,13 +254,13 @@ class Menu {
                   </a>
                   <ul class="nav nav-treeview">
                     <li class="nav-item">
-                      <a href="registrarprestamoview.php" class="nav-link '.$activePrestamoReg.'">
+                      <a href="prestamoregistrarview.php" class="nav-link '.$activePrestamoReg.'">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Registrar Préstamo</p>
                       </a>
                     </li>
                     <li class="nav-item">
-                      <a href="consultarprestamoview.php" class="nav-link '.$activePrestamoVer.'">
+                      <a href="prestamoconsultarview.php" class="nav-link '.$activePrestamoVer.'">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Ver Préstamos</p>
                       </a>
@@ -589,7 +595,7 @@ class Menu {
             theme: \'bootstrap4\'
           })
         });
-         //PARA SUBIR SOLAMENTE LA IMAGEN
+         //PARA SUBIR LA IMAGEN DEL PERFIL DEL USUARIO
         var subirImagenPerfil = function() {
           $(\'#btnSubirImagenPerfil\').on("click", subirImagen);
           function subirImagen() {
@@ -638,6 +644,7 @@ class Menu {
             }
           }
         }
+        //Función para envíar los datos para actualizar el perfil
         var enviarFormularioPerfil = function () {
           $.validator.setDefaults({
             submitHandler: function () {

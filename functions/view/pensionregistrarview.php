@@ -97,7 +97,7 @@
                             <i class="fas fa-dollar-sign"></i>
                           </span>
                         </div>
-                        <input type="number" onkeypress="return soloNumeros(this);"  maxlength="10" class="form-control" id="monto" name="monto">
+                        <input type="number" onkeypress="return soloNumeros(this);"  maxlength="10" class="form-control" id="monto" placeholder="Monto" name="monto">
                       </div>
                     </div>
                 </div>
@@ -223,7 +223,7 @@
   var enviarFormulario = function () {
     $.validator.setDefaults({
       submitHandler: function () {
-        var datos = $('#form').serialize() + "&accion=insert";
+        var datos = $('#form').serialize() + "&accion=insert" + "&idcliente=" + $('#idcliente').val();
         $.ajax({
           type: "POST",
           url: "../process/pensionajax.php",

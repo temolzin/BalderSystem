@@ -4,14 +4,17 @@
   $accion = $_POST['accion'];
 
   if($accion == "insert") {
-    $idmodulo = $_POST['modulo'];
-    $idtipopensiontransaccion = $_POST['tipopensiontransaccion'];
-    $nombre = $_POST['nombre'];
+    session_start();
+    $idconceptotransaccion = $_POST['conceptotransaccion'];
+    $idusuario = $_SESSION['user']['id_usuario'];
+    $idcliente = $_POST['idcliente'];
+    $monto = $_POST['monto'];
     $descripcion = $_POST['descripcion'];
     $data = array(
-      'idmodulo' => $idmodulo,
-      'idtipopensiontransaccion' => $idtipopensiontransaccion,
-      'nombre' => $nombre,
+      'idconceptotransaccion' => $idconceptotransaccion,
+      'idusuario' => $idusuario,
+      'idcliente' => $idcliente,
+      'monto' => $monto,
       'descripcion' => $descripcion
     );
     $pension->insert($data);
@@ -26,6 +29,7 @@
     $data = array(
       'idpension' => $idpension,
       'idmodulo' => $idmodulo,
+      'idmodulo' => $idmodulo,
       'idtipopensiontransaccion' => $tipopensiontransaccion,
       'nombre' => $nombre,
       'descripcion' => $descripcion
@@ -33,7 +37,7 @@
     $pension->update($data);
   }
   else if($accion == "delete") {
-    $id = $_POST['idpension'];
+    $id = $_POST['idtransaccion'];
     echo $pension->delete($id);
   }
   else if($accion == "read") {

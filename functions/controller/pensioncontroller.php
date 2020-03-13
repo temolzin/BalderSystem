@@ -1,7 +1,7 @@
 <?php
   require_once 'crudinterface.php';
   require_once 'conexion.php';
-  class PEnsion implements Crud {
+  class Pension implements Crud {
     public $conex;
 
     public function __construct() {
@@ -10,8 +10,11 @@
 
     public function read()
     {
-      $query = "SELECT * FROM transaccion ct INNER JOIN modulo m ON ct.id_modulo = m.id_modulo 
-                INNER JOIN tipotransaccion tct ON ct.id_tipo_concepto_transaccion = tct.id_tipo_concepto_transaccion WHERE ct.activo = 1";
+      $query = "SELECT * FROM transaccion t INNER JOIN usuario u ON t.id_usuario = u.id_usuario 
+                INNER JOIN cliente cl ON t.id_cliente = cl.id_cliente
+                INNER JOIN conceptotransaccion ct ON t.id_concepto_transaccion = ct.id_concepto_transaccion
+                INNER JOIN tipoconceptotransaccion tct ON ct.id_tipo_concepto_transaccion = tct.id_tipo_concepto_transaccion
+                WHERE t.activo = 1";
       $objPension = null;
       foreach ($this->conex->consultar($query) as $key => $value) {
         $objPension["data"][] = $value;
@@ -21,19 +24,21 @@
 
     public function insert($data)
     {
-      $idmodulo = $data['idmodulo'];
-      $idtipotransaccion = $data['idtipotransaccion'];
-      $nombre = $data['nombre'];
+      $idconceptotransaccion = $data['idconceptotransaccion'];
+      $idusuario = $data['idusuario'];
+      $idcliente = $data['idcliente'];
+      $monto = $data['monto'];
       $descripcion = $data['descripcion'];
 
       $valoresInsertar = array(
-        ':idmodulo' => $idmodulo,
-        ':idtipotransaccion' => $idtipotransaccion,
-        ':nombreconcepto' => $nombre,
+        ':idconceptotransaccion' => $idconceptotransaccion,
+        ':idusuario' => $idusuario,
+        ':idcliente' => $idcliente,
+        ':monto' => $monto,
         ':descripcion' => $descripcion
       );
 
-      $sentencia = $this->conex->ejecutarAccion("INSERT INTO transaccion VALUES (null, :idtipotransaccion, :idmodulo, :nombreconcepto, :descripcion,1)", $valoresInsertar);
+      $sentencia = $this->conex->ejecutarAccion("INSERT INTO transaccion VALUES (null, :idconceptotransaccion, :idusuario, :idcliente, :monto, NOW(),:descripcion, 1)", $valoresInsertar);
 
       if($sentencia) {
         echo 'ok';
@@ -45,9 +50,9 @@
     public function delete($id)
     {
       $valoresEliminar = array(
-        ':idconcepto' => $id,
+        ':idtransaccion' => $id,
       );
-      $sentencia = $this->conex->ejecutarAccion("UPDATE transaccion SET activo = 0 WHERE id_concepto = :idconcepto", $valoresEliminar);
+      $sentencia = $this->conex->ejecutarAccion("UPDATE transaccion SET activo = 0 WHERE id_transaccion = :idtransaccion", $valoresEliminar);
 
       if($sentencia) {
         echo 'ok';
