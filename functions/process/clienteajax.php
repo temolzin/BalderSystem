@@ -138,3 +138,7 @@
   else if($accion == "read") {
     echo $cliente->read();
   }
+  else if($accion == "readbyid") {
+    $idcliente = $_POST['idcliente'];
+    echo $cliente->readbyid($idcliente);
+  }

@@ -65,7 +65,7 @@ else if($accion == "update") {
   //Validación para ver si se está actualizando el perfil
   //En caso de que si se esté actualizando el perfil se va a ejecutar una consulta para actualizar los datos deel perfil en tiempo real
   if(isset($_POST['perfilUsuario'])) {
-    echo $usuario->readbyid($idusuario);
+    echo $usuario->readbyidprofile($idusuario);
   }
 }
 else if($accion == 'actualizarImagen') {
@@ -91,7 +91,7 @@ else if($accion == 'actualizarImagen') {
   //Validación para ver si se está actualizando el perfil
   //En caso de que si se esté actualizando el perfil se va a ejecutar una consulta para actualizar los datos deel perfil en tiempo real
   if(isset($_POST['perfilUsuario'])) {
-    echo $usuario->readbyid($idusuario);
+    echo $usuario->readbyidprofile($idusuario);
   }
 }
 else if($accion == "delete") {

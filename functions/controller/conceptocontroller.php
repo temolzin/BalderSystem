@@ -12,11 +12,35 @@
     {
       $query = "SELECT * FROM conceptotransaccion ct INNER JOIN modulo m ON ct.id_modulo = m.id_modulo 
                 INNER JOIN tipoconceptotransaccion tct ON ct.id_tipo_concepto_transaccion = tct.id_tipo_concepto_transaccion WHERE ct.activo = 1";
-      $objDocumento = null;
+      $objConcepto = null;
       foreach ($this->conex->consultar($query) as $key => $value) {
-        $objDocumento["data"][] = $value;
+        $objConcepto["data"][] = $value;
       }
-      echo json_encode($objDocumento, JSON_UNESCAPED_UNICODE);
+      echo json_encode($objConcepto, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function readbymodulo($idmodulo)
+    {
+      $query = "SELECT * FROM conceptotransaccion ct INNER JOIN modulo m ON ct.id_modulo = m.id_modulo 
+                INNER JOIN tipoconceptotransaccion tct ON ct.id_tipo_concepto_transaccion = tct.id_tipo_concepto_transaccion 
+                WHERE ct.activo = 1 and ct.id_modulo = " . $idmodulo;
+      $objConcepto = null;
+      foreach ($this->conex->consultar($query) as $key => $value) {
+        $objConcepto[] = $value;
+      }
+      echo json_encode($objConcepto, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function readbyidconcepto($idconcepto)
+    {
+      $query = "SELECT * FROM conceptotransaccion ct INNER JOIN modulo m ON ct.id_modulo = m.id_modulo 
+                INNER JOIN tipoconceptotransaccion tct ON ct.id_tipo_concepto_transaccion = tct.id_tipo_concepto_transaccion 
+                WHERE ct.activo = 1 and ct.id_concepto_transaccion = " . $idconcepto;
+      $objConcepto = null;
+      foreach ($this->conex->consultar($query) as $key => $value) {
+        $objConcepto = $value;
+      }
+      echo json_encode($objConcepto, JSON_UNESCAPED_UNICODE);
     }
 
     public function insert($data)

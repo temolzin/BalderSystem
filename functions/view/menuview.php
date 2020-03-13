@@ -105,11 +105,15 @@ class Menu {
         <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
         <!-- Ionicons -->
         <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+               <!-- Select2 -->
+        <link rel="stylesheet" href="../../plugins/select2/css/select2.min.css">
+        <link rel="stylesheet" href="../../plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
         <!-- overlayScrollbars -->
         <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
         <link rel="stylesheet" href="../../plugins/datatables-bs4/css/dataTables.bootstrap4.css">
         <link rel="stylesheet" href="../../plugins/datatables-responsive/css/responsive.bootstrap4.css">
         <link rel="stylesheet" href="../../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+ 
         <!-- Google Font: Source Sans Pro -->
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
       </head>
@@ -568,12 +572,22 @@ class Menu {
       <script src="../../plugins/datatables-buttons/js/buttons.html5.min.js"></script>
       <script src="../../plugins/datatables-buttons/js/buttons.print.min.js"></script>
       <script src="../../plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
-      '.$this->librerias.'
+      <!-- Select2 -->
+      <script src="../../plugins/select2/js/select2.full.min.js"></script>
       
+      '.$this->librerias.'
+      <!--Código para Actualizar Perfil-->
       <script type="text/javascript">
         $(document).ready(function () {
           enviarFormularioPerfil();
           subirImagenPerfil();
+          //Initialize Select2 Elements
+          $(\'.select2\').select2();
+      
+          //Initialize Select2 Elements
+          $(\'.select2bs4\').select2({
+            theme: \'bootstrap4\'
+          })
         });
          //PARA SUBIR SOLAMENTE LA IMAGEN
         var subirImagenPerfil = function() {

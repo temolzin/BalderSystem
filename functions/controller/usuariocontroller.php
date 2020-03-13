@@ -150,9 +150,9 @@
     }
 
     /*
- * Método para ActualizarPerfil
- */
-    public function readbyid($id) {
+   * Método para leer el usuario y asignarselo a la sesión
+   */
+    public function readbyidprofile($id) {
       session_start();
       $query = "SELECT * FROM usuario u INNER JOIN tipousuario tu ON u.id_tipo_usuario = tu.id_tipo_usuario WHERE id_usuario = '" . $id . "'";
 
