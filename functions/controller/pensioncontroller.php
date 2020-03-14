@@ -63,23 +63,24 @@
 
     public function update($data)
     {
-      $idconcepto = $data['idconcepto'];
-      $idtipoconcepto = $data['idtipotransaccion'];
-      $idmodulo = $data['idmodulo'];
-      $nombre = $data['nombre'];
+      $idtransaccion = $data['idtransaccion'];
+      $idconceptotransaccion = $data['idconceptotransaccion'];
+      $idusuario = $data['idusuario'];
+      $idcliente = $data['idcliente'];
+      $monto = $data['monto'];
       $descripcion = $data['descripcion'];
 
       $valoresActualizar = array(
-        ':idconcepto' => $idconcepto,
-        ':idtipoconcepto' => $idtipoconcepto,
-        ':idmodulo' => $idmodulo,
-        ':nombreconcepto' => $nombre,
+        ':idtransaccion' => $idtransaccion,
+        ':idconceptotransaccion' => $idconceptotransaccion,
+        ':idusuario' => $idusuario,
+        ':idcliente' => $idcliente,
+        ':monto' => $monto,
         ':descripcion' => $descripcion
       );
 
-      $sentencia = $this->conex->ejecutarAccion("UPDATE transaccion SET id_tipo_concepto_transaccion=:idtipoconcepto,
-                                                id_modulo = :idmodulo, nombre_concepto_transaccion=:nombreconcepto,descripcion=:descripcion 
-                                                WHERE id_concepto_transaccion = :idconcepto", $valoresActualizar);
+      $sentencia = $this->conex->ejecutarAccion("UPDATE transaccion SET  id_concepto_transaccion=:idconceptotransaccion,id_usuario=:idusuario,id_cliente=:idcliente,
+                                                monto=:monto,fecha_registro=NOW(),descripcion=:descripcion  WHERE id_transaccion = :idtransaccion", $valoresActualizar);
 
       if($sentencia) {
         echo 'ok';

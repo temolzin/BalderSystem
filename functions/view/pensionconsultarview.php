@@ -79,7 +79,7 @@
                 <div class="form-group">
                   <label for="idcliente">ID Cliente</label>
                   <div class="input-group mb-3">
-                    <input type="text" disabled class="form-control" placeholder="ID Cliente" id="idcliente" name="idcliente" aria-label="ID Cliente">
+                    <input type="text" readonly class="form-control" placeholder="ID Cliente" id="idcliente" name="idcliente" aria-label="ID Cliente">
                     <input type="hidden" class="form-control" placeholder="ID Actualizar" id="idActualizar" name="idActualizar" aria-label="Idactualizar">
                   </div>
                 </div>
@@ -221,7 +221,7 @@
           {data:"nombre_cliente"},
           {data:"fecha_registro"},
           {data:"monto"},
-          {data:"descripcion"},
+          {data:6}, //En la posición 6 está la descripción de la transacción.
           {data:null, "defaultContent": "<button class='editar btn btn-primary' data-toggle='modal' data-target='#modalActualizar'><i class=\"fa fa-edit\"></i></button> " +
               "<button class='eliminar btn btn-danger' data-toggle='modal' data-target='#modalEliminar'><i class=\"far fa-trash-alt\"></i></button>" }
         ],
@@ -250,7 +250,7 @@
       var apmat = $("#apmat").val(data[25]); //En la posición 25 está el apellido materno del cliente
       var monto = $("#monto").val(data.monto);
       var tipoconcepto = $("#tipoconceptotransaccion").val(data.nombre_tipo_concepto + "("+ data.signo_concepto +")");
-      var descripcion = $("#descripcion").val(data.descripcion);
+      var descripcion = $("#descripcion").val(data[6]); //En la posición 25 está la descripción de la transacción
     });
   }
 
@@ -313,36 +313,37 @@
   }
 
   var enviarFormulario = function () {
-  $.validator.setDefaults({
+    $.validator.setDefaults({
       submitHandler: function () {
-      var datos = $("#form").serialize() + "&accion=update";
+        var datos = $('#form').serialize() + "&accion=update";
         $.ajax({
-              type: "POST",
-              url: "../process/conceptoajax.php",
-              data: datos,
-              success: function(data){
-                if(data == 'ok') {
-                  Swal.fire(
-                    "¡Éxito!",
-                    "El concepto ha sido actualizado de manera correcta",
-                    "success"
-                  ).then(function() {
-                    window.location = "conceptoconsultarview.php";
-                  })
-                } else {
-                  Swal.fire(
-                    "¡Error!",
-                    "Ha ocurrido un error al actualizar el concepto. " + data,
-                    "error"
-                  );
-                }
+          type: "POST",
+          url: "../process/pensionajax.php",
+          data: datos,
+          success: function(data){
+            console.log(data);
+            if(data == 'ok') {
+              Swal.fire(
+                "¡Éxito!",
+                "El registro de la pensión ha sido actualizado de manera correcta",
+                "success"
+              ).then(function() {
+                window.location = "pensionconsultarview.php";
+              });
+            } else {
+              Swal.fire(
+                "¡Error!",
+                "Ha ocurrido un error al actualizar el registro de la pensión. ",
+                "error"
+              );
+            }
           },
         });
       }
     });
     $('#form').validate({
       rules: {
-        nombre: {
+        monto: {
           required: true
         },
         descripcion: {
@@ -350,17 +351,17 @@
         }
       },
       messages: {
-        nombre: {
-          required: "Ingresa un nombre"
+        monto: {
+          required: "Ingresa un monto"
         },
         descripcion: {
-          required: "Ingresa una descripción",
+          required: "Ingresa una descripción"
         }
       },
       errorElement: 'span',
       errorPlacement: function (error, element) {
-      error.addClass('invalid-feedback');
-      element.closest('.form-group').append(error);
+        error.addClass('invalid-feedback');
+        element.closest('.form-group').append(error);
       },
       highlight: function (element, errorClass, validClass) {
         $(element).addClass('is-invalid');
@@ -370,7 +371,6 @@
       }
     });
   }
-
   // Add the following code if you want the name of the file appear on select
   $(".custom-file-input").on("change", function() {
     var fileName = $(this).val().split("\\").pop();

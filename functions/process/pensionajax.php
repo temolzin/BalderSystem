@@ -20,18 +20,19 @@
     $pension->insert($data);
   }
   else if($accion == "update") {
-    $idpension = $_POST['idpension'];
-    $idmodulo = $_POST['modulo'];
-    $tipopensiontransaccion = $_POST['tipopensiontransaccion'];
-    $nombre = $_POST['nombre'];
+    session_start();
+    $idtransaccion = $_POST['idActualizar'];
+    $idconceptotransaccion = $_POST['conceptotransaccion'];
+    $idusuario = $_SESSION['user']['id_usuario'];
+    $idcliente = $_POST['idcliente'];
+    $monto = $_POST['monto'];
     $descripcion = $_POST['descripcion'];
-
     $data = array(
-      'idpension' => $idpension,
-      'idmodulo' => $idmodulo,
-      'idmodulo' => $idmodulo,
-      'idtipopensiontransaccion' => $tipopensiontransaccion,
-      'nombre' => $nombre,
+      'idtransaccion' => $idtransaccion,
+      'idconceptotransaccion' => $idconceptotransaccion,
+      'idusuario' => $idusuario,
+      'idcliente' => $idcliente,
+      'monto' => $monto,
       'descripcion' => $descripcion
     );
     $pension->update($data);
