@@ -369,6 +369,35 @@
     obtenerdatosDT(table);
   }
 
+  /*var enviarDatosPerfilCliente = function (table) {
+    $('#tablaDT tbody').on('click', 'tr', function() {
+      var data = table.row(this).data();
+
+      var id_cliente = $("#idActualizar").val(data.id_cliente);
+      var id_institucion_interbancaria = $("#banco option[value='"+ data.id_institucion_interbancaria +"']").attr("selected",true);
+      var id_genero = $("#genero option[value='"+ data.id_genero +"']").attr("selected",true);
+      var nombre_cliente = $("#nombre").val(data.nombre_cliente);
+      var appat = $("#appat").val(data.ap_pat);
+      var apmat = $("#apmat").val(data.ap_mat);
+      var rfc = $("#rfc").val(data.rfc);
+      var curp = $("#curp").val(data.curp);
+      var fecha_nacimiento = $("#fechanacimiento").val(data.fecha_nacimiento);
+      var estado_nacimiento = $("#estadonacimiento").val(data.estado_nacimiento);
+      var email = $("#email").val(data.email);
+      var telefono = $("#telefono").val(data.telefono);
+      var calle = $("#calle").val(data.calle);
+      var noexterior = $("#noexterior").val(data.noexterior);
+      var nointerior = $("#nointerior").val(data.nointerior);
+      var nss = $("#nss").val(data.nss);
+      var altaimss = $("#altaimss").val(data.alta_imss);
+      var bajaimss = $("#bajaimss").val(data.baja_imss);
+      var clabe = $("#clabe").val(data.clabe_interbancaria);
+      var observacion = $("#observacion").val(data.observacion);
+      var activo = $("#activo").val(data.activo);
+
+    });
+  }*/
+
   var obtenerdatosDT = function (table) {
     $('#tablaDT tbody').on('click', 'tr', function() {
       var data = table.row(this).data();

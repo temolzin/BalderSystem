@@ -54,6 +54,7 @@ class Menu {
     $activeReporte = "";
     $activeReporteCheckList = "";
     $activeReporteEstadoCuenta = "";
+    $activeSubirDocumento = "";
 
     if($active == 'inicio') {
       $activeInicio = "active";
@@ -96,6 +97,9 @@ class Menu {
     } elseif ($active == 'prestamover') {
       $activePrestamo = 'active';
       $activePrestamoVer = 'active';
+    } elseif ($active == 'subirdocumento') {
+      $activeCliente = 'active';
+      $activeSubirDocumento = 'active';
     }
 
     echo '<!DOCTYPE html>
@@ -217,6 +221,12 @@ class Menu {
                       <a href="clienteconsultarview.php" class="nav-link ' .$activeClienteVer.'">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Ver Clientes</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="clientesubirdocumentoview.php" class="nav-link ' .$activeSubirDocumento.'">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Cargar documentos</p>
                       </a>
                     </li>
                   </ul>
