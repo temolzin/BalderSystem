@@ -4,6 +4,7 @@
   $menu = new Menu();
   $menu->header('clientever','Listado de clientes');
   ?>
+<div id="contenedor" name="contenedor">
   <div class="row">
     <div class="col-12">
       <div class="card">
@@ -299,6 +300,9 @@
             </form>
       </div>
     </div>
+    </div>
+  </div>
+</div>
 <?php
   $menu->footer();
   ?>
@@ -400,6 +404,15 @@
 
   var obtenerdatosDT = function (table) {
     $('#tablaDT tbody').on('click', 'tr', function() {
+      $(".consultar").on('click', function () {
+        var data = table.row(this).data();
+        $.post( "clienteperfilview.php", data,function( data ) {
+          $('#contenedor').html(data);
+          $('#titulomenu').html('<h1>Perfil Cliente</h1>');
+        });
+
+      });
+
       var data = table.row(this).data();
       if(typeof data.imagen == "undefined") {
         data.imagen = "sinimagen.jpg";

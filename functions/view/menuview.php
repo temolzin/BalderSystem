@@ -377,12 +377,12 @@ class Menu {
         </aside>
       
         <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper">
+        <div id="contenedorprincipal" name="contenedorprincipal" class="content-wrapper">
           <!-- Content Header (Page header) -->
           <section class="content-header">
             <div class="container-fluid">
               <div class="row mb-2">
-                <div class="col-sm-6">
+                <div class="col-sm-6" id="titulomenu" name="titulomenu">
                   <h1>' . $title . '</h1>
                 </div>
                 <div class="col-sm-6">
@@ -405,7 +405,7 @@ class Menu {
                 <div class="modal-body">
                   ¿Estás seguro de salir del sistema?
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer">0
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                   <a href="../process/logout.php" class="btn btn-danger">Cerrar sesión</a>
                 </div>

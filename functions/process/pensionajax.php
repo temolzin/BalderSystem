@@ -44,3 +44,11 @@
   else if($accion == "read") {
     echo $pension->read();
   }
+  else if($accion == "readbyidcliente") {
+    $idcliente = $_POST['idcliente'];
+    echo $pension->readbyidcliente($idcliente);
+  }
+  else if($accion == "readbyidclientearray") {
+    $idcliente = $_POST['idcliente'];
+    echo $pension->readbyidclientearray($idcliente);
+  }

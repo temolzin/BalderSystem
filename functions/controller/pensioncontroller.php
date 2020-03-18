@@ -22,6 +22,34 @@
       echo json_encode($objPension, JSON_UNESCAPED_UNICODE);
     }
 
+    public function readbyidcliente($idcliente)
+    {
+      $query = "SELECT * FROM transaccion t INNER JOIN usuario u ON t.id_usuario = u.id_usuario 
+                INNER JOIN cliente cl ON t.id_cliente = cl.id_cliente
+                INNER JOIN conceptotransaccion ct ON t.id_concepto_transaccion = ct.id_concepto_transaccion
+                INNER JOIN tipoconceptotransaccion tct ON ct.id_tipo_concepto_transaccion = tct.id_tipo_concepto_transaccion
+                WHERE t.activo = 1 and t.id_cliente = " .$idcliente;
+      $objPension = null;
+      foreach ($this->conex->consultar($query) as $key => $value) {
+        $objPension["data"][] = $value;
+      }
+      echo json_encode($objPension, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function readbyidclientearray($idcliente)
+    {
+      $query = "SELECT * FROM transaccion t INNER JOIN usuario u ON t.id_usuario = u.id_usuario 
+                INNER JOIN cliente cl ON t.id_cliente = cl.id_cliente
+                INNER JOIN conceptotransaccion ct ON t.id_concepto_transaccion = ct.id_concepto_transaccion
+                INNER JOIN tipoconceptotransaccion tct ON ct.id_tipo_concepto_transaccion = tct.id_tipo_concepto_transaccion
+                WHERE t.activo = 1 and t.id_cliente = " .$idcliente;
+      $objPension = null;
+      foreach ($this->conex->consultar($query) as $key => $value) {
+        $objPension[] = $value;
+      }
+      echo json_encode($objPension, JSON_UNESCAPED_UNICODE);
+    }
+
     public function insert($data)
     {
       $idconceptotransaccion = $data['idconceptotransaccion'];
