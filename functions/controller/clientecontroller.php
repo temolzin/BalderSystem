@@ -35,6 +35,22 @@
       }
       echo json_encode($objCliente, JSON_UNESCAPED_UNICODE);
     }
+    /*
+     * Método para devolver a los últimos clientes registrados límitados por la variable LIMITE
+     * */
+    public function readbylimit($limite)
+    {
+      $query = "SELECT * FROM cliente c 
+                INNER JOIN postal p on c.id_postal = p.id 
+                INNER JOIN institucionbancaria ib on c.id_institucion_bancaria = ib.id_institucion_bancaria
+                INNER JOIN genero g on c.id_genero = g.id_genero
+                WHERE activo = 1 ORDER BY c.id_cliente DESC LIMIT " . $limite;
+      $objCliente = null;
+      foreach ($this->conex->consultar($query) as $key => $value) {
+        $objCliente[] = $value;
+      }
+      echo json_encode($objCliente, JSON_UNESCAPED_UNICODE);
+    }
 
     public function insert($data)
     {

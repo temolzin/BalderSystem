@@ -22,6 +22,21 @@
       echo json_encode($objPension, JSON_UNESCAPED_UNICODE);
     }
 
+    //Metodo que regresa las últimas transacciones limitadas por el parámetro LIMITE
+    public function readbylimit($limite)
+    {
+      $query = "SELECT * FROM transaccion t INNER JOIN usuario u ON t.id_usuario = u.id_usuario 
+                INNER JOIN cliente cl ON t.id_cliente = cl.id_cliente
+                INNER JOIN conceptotransaccion ct ON t.id_concepto_transaccion = ct.id_concepto_transaccion
+                INNER JOIN tipoconceptotransaccion tct ON ct.id_tipo_concepto_transaccion = tct.id_tipo_concepto_transaccion
+                WHERE t.activo = 1 ORDER BY t.id_transaccion DESC LIMIT " . $limite;
+      $objPension = null;
+      foreach ($this->conex->consultar($query) as $key => $value) {
+        $objPension[] = $value;
+      }
+      echo json_encode($objPension, JSON_UNESCAPED_UNICODE);
+    }
+
     public function readbyidcliente($idcliente)
     {
       $query = "SELECT * FROM transaccion t INNER JOIN usuario u ON t.id_usuario = u.id_usuario 
@@ -35,7 +50,7 @@
       }
       echo json_encode($objPension, JSON_UNESCAPED_UNICODE);
     }
-
+    //Metodo que regresa el objeto del cliente para ver el perfil del cliente
     public function readbyidclientearray($idcliente)
     {
       $query = "SELECT * FROM transaccion t INNER JOIN usuario u ON t.id_usuario = u.id_usuario 

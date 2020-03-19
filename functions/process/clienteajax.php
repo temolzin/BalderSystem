@@ -142,3 +142,7 @@
     $idcliente = $_POST['idcliente'];
     echo $cliente->readbyid($idcliente);
   }
+  else if($accion == "readbylimit") {
+    $limite = $_POST['limit'];
+    echo $cliente->readbylimit($limite);
+  }

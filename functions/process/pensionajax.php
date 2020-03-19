@@ -44,6 +44,10 @@
   else if($accion == "read") {
     echo $pension->read();
   }
+  else if($accion == "readbylimit") {
+    $limite = $_POST['limit'];
+    echo $pension->readbylimit($limite);
+  }
   else if($accion == "readbyidcliente") {
     $idcliente = $_POST['idcliente'];
     echo $pension->readbyidcliente($idcliente);

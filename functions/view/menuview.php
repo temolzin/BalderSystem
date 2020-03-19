@@ -60,6 +60,7 @@ class Menu {
       $activeInicio = "active";
       $title = "Bienvenido: " . $this->nombreCompleto;
       $this->librerias = "<script src=\"../../plugins/chart.js/Chart.min.js\"></script>
+      <script src=\"../../plugins/chart.js/Chart.bundle.min.js\"></script>
       <script src=\"../../dist/js/pages/dashboard3.js\"></script>";
     } elseif ($active == 'clientever'){
       $activeCliente = 'active';
@@ -405,7 +406,7 @@ class Menu {
                 <div class="modal-body">
                   ¿Estás seguro de salir del sistema?
                 </div>
-                <div class="modal-footer">0
+                <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                   <a href="../process/logout.php" class="btn btn-danger">Cerrar sesión</a>
                 </div>

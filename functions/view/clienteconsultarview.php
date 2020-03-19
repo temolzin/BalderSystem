@@ -404,16 +404,15 @@
 
   var obtenerdatosDT = function (table) {
     $('#tablaDT tbody').on('click', 'tr', function() {
+      var data = table.row(this).data();
+      console.log(data);
       $(".consultar").on('click', function () {
-        var data = table.row(this).data();
         $.post( "clienteperfilview.php", data,function( data ) {
           $('#contenedor').html(data);
           $('#titulomenu').html('<h1>Perfil Cliente</h1>');
         });
-
       });
 
-      var data = table.row(this).data();
       if(typeof data.imagen == "undefined") {
         data.imagen = "sinimagen.jpg";
       }
