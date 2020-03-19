@@ -40,6 +40,7 @@
             <h3 class="profile-username text-center"><?php echo $nombre?></h3>
 
             <p class="text-muted text-center"><?php echo $appat . " " .$apmat?></p>
+            <p class="text-muted text-center">ID Cliente: <?php echo $idcliente?></p>
 
             <ul class="list-group list-group-unbordered mb-3">
               <li class="text-center list-group-item">
@@ -48,6 +49,7 @@
               <li class="list-group-item">
                 <b>Cargos</b> <a id="cargo" name="cargo" class="float-right">$0.0</a> <br>
                 <b>Abonos</b> <a id="abono" name="abono" class="float-right">$0.0</a>
+                <b>Total</b> <a id="total" name="total" class="float-right">$0.0</a>
               </li>
             </ul>
           </div>
@@ -94,27 +96,47 @@
       </div>
       <!-- /.col -->
       <div class="col-md-9">
-        <div class="card">
-          <div class="card-header">
-            <h3 class="card-title">Pensiones</h3>
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Pensiones</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+              <table id="tablaDTPension" class="table table-bordered table-hover dt-responsive nowrap" style="width:100%">
+                <thead>
+                <tr>
+                  <th>Tipo Concepto</th>
+                  <th>Concepto</th>
+                  <th>Fecha</th>
+                  <th>Monto</th>
+                  <th>Descripción</th>
+                </tr>
+                </thead>
+              </table>
+            </div>
+            <!-- /.card-body -->
           </div>
-          <!-- /.card-header -->
-          <div class="card-body">
-            <table id="tablaDT" class="table table-bordered table-hover dt-responsive nowrap" style="width:100%">
-              <thead>
-              <tr>
-                <th>Tipo Concepto</th>
-                <th>Concepto</th>
-                <th>Fecha</th>
-                <th>Monto</th>
-                <th>Descripción</th>
-              </tr>
-              </thead>
-            </table>
+
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Documentos</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+              <table id="tablaDTDocumento" class="table table-bordered table-hover dt-responsive nowrap" style="width:100%">
+                <thead>
+                <tr>
+                  <th>Documento</th>
+                  <th>Estatus</th>
+                  <th></th>
+                </tr>
+                </thead>
+              </table>
+            </div>
+            <!-- /.card-body -->
           </div>
-          <!-- /.card-body -->
         </div>
-        <!-- /.card -->
+
       </div>
       <!-- /.col -->
     </div>
@@ -126,6 +148,7 @@
 <script type="text/javascript">
   $(document).ready(function () {
     asignarCargosAbonos();
+    mostrarRegistrosDocumento();
   });
 
   var idiomaDataTable = {
@@ -157,8 +180,6 @@
     }
   };
 
-
-
   var asignarCargosAbonos = function () {
       $.ajax({
         method: "POST",
@@ -169,6 +190,7 @@
             data = JSON.parse(data);
             var cargo = 0.0;
             var abono = 0.0;
+            var total = 0.0;
             $.each(data, function (i, row) {
               if (data[i]['nombre_tipo_concepto'] === 'Cargo') {
                 cargo += parseFloat(data[i]['monto']);
@@ -176,11 +198,13 @@
                 abono += parseFloat(data[i]['monto']);
               }
             });
+            total = cargo - abono;
             $('#cargo').text("$" + cargo);
             $('#abono').text("$" + abono);
-            mostrarRegistros();
+            $('#total').text("$" + total);
+            mostrarRegistrosPension();
           } catch (e) {
-            var table = $("#tablaDT").DataTable({
+            var table = $("#tablaDTPension").DataTable({
               responsive: true,
               language: idiomaDataTable,
               lengthChange: true,
@@ -189,10 +213,30 @@
         }
       })
   }
+  var mostrarRegistrosDocumento = function () {
+      var table1 = $("#tablaDTDocumento").DataTable({
+        destroy: true,
+        ajax:{
+          method: "POST",
+          url: "../process/documentoajax.php",
+          data: {"accion":"read"}
+        },
+        columns: [
+          {data:"nombre_documento"},
+          {data:null, "defaultContent": "<img class='text-center img-fluid' width='40px' height='40px' src='../../dist/img/icons/error.png'>" },
+          {data:null, "defaultContent": "<button class='editar btn btn-primary' data-toggle='modal' data-target='#modalActualizar'><i class=\"fa fa-cloud-download-alt\"></i></button>" }
+        ],
+        responsive: true,
+        language: idiomaDataTable,
+        lengthChange: true,
+        dom: 'fltip'
+      });
 
-  var mostrarRegistros = function () {
+      table1.buttons().container().appendTo('#tablaDT_wrapper .col-md-6:eq(0)');
+  }
 
-    var table = $("#tablaDT").DataTable({
+  var mostrarRegistrosPension = function () {
+    var table = $("#tablaDTPension").DataTable({
       destroy: true,
       ajax:{
         method: "POST",
@@ -212,6 +256,6 @@
       buttons: ['copy','excel','csv','pdf','colvis'],
       dom: 'Bfltip'
     });
-    table.buttons().container().appendTo('#tablaDT_wrapper .col-md-6:eq(0)');
+    table.buttons().container().appendTo('#tablaDTPension_wrapper .col-md-6:eq(0)');
   }
   </script>

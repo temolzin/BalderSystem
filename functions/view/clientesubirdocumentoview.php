@@ -2,7 +2,7 @@
   require_once 'menuview.php';
 
   $menu = new Menu();
-  $menu->header('pensionreg','Registro de Pensión');
+  $menu->header('subirdocumento','Carga de documentos');
   ?>
   <div class="container-fluid">
     <div class="row">
@@ -11,7 +11,7 @@
         <!-- jquery validation -->
         <div class="card card-primary">
           <div class="card-header">
-            <h3 class="card-title">Pensión <small> &nbsp; (*) Campos requeridos</small></h3>
+            <h3 class="card-title">Carga Documentos <small> &nbsp; (*) Campos requeridos</small></h3>
           </div>
           <!-- /.card-header -->
           <!-- form start -->
@@ -70,51 +70,35 @@
                     </div>
                   </div>
                 </div>
-                <div class="row">
-                  <div class="col-12 col-md-12">
-                    <div class="form-group">
-                      <label for="modulo">Concepto (*)</label>
-                      <select class="form-control select2" name="conceptotransaccion" id="conceptotransaccion" style="width: 100%;">
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-12 col-md-12">
-                    <div class="form-group">
-                      <label for="modulo">Tipo Concepto</label>
-                      <input type="text" disabled class="form-control" id="tipoconceptotransaccion" name="tipoconceptotransaccion" value="" placeholder="Tipo concepto" />
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                    <div class="col-12 col-sm-12">
-                      <label for="modulo">Monto (*)</label>
-                      <div class="form-group input-group">
-
-                        <div class="input-group-prepend">
-                          <span class="input-group-text">
-                            <i class="fas fa-dollar-sign"></i>
-                          </span>
-                        </div>
-                        <input type="number" onkeypress="return soloNumeros(this);"  maxlength="10" class="form-control" id="monto" placeholder="Monto" name="monto">
-                      </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12 col-md-12">
-                      <div class="form-group">
-                        <label for="descripcion">Descripción (*)</label>
-                        <textarea type="text" id="descripcion" name="descripcion" value="" class="form-control" placeholder="Descripción"></textarea>
-                      </div>
-                    </div>
-                </div>
-              </div>
-                <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">Registrar</button>
-                </div>
             </form>
           </div>
+
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">Documentos</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                  <table id="tablaDT" class="table table-bordered table-hover dt-responsive nowrap" style="width:100%">
+                    <thead>
+                    <tr>
+                      <th>Documento</th>
+                      <th>Estatus</th>
+                      <th></th>
+                    </tr>
+                    </thead>
+                  </table>
+                </div>
+                <!-- /.card-body -->
+              </div>
+              <!-- /.card -->
+            </div>
+            <!-- /.col -->
+          </div>
+          <!-- /.row -->
+
         </div>
         <!-- /.card -->
       </div>
@@ -129,29 +113,9 @@
 ?>
 <script>
   $(document).ready(function () {
-    enviarFormulario();
     enviarFormularioIdcliente();
-    llenarComboConcepto();
-    consultarTipoConcepto();
+    mostrarRegistros();
   });
-
-  var llenarComboConcepto = function () {
-    $.ajax({
-      type: "POST",
-      url: "../process/conceptoajax.php",
-      data: {'accion':'readbymodulo','idmodulo':'1'},
-      success: function(data) {
-        data = JSON.parse(data);
-        $.each(data, function (i, row) {
-          $('#conceptotransaccion').append("<option value='" + data[i]['id_concepto_transaccion'] + "'>"+ data[i]['nombre_concepto_transaccion'] +"</option>");
-        });
-        $.each(data, function (i, row) {
-          $('#tipoconceptotransaccion').val(data[i]['nombre_tipo_concepto'] + "(" +data[i]['signo_concepto'] + ")" );
-          return false;
-        });
-      }
-    });
-  }
 
   var enviarFormularioIdcliente = function () {
     $.validator.setDefaults({
@@ -206,76 +170,65 @@
     });
   }
 
-  var consultarTipoConcepto = function () {
-    $('#conceptotransaccion').change(function () {
-      $.ajax({
-        type: "POST",
-        url: "../process/conceptoajax.php",
-        data: {'accion':'readbyidconcepto','idconceptotransaccion': $('#conceptotransaccion').val()},
-        success: function(data) {
-          data = JSON.parse(data);
-          $('#tipoconceptotransaccion').val(data.nombre_tipo_concepto + "(" +data.signo_concepto + ")" );
-        }
-      });
+
+  var idiomaDataTable = {
+    "sProcessing":     "Procesando...",
+    "sLengthMenu":     "Mostrar _MENU_ registros",
+    "sZeroRecords":    "No se encontraron resultados",
+    "sEmptyTable":     "Ningún dato disponible en esta tabla",
+    "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+    "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+    "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+    "sInfoPostFix":    "",
+    "sSearch":         "Buscar:",
+    "sUrl":            "",
+    "sInfoThousands":  ",",
+    "sLoadingRecords": "Cargando...",
+    "oPaginate": {
+      "sFirst":    "Primero",
+      "sLast":     "Último",
+      "sNext":     "Siguiente",
+      "sPrevious": "Anterior"
+    },
+    "oAria": {
+      "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+      "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+    },
+    "buttons": {
+      "copy": "Copiar",
+      "colvis": "Visibilidad"
+    }
+  };
+  var mostrarRegistros = function () {
+    var table = $("#tablaDT").DataTable({
+      ajax:{
+        method: "POST",
+        url: "../process/documentoajax.php",
+        data: {"accion":"read"}
+      },
+      columns: [
+        {data:"nombre_documento"},
+        {data:null, "defaultContent": "<img class='text-center img-fluid' width='40px' height='40px' src='../../dist/img/icons/error.png'>" },
+        {data:null, "defaultContent": "<button class='editar btn btn-primary' data-toggle='modal' data-target='#modalActualizar'><i class=\"fa fa-cloud-upload-alt\"></i></button>" }
+      ],
+      responsive: true,
+      language: idiomaDataTable,
+      lengthChange: true,
+      dom: 'fltip'
+    });
+
+    table.buttons().container().appendTo('#tablaDT_wrapper .col-md-6:eq(0)');
+    obtenerdatosDT(table);
+  }
+
+  var obtenerdatosDT = function (table) {
+    $('#tablaDT tbody').on('click', 'tr', function() {
+      var data = table.row(this).data();
+      var ideliminar = $('#idEliminar').val(data.id_documento);
+      var iddocumento = $("#iddocumento").val(data.id_documento);
+      var nombre_documento = $("#nombre").val(data.nombre_documento);
+      var descripcion = $("#descripcion").val(data.descripcion);
     });
   }
 
-  var enviarFormulario = function () {
-    $.validator.setDefaults({
-      submitHandler: function () {
-        var datos = $('#form').serialize() + "&accion=insert" + "&idcliente=" + $('#idcliente').val();
-        $.ajax({
-          type: "POST",
-          url: "../process/pensionajax.php",
-          data: datos,
-          success: function(data){
-            if(data == 'ok') {
-              Swal.fire(
-                "¡Éxito!",
-                "El registro de la pensión ha sido registrado de manera correcta",
-                "success"
-              ).then(function() {
-                window.location = "pensionregistrarview.php";
-              });
-            } else {
-              Swal.fire(
-                "¡Error!",
-                "Ha ocurrido un error al registrar el registro de la pensión. ",
-                "error"
-              );
-            }
-          },
-        });
-      }
-    });
-    $('#form').validate({
-      rules: {
-        monto: {
-          required: true
-        },
-        descripcion: {
-          required: true
-        }
-      },
-      messages: {
-        monto: {
-          required: "Ingresa un monto"
-        },
-        descripcion: {
-          required: "Ingresa una descripción"
-        }
-      },
-      errorElement: 'span',
-      errorPlacement: function (error, element) {
-        error.addClass('invalid-feedback');
-        element.closest('.form-group').append(error);
-      },
-      highlight: function (element, errorClass, validClass) {
-        $(element).addClass('is-invalid');
-      },
-      unhighlight: function (element, errorClass, validClass) {
-        $(element).removeClass('is-invalid');
-      }
-    });
-  }
 </script>
