@@ -61,7 +61,8 @@ class Menu {
       $title = "Bienvenido: " . $this->nombreCompleto;
       $this->librerias = "<script src=\"../../plugins/chart.js/Chart.min.js\"></script>
       <script src=\"../../plugins/chart.js/Chart.bundle.min.js\"></script>
-      <script src=\"../../dist/js/pages/dashboard3.js\"></script>";
+      <script src=\"../../plugins/canvas-toblob/canvas-toBlob.js\"></script>
+      <script src=\"../../plugins/filesaver/FileSaver.min.js\"></script>";
     } elseif ($active == 'clientever'){
       $activeCliente = 'active';
       $activeClienteVer = 'active';

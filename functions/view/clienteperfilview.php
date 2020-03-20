@@ -48,7 +48,7 @@
               </li>
               <li class="list-group-item">
                 <b>Cargos</b> <a id="cargo" name="cargo" class="float-right">$0.0</a> <br>
-                <b>Abonos</b> <a id="abono" name="abono" class="float-right">$0.0</a>
+                <b>Abonos</b> <a id="abono" name="abono" class="float-right">$0.0</a> <br>
                 <b>Total</b> <a id="total" name="total" class="float-right">$0.0</a>
               </li>
             </ul>
@@ -116,6 +116,10 @@
             </div>
             <!-- /.card-body -->
           </div>
+          <div class="col-lg-12 text-center">
+            <button class="btn btn-danger" id="btnEstadoCuentaPension"><i class="far fa-file-pdf"></i> Estado de Cuenta Pensión</button>
+          </div>
+        <br>
 
           <div class="card">
             <div class="card-header">
@@ -135,6 +139,10 @@
             </div>
             <!-- /.card-body -->
           </div>
+        <div class="col-lg-12 text-center">
+          <button class="btn btn-danger" id="btnCheckListDocumentos"><i class="far fa-file-pdf"></i> CheckList Documentos</button>
+        </div>
+        <br>
         </div>
 
       </div>
@@ -183,7 +191,7 @@
   var asignarCargosAbonos = function () {
       $.ajax({
         method: "POST",
-        url: "../process/pensionajax.php",
+        url: "../process/transaccionajax.php",
         data: {"accion": "readbyidclientearray", "idcliente": "<?php echo $idcliente;?>"},
         success: function (data) {
           try {
@@ -240,7 +248,7 @@
       destroy: true,
       ajax:{
         method: "POST",
-        url: "../process/pensionajax.php",
+        url: "../process/transaccionajax.php",
         data: {"accion": "readbyidcliente", "idcliente": "<?php echo $idcliente;?>"}
       },
       columns: [
