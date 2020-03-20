@@ -65,6 +65,37 @@
       echo json_encode($objPension, JSON_UNESCAPED_UNICODE);
     }
 
+    /*
+     * Método que devuelve las transacciones hechas o recibidas por MES
+     * */
+    public function readbyidtipoconcepto($idtipoconcepto)
+    {
+      $query = "SELECT 
+              SUM(IF(MONTH(fecha_registro)=1,monto,0)) As 'Enero',
+              SUM(IF(MONTH(fecha_registro)=2,monto,0)) As 'Febrero',
+              SUM(IF(MONTH(fecha_registro)=3,monto,0)) As 'Marzo',
+              SUM(IF(MONTH(fecha_registro)=4,monto,0)) As 'Abril',
+              SUM(IF(MONTH(fecha_registro)=5,monto,0)) As 'Mayo',
+              SUM(IF(MONTH(fecha_registro)=6,monto,0)) As 'Junio',
+              SUM(IF(MONTH(fecha_registro)=7,monto,0)) As 'Julio',
+              SUM(IF(MONTH(fecha_registro)=8,monto,0)) As 'Agosto',
+              SUM(IF(MONTH(fecha_registro)=9,monto,0)) As 'Septiembre',
+              SUM(IF(MONTH(fecha_registro)=10,monto,0)) As 'Octubre',
+              SUM(IF(MONTH(fecha_registro)=11,monto,0)) As 'Noviembre',
+              SUM(IF(MONTH(fecha_registro)=12,monto,0)) As 'Diciembre'
+               FROM transaccion t INNER JOIN conceptotransaccion ct ON 
+              t.id_concepto_transaccion = ct.id_concepto_transaccion
+              INNER JOIN tipoconceptotransaccion tct ON
+              ct.id_tipo_concepto_transaccion = tct.id_tipo_concepto_transaccion 
+              WHERE ct.id_tipo_concepto_transaccion = " . $idtipoconcepto;
+      $objTransaccion = null;
+      foreach ($this->conex->consultar($query) as $key => $value) {
+        $objTransaccion = $value;
+      }
+      echo json_encode($objTransaccion, JSON_UNESCAPED_UNICODE);
+    }
+
+
     public function insert($data)
     {
       $idconceptotransaccion = $data['idconceptotransaccion'];

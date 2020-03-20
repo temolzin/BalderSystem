@@ -56,42 +56,8 @@
         <!-- /.col-md-6 -->
         <div class="col-lg-6">
           <div class="card">
-            <div class="card-header border-0">
-              <div class="d-flex justify-content-between">
-                <h3 class="card-title">Sales</h3>
-                <a href="javascript:void(0);">View Report</a>
-              </div>
+            <canvas id="migrafica"></canvas>
             </div>
-            <div class="card-body">
-              <div class="d-flex">
-                <p class="d-flex flex-column">
-                  <span class="text-bold text-lg">$18,230.00</span>
-                  <span>Sales Over Time</span>
-                </p>
-                <p class="ml-auto d-flex flex-column text-right">
-                    <span class="text-success">
-                      <i class="fas fa-arrow-up"></i> 33.1%
-                    </span>
-                  <span class="text-muted">Since last month</span>
-                </p>
-              </div>
-              <!-- /.d-flex -->
-
-              <div class="position-relative mb-4">
-                <canvas id="sales-chart" height="200"></canvas>
-              </div>
-
-              <div class="d-flex flex-row justify-content-end">
-                  <span class="mr-2">
-                    <i class="fas fa-square text-primary"></i> This year
-                  </span>
-
-                <span>
-                    <i class="fas fa-square text-gray"></i> Last year
-                  </span>
-              </div>
-            </div>
-          </div>
           <!-- /.card -->
 
           <div class="card">
@@ -135,6 +101,7 @@
   $(document).ready(function () {
     agregarClientesNuevos();
     agregarTransacciones();
+    graficaTotal();
   });
 
   var agregarClientesNuevos = function () {
@@ -161,11 +128,10 @@
   var agregarTransacciones = function () {
     $.ajax({
       method: "post",
-      url: "../process/pensionajax.php",
+      url: "../process/transaccionajax.php",
       data: {"accion":"readbylimit","limit":"6"},
       success: function (data) {
         data = JSON.parse(data);
-        console.log(data);
         $.each(data, function (i, row) {
           var tipoConcepto = "";
           if(data[i].nombre_tipo_concepto == "Abono") {
@@ -178,7 +144,7 @@
             '   <td><a>' + data[i].id_transaccion + '</a></td>' +
             '   <td>' + data[i].nombre_concepto_transaccion + '</td>' +
             '   <td>' +
-            '   <div class="sparkbar" data-color="#00a65a">$'+data[i].monto+'</div>' +
+            '   <div class="sparkbar" data-color="#00a65a">$'+data[i].totalesCargos+'</div>' +
             '   </td>' +
             '   <td><span class="badge badge-'+tipoConcepto+'">'+data[i].nombre_tipo_concepto+'</span></td>' +
             '</tr>'
@@ -189,99 +155,97 @@
   }
 </script>
 
-<script>
-  $.ajax({
-    url: "../process/clienteajax",
-    dataType: 'json',
-    contentType: "application/json; charset=utf-8",
-    data: {'accion':'readbytipoconcepto', 'idtipoconcepto':'1'}, //IDtipoconcepto 1 es CARGO
-    method: "POST",
-    success: function(data) {
-      var nombre = [];
-      var stock = [];
-      var color = ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)'];
-      var bordercolor = ['rgba(255,99,132,1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'];
-      console.log(data);
+<script type="text/javascript">
+  var meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+  var totalesCargos = [];
+  var totalesAbonos = [];
+  var graficaTotal = function() {
 
-      for (var i in data) {
-        nombre.push(data[i].nombre);
-        stock.push(data[i].stock);
+    $.ajax({
+      url: "../process/transaccionajax.php",
+      data: {'accion': 'readbyidtipoconcepto', 'idtipoconcepto': '1'}, //IDtipoconcepto 1 es CARGO
+      method: "POST",
+      success: function (data) {
+        data = JSON.parse(data);
+        console.log(data);
+
+        totalesCargos.push(data.Enero);
+        totalesCargos.push(data.Febrero);
+        totalesCargos.push(data.Marzo);
+        totalesCargos.push(data.Abril);
+        totalesCargos.push(data.Mayo);
+        totalesCargos.push(data.Junio);
+        totalesCargos.push(data.Julio);
+        totalesCargos.push(data.Agosto);
+        totalesCargos.push(data.Septiembre);
+        totalesCargos.push(data.Octubre);
+        totalesCargos.push(data.Noviembre);
+        totalesCargos.push(data.Diciembre);
+
+        console.log(totalesCargos);
+        console.log(meses);
+        $.ajax({
+          url: "../process/transaccionajax.php",
+          data: {'accion': 'readbyidtipoconcepto', 'idtipoconcepto': '2'}, //IDtipoconcepto 2 es ABONOS
+          method: "POST",
+          success: function (data) {
+            data = JSON.parse(data);
+            console.log(data);
+
+            totalesAbonos.push(data.Enero);
+            totalesAbonos.push(data.Febrero);
+            totalesAbonos.push(data.Marzo);
+            totalesAbonos.push(data.Abril);
+            totalesAbonos.push(data.Mayo);
+            totalesAbonos.push(data.Junio);
+            totalesAbonos.push(data.Julio);
+            totalesAbonos.push(data.Agosto);
+            totalesAbonos.push(data.Septiembre);
+            totalesAbonos.push(data.Octubre);
+            totalesAbonos.push(data.Noviembre);
+            totalesAbonos.push(data.Diciembre);
+            crearGrafica();
+            console.log(totalesAbonos);
+            console.log(meses);
+          }
+        });
       }
+    });
+  }
 
-      var chartdata = {
-        labels: nombre,
+  var crearGrafica = function() {
+    var ctx = document.getElementById('graficaBarrasCargoAbono').getContext('2d');
+    console.log("aqui" + totalesCargos);
+    var myChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: meses,
         datasets: [{
-          label: nombre,
-          backgroundColor: color,
-          borderColor: color,
-          borderWidth: 2,
-          hoverBackgroundColor: color,
-          hoverBorderColor: bordercolor,
-          data: stock
+          label: 'Cargos',
+          data: totalesCargos,
+          backgroundColor: 'rgba(255, 99, 132, 0.2)',
+          borderColor: 'rgba(255, 99, 132, 1)',
+          borderWidth: 1
+        }, {
+          label: 'Abonos',
+          data: totalesAbonos,
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1
         }]
-      };
-
-      var mostrar = $("#miGrafico");
-
-      var grafico = new Chart(mostrar, {
-        type: 'doughnut',
-        data: chartdata,
-        options: {
-          responsive: true,
-          scales: {
-            yAxes: [{
-              ticks: {
-                beginAtZero: true
-              }
-            }]
-          }
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        }, title: {
+          display: true,
+          text: 'Cargos y Abonos'
         }
-      });
-    },
-    error: function(data) {
-      console.log(data);
-    }
-  });
-
-
-  var ctx = document.getElementById('graficaBarrasCargoAbono').getContext('2d');
-  var myChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-      datasets: [{
-        label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3],
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(255, 159, 64, 0.2)'
-        ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(255, 159, 64, 1)'
-        ],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: {
-        yAxes: [{
-          ticks: {
-            beginAtZero: true
-          }
-        }]
-      },       title: {
-        display: true,
-        text: 'Custom Chart Title'
       }
-    }
-  });
+    });
+  }
 </script>

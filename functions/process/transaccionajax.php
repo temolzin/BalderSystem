@@ -1,5 +1,5 @@
 <?php
-  require_once '../controller/pensioncontroller.php';
+  require_once '../controller/transaccioncontroller.php';
   $pension = new Pension();
   $accion = $_POST['accion'];
 
@@ -55,4 +55,8 @@
   else if($accion == "readbyidclientearray") {
     $idcliente = $_POST['idcliente'];
     echo $pension->readbyidclientearray($idcliente);
+  }
+  else if($accion == "readbyidtipoconcepto") {
+    $idtipoconcepto = $_POST['idtipoconcepto'];
+    echo $pension->readbyidtipoconcepto($idtipoconcepto);
   }
