@@ -86,13 +86,13 @@
                 <div class="col-6 col-md-6">
                   <div class="form-group">
                     <label for="rfc">RFC (*)</label>
-                    <input type="text" name="rfc" id="rfc" class="form-control" placeholder="RFC" value="">
+                    <input type="text" name="rfc" id="rfc" class="form-control" maxlength="13" placeholder="RFC" value="">
                   </div>
                 </div>
                 <div class="col-6 col-md-6">
                   <div class="form-group">
                     <label for="telefono">CURP (*)</label>
-                    <input type="text" id="curp" name="curp" class="form-control" placeholder="CURP" value="">
+                    <input type="text" id="curp" name="curp" class="form-control" placeholder="CURP" maxlength="18" value="">
                   </div>
                 </div>
               </div>
@@ -115,7 +115,7 @@
                 <div class="col-12 col-sm-4">
                   <div class="form-group">
                     <label>NSS</label>
-                    <input type="text" class="form-control" id="nss" name="nss" placeholder="Número de Seguridad Social" value="" />
+                    <input type="text" class="form-control" id="nss" name="nss" placeholder="Número de Seguridad Social" value="" maxlength="11" />
                   </div>
                 </div>
                 <div class="col-6 col-sm-4">
@@ -299,7 +299,7 @@
                 "El cliente ha sido registrado de manera correcta",
                 "success"
               ).then(function() {
-                window.location = "registrarclienteview.php";
+                window.location = "clienteregistrarview.php";
                 limpiarCajas();
               })
             } else {
@@ -328,10 +328,12 @@
           required: true
         },
         rfc: {
-          required: true
+          required: true,
+          minlength: 13
         },
         curp: {
-          required: true
+          required: true,
+          minlength: 18
         },
         fechanacimiento: {
           required: true
@@ -342,6 +344,9 @@
         },
         clabe: {
           minlength: 18
+        },
+        nss: {
+          minlength: 11
         },
         calle: {
           required: true
@@ -370,10 +375,12 @@
           required: "Ingresa apellido materno"
         },
         rfc: {
-          required: "Ingresa RFC"
+          required: "Ingresa RFC",
+          minlength: "El RFC debe contener 13 carácteres"
         },
         curp: {
-          required: "Ingresa CURP"
+          required: "Ingresa CURP",
+          minlength: "La CURP debe contener 18 carácteres"
         },
         fechanacimiento: {
           required: "Ingresa Fecha de Nacimiento"
@@ -384,6 +391,9 @@
         },
         clabe: {
           minlength: "La Clabe debe tener 18 dígitos"
+        },
+        clabe: {
+          minlength: "El NSS debe contener 11 dígitos"
         },
         calle: {
           required: "Ingresa la calle del domicilio",

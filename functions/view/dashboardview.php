@@ -90,7 +90,7 @@
               </div>
               <!-- /.card-body -->
               <div class="card-footer text-center">
-                <a href="pensionconsultarview.php">Ver todas las transacciones</a>
+                <a href="transaccionconsultarview.php">Ver todas las transacciones</a>
               </div>
               <!-- /.card-footer -->
             </div>
@@ -129,8 +129,6 @@
       <!-- /.row -->
     </div>
     <!-- /.container-fluid -->
-  </div>
-  <!-- /.content -->
 <?php
   $menu->footer();
   ?>
@@ -180,7 +178,7 @@
     $.ajax({
       method: "post",
       url: "../process/transaccionajax.php",
-      data: {"accion":"readbylimit","limit":"6"},
+      data: {"accion":"readbyidmoduloandlimit","limit":"6", "idmodulo":"1"},
       success: function (data) {
         data = JSON.parse(data);
         $.each(data, function (i, row) {
@@ -214,7 +212,7 @@
 
     $.ajax({
       url: "../process/transaccionajax.php",
-      data: {'accion': 'readbyidtipoconcepto', 'idtipoconcepto': '1'}, //IDtipoconcepto 1 es CARGO
+      data: {'accion': 'readbyidmoduloandidtipoconcepto', 'idtipoconcepto': '1', 'idmodulo':'1'}, //IDtipoconcepto 1 es CARGO, El módulo 1 es pensiones
       method: "POST",
       success: function (data) {
         data = JSON.parse(data);
@@ -234,9 +232,10 @@
 
         $.ajax({
           url: "../process/transaccionajax.php",
-          data: {'accion': 'readbyidtipoconcepto', 'idtipoconcepto': '2'}, //IDtipoconcepto 2 es ABONOS
+          data: {'accion': 'readbyidmoduloandidtipoconcepto', 'idtipoconcepto': '2', 'idmodulo':'1'}, //IDtipoconcepto 2 es ABONOS el idmodulo 1 es el módulo de pensiones
           method: "POST",
           success: function (data) {
+            console.log(data);
             data = JSON.parse(data);
 
             totalesAbonos.push(data.Enero);

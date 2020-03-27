@@ -45,12 +45,9 @@ class Menu {
     $activeDocumento= "";
     $activeDocumentoVer= "";
     $activeDocumentoReg = "";
-    $activePrestamo = "";
-    $activePrestamoVer = "";
-    $activePrestamoReg = "";
-    $activePension = "";
-    $activePensionVer = "";
-    $activePensionReg = "";
+    $activeTransaccion = "";
+    $activeTransaccionVer = "";
+    $activeTransaccionReg = "";
     $activeReporte = "";
     $activeReporteCheckList = "";
     $activeReporteEstadoCuenta = "";
@@ -87,18 +84,12 @@ class Menu {
     } elseif ($active == 'usuariover') {
       $activeUsuario = 'active';
       $activeUsuarioVer = 'active';
-    } elseif ($active == 'pensionreg') {
-      $activePension = 'active';
-      $activePensionReg = 'active';
-    } elseif ($active == 'pensionver') {
-      $activePension = 'active';
-      $activePensionVer = 'active';
-    } elseif ($active == 'prestamoreg') {
-      $activePrestamo = 'active';
-      $activePrestamoReg = 'active';
-    } elseif ($active == 'prestamover') {
-      $activePrestamo = 'active';
-      $activePrestamoVer = 'active';
+    } elseif ($active == 'transaccionreg') {
+      $activeTransaccion = 'active';
+      $activeTransaccionReg = 'active';
+    } elseif ($active == 'transaccionver') {
+      $activeTransaccion = 'active';
+      $activeTransaccionVer = 'active';
     } elseif ($active == 'subirdocumento') {
       $activeCliente = 'active';
       $activeSubirDocumento = 'active';
@@ -128,6 +119,7 @@ class Menu {
  
         <!-- Google Font: Source Sans Pro -->
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+        
       </head>
       <body class="hold-transition sidebar-mini">
       <!-- Site wrapper -->
@@ -234,30 +226,30 @@ class Menu {
                   </ul>
                 </li>
                 <li class="nav-item has-treeview">
-                  <a href="#" class="nav-link '.$activePension.'">
+                  <a href="#" class="nav-link '.$activeTransaccion.'">
                     <i class="nav-icon fas fa-dollar-sign"></i>
                     <p>
-                      Pensión
+                      Transacciones
                       <i class="right fas fa-angle-left"></i>
                     </p>
                   </a>
                   <ul class="nav nav-treeview">
                     <li class="nav-item">
-                      <a href="pensionregistrarview.php" class="nav-link '.$activePensionReg.'">
+                      <a href="transaccionregistrarview.php" class="nav-link '.$activeTransaccionReg.'">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>Registrar Pension</p>
+                        <p>Registrar Transaccion</p>
                       </a>
                     </li>
                     <li class="nav-item">
-                      <a href="pensionconsultarview.php" class="nav-link '.$activePensionVer.'">
+                      <a href="transaccionconsultarview.php" class="nav-link '.$activeTransaccionVer.'">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>Ver Pensiones</p>
+                        <p>Ver Transacciones</p>
                       </a>
                     </li>
                   </ul>
                 </li>
-                <li class="nav-item has-treeview">
-                  <a href="#" class="nav-link '.$activePrestamo.'">
+  <!--              <li class="nav-item has-treeview">
+                  <a href="#" class="nav-link $activePrestamo>
                     <i class="nav-icon fas fa-hand-holding-usd"></i>
                     <p>
                       Préstamos
@@ -266,19 +258,19 @@ class Menu {
                   </a>
                   <ul class="nav nav-treeview">
                     <li class="nav-item">
-                      <a href="prestamoregistrarview.php" class="nav-link '.$activePrestamoReg.'">
+                      <a href="prestamoregistrarview.php" class="nav-link $activePrestamoReg>
                         <i class="far fa-circle nav-icon"></i>
                         <p>Registrar Préstamo</p>
                       </a>
                     </li>
                     <li class="nav-item">
-                      <a href="prestamoconsultarview.php" class="nav-link '.$activePrestamoVer.'">
+                      <a href="prestamoconsultarview.php" class="nav-link $activePrestamoVer>
                         <i class="far fa-circle nav-icon"></i>
                         <p>Ver Préstamos</p>
                       </a>
                     </li>
                   </ul>
-                </li>
+                </li> -->
                 <li class="nav-item has-treeview">
                   <a href="#" class="nav-link '.$activeReporte.'">
                     <i class="nav-icon fas fa-file-pdf"></i>
@@ -289,13 +281,13 @@ class Menu {
                   </a>
                   <ul class="nav nav-treeview">
                     <li class="nav-item '.$activeReporteCheckList.'">
-                      <a href="reporteCheckListview.php" class="nav-link">
+                      <a href="construccionview.php" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                         <p>CheckList</p>
                       </a>
                     </li>
                     <li class="nav-item '.$activeReporteEstadoCuenta.'">
-                      <a href="reporteEstadoCuentaview.php" class="nav-link">
+                      <a href="construccionview.php" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Estado de cuenta</p>
                       </a>
@@ -550,7 +542,7 @@ class Menu {
         <!-- /.content-wrapper -->
         <footer class="main-footer">
           <div class="float-right d-none d-sm-block">
-            <b>Software for pension Version </b> 1.0
+            <b>Software for transaccion Version </b> 1.0
           </div>
           <strong>Copyright &copy; 2020 <a href="http://baldersystem.com">BalderSystem</a>.</strong> All rights
           reserved.

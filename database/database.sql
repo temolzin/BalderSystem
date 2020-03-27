@@ -127,7 +127,7 @@ CREATE TABLE transaccion(
     id_usuario int,
     id_cliente int,
     monto decimal(12,2),
-    fecha_registro date,
+    fecha_registro datetime,
     descripcion text,
     activo boolean,
     foreign key (id_concepto_transaccion) references conceptotransaccion(id_concepto_transaccion),

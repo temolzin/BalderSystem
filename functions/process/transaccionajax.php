@@ -1,23 +1,25 @@
 <?php
   require_once '../controller/transaccioncontroller.php';
-  $pension = new Pension();
+  $transaccion = new Transaccion();
   $accion = $_POST['accion'];
 
   if($accion == "insert") {
     session_start();
     $idconceptotransaccion = $_POST['conceptotransaccion'];
+    $idmodulo = $_POST['modulo'];
     $idusuario = $_SESSION['user']['id_usuario'];
     $idcliente = $_POST['idcliente'];
     $monto = $_POST['monto'];
     $descripcion = $_POST['descripcion'];
     $data = array(
       'idconceptotransaccion' => $idconceptotransaccion,
+      'idmodulo' => $idmodulo,
       'idusuario' => $idusuario,
       'idcliente' => $idcliente,
       'monto' => $monto,
       'descripcion' => $descripcion
     );
-    $pension->insert($data);
+    $transaccion->insert($data);
   }
   else if($accion == "update") {
     session_start();
@@ -27,6 +29,7 @@
     $idcliente = $_POST['idcliente'];
     $monto = $_POST['monto'];
     $descripcion = $_POST['descripcion'];
+
     $data = array(
       'idtransaccion' => $idtransaccion,
       'idconceptotransaccion' => $idconceptotransaccion,
@@ -35,28 +38,44 @@
       'monto' => $monto,
       'descripcion' => $descripcion
     );
-    $pension->update($data);
+    $transaccion->update($data);
   }
-  else if($accion == "delete") {
+  else if($accion == "deletepension") {
     $id = $_POST['idtransaccion'];
-    echo $pension->delete($id);
+    echo $transaccion->delete($id);
   }
-  else if($accion == "read") {
-    echo $pension->read();
+  else if($accion == "readbyidmodulo") {
+    $idmodulo = $_POST['idmodulo'];
+    echo $transaccion->readbyidmodulo($idmodulo);
   }
-  else if($accion == "readbylimit") {
+  else if($accion == "readbyidmoduloandlimit") {
+    $idmodulo = $_POST['idmodulo'];
     $limite = $_POST['limit'];
-    echo $pension->readbylimit($limite);
+    echo $transaccion->readbyidmoduloandlimit($idmodulo, $limite);
+  }
+  else if($accion == "readbyidmoduloandidcliente") {
+    $idmodulo = $_POST['idmodulo'];
+    $idcliente = $_POST['idcliente'];
+    echo $transaccion->readbyidmoduloandidcliente($idmodulo,$idcliente);
   }
   else if($accion == "readbyidcliente") {
     $idcliente = $_POST['idcliente'];
-    echo $pension->readbyidcliente($idcliente);
+    echo $transaccion->readbyidcliente($idcliente);
+  }
+  else if($accion == "readbyidmoduloandidclientearray") {
+    $idmodulo= $_POST['idmodulo'];
+    $idcliente = $_POST['idcliente'];
+    echo $transaccion->readbyidmoduloandidclientearray($idmodulo, $idcliente);
   }
   else if($accion == "readbyidclientearray") {
     $idcliente = $_POST['idcliente'];
-    echo $pension->readbyidclientearray($idcliente);
+    echo $transaccion->readbyidclientearray($idcliente);
   }
-  else if($accion == "readbyidtipoconcepto") {
+  else if($accion == "readbyidmoduloandidtipoconcepto") {
+    $idmodulo = $_POST['idmodulo'];
     $idtipoconcepto = $_POST['idtipoconcepto'];
-    echo $pension->readbyidtipoconcepto($idtipoconcepto);
+    echo $transaccion->readbyidmoduloandidtipoconcepto($idmodulo, $idtipoconcepto);
+  }
+  else if($accion == "read") {
+    echo $transaccion->read();
   }

@@ -2,7 +2,7 @@
   require_once 'menuview.php';
 
   $menu = new Menu();
-  $menu->header('pensionreg','Registro de Pensión');
+  $menu->header('transaccionreg','Registro de Transacciones');
   ?>
   <div class="container-fluid">
     <div class="row">
@@ -11,7 +11,7 @@
         <!-- jquery validation -->
         <div class="card card-primary">
           <div class="card-header">
-            <h3 class="card-title">Pensión <small> &nbsp; (*) Campos requeridos</small></h3>
+            <h3 class="card-title">Transacción <small> &nbsp; (*) Campos requeridos</small></h3>
           </div>
           <!-- /.card-header -->
           <!-- form start -->
@@ -20,7 +20,7 @@
               <div class="row">
                 <div class="col-12 col-md-12">
                   <div class="form-group">
-                    <label for="idcliente">ID Cliente</label>
+                    <label for="idcliente">Cliente (*)</label>
                     <div class="input-group mb-3">
                       <input type="text" class="form-control" maxlength="7" onkeypress="return soloNumeros();" placeholder="ID Cliente" id="idcliente" name="idcliente" aria-label="ID Cliente">
                       <div class="input-group-append">
@@ -73,14 +73,21 @@
                 <div class="row">
                   <div class="col-12 col-md-12">
                     <div class="form-group">
-                      <label for="modulo">Concepto (*)</label>
-                      <select class="form-control select2" name="conceptotransaccion" id="conceptotransaccion" style="width: 100%;">
+                      <label for="modulo">Modulo (*)</label>
+                      <select class="form-control select2" name="modulo" id="modulo" style="width: 100%;">
                       </select>
                     </div>
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-12 col-md-12">
+                  <div class="col-6 col-md-6">
+                    <div class="form-group">
+                      <label for="conceptotransaccion">Concepto (*)</label>
+                      <select class="form-control select2" name="conceptotransaccion" id="conceptotransaccion" style="width: 100%;">
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-6 col-md-6">
                     <div class="form-group">
                       <label for="modulo">Tipo Concepto</label>
                       <input type="text" disabled class="form-control" id="tipoconceptotransaccion" name="tipoconceptotransaccion" value="" placeholder="Tipo concepto" />
@@ -88,18 +95,17 @@
                   </div>
                 </div>
                 <div class="row">
-                    <div class="col-12 col-sm-12">
-                      <label for="modulo">Monto (*)</label>
-                      <div class="form-group input-group">
-
-                        <div class="input-group-prepend">
+                  <div class="col-12 col-sm-12">
+                    <label for="modulo">Monto (*)</label>
+                    <div class="form-group input-group">
+                      <div class="input-group-prepend">
                           <span class="input-group-text">
                             <i class="fas fa-dollar-sign"></i>
                           </span>
-                        </div>
-                        <input type="number" onkeypress="return soloNumeros(this);"  maxlength="10" class="form-control" id="monto" placeholder="Monto" name="monto">
                       </div>
+                      <input type="number" onkeypress="return soloNumeros(this);" class="form-control" id="monto" placeholder="Monto" name="monto">
                     </div>
+                  </div>
                 </div>
                 <div class="row">
                     <div class="col-12 col-md-12">
@@ -131,15 +137,16 @@
   $(document).ready(function () {
     enviarFormulario();
     enviarFormularioIdcliente();
-    llenarComboConcepto();
+    llenarComboConcepto(1); // se inicia con 1 ya que el módulo 1 es pensión y es el que sale por defecto
+    llenarComboModulo();
     consultarTipoConcepto();
   });
 
-  var llenarComboConcepto = function () {
+  var llenarComboConcepto = function (idmodulo) {
     $.ajax({
       type: "POST",
       url: "../process/conceptoajax.php",
-      data: {'accion':'readbymodulo','idmodulo':'1'},
+      data: {'accion':'readbyidmodulo','idmodulo': idmodulo}, //El idmodulo 1 es de pensiones
       success: function(data) {
         data = JSON.parse(data);
         $.each(data, function (i, row) {
@@ -148,6 +155,26 @@
         $.each(data, function (i, row) {
           $('#tipoconceptotransaccion').val(data[i]['nombre_tipo_concepto'] + "(" +data[i]['signo_concepto'] + ")" );
           return false;
+        });
+      }
+    });
+  }
+
+  var cambiarComboConceptoByModulo = $("#modulo").change(function () {
+    var idmodulo = $("#modulo").val();
+    $('#conceptotransaccion').html("");
+    llenarComboConcepto(idmodulo);
+  });
+
+  var llenarComboModulo = function () {
+    $.ajax({
+      type: "POST",
+      url: "../process/moduloajax.php",
+      data: {'accion':'read'}, //El idmodulo 1 es de pensiones
+      success: function(data) {
+        data = JSON.parse(data);
+        $.each(data, function (i, row) {
+          $('#modulo').append("<option value='" + data[i]['id_modulo'] + "'>"+ data[i]['nombre_modulo'] +"</option>");
         });
       }
     });
@@ -226,21 +253,21 @@
         var datos = $('#form').serialize() + "&accion=insert" + "&idcliente=" + $('#idcliente').val();
         $.ajax({
           type: "POST",
-          url: "../process/pensionajax.php",
+          url: "../process/transaccionajax.php",
           data: datos,
           success: function(data){
             if(data == 'ok') {
               Swal.fire(
                 "¡Éxito!",
-                "El registro de la pensión ha sido registrado de manera correcta",
+                "La transacción ha sido registrado de manera correcta",
                 "success"
               ).then(function() {
-                window.location = "pensionregistrarview.php";
+                window.location = "transaccionregistrarview.php";
               });
             } else {
               Swal.fire(
                 "¡Error!",
-                "Ha ocurrido un error al registrar el registro de la pensión. ",
+                "Ha ocurrido un error al registrar la transacción. ",
                 "error"
               );
             }

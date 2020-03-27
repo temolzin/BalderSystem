@@ -98,13 +98,14 @@
       <div class="col-md-9">
           <div class="card">
             <div class="card-header">
-              <h3 class="card-title">Pensiones</h3>
+              <h3 class="card-title">Transacciones</h3>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
               <table id="tablaDTPension" class="table table-bordered table-hover dt-responsive nowrap" style="width:100%">
                 <thead>
                 <tr>
+                  <th>Módulo</th>
                   <th>Tipo Concepto</th>
                   <th>Concepto</th>
                   <th>Fecha</th>
@@ -116,9 +117,14 @@
             </div>
             <!-- /.card-body -->
           </div>
-          <div class="col-lg-12 text-center">
+        <div class="row">
+          <div class="col-lg-6 text-center">
             <button class="btn btn-danger" id="btnEstadoCuentaPension"><i class="far fa-file-pdf"></i> Estado de Cuenta Pensión</button>
           </div>
+          <div class="col-lg-6 text-center">
+            <button class="btn btn-danger" id="btnEstadoCuentaPension"><i class="far fa-file-pdf"></i> Estado de Cuenta Préstamo</button>
+          </div>
+        </div>
         <br>
 
           <div class="card">
@@ -210,7 +216,7 @@
             $('#cargo').text("$" + cargo);
             $('#abono').text("$" + abono);
             $('#total').text("$" + total);
-            mostrarRegistrosPension();
+            mostrarRegistrosTransaccion();
           } catch (e) {
             var table = $("#tablaDTPension").DataTable({
               responsive: true,
@@ -243,7 +249,7 @@
       table1.buttons().container().appendTo('#tablaDT_wrapper .col-md-6:eq(0)');
   }
 
-  var mostrarRegistrosPension = function () {
+  var mostrarRegistrosTransaccion = function () {
     var table = $("#tablaDTPension").DataTable({
       destroy: true,
       ajax:{
@@ -252,6 +258,7 @@
         data: {"accion": "readbyidcliente", "idcliente": "<?php echo $idcliente;?>"}
       },
       columns: [
+        {data:"nombre_modulo"},
         {data:"nombre_tipo_concepto"},
         {data:"nombre_concepto_transaccion"},
         {data:"fecha_registro"},

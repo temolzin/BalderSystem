@@ -2,19 +2,20 @@
   require_once 'menuview.php';
 
   $menu = new Menu();
-  $menu->header('pensionver','Listado de Pensiones');
+  $menu->header('transaccionver','Listado de Transacciones');
   ?>
 <div class="row">
   <div class="col-12">
     <div class="card">
       <div class="card-header">
-        <h3 class="card-title">Pensiones</h3>
+        <h3 class="card-title">Transacciones</h3>
       </div>
       <!-- /.card-header -->
       <div class="card-body">
         <table id="tablaDT" class="table table-bordered table-hover dt-responsive nowrap" style="width:100%">
           <thead>
           <tr>
+            <th>Modulo</th>
             <th>Tipo Concepto</th>
             <th>Concepto</th>
             <th>Usuario</th>
@@ -123,14 +124,21 @@
               <div class="row">
                 <div class="col-12 col-md-12">
                   <div class="form-group">
-                    <label for="modulo">Concepto (*)</label>
-                    <select class="form-control select2" name="conceptotransaccion" id="conceptotransaccion" style="width: 100%;">
+                    <label for="modulo">Modulo (*)</label>
+                    <select class="form-control select2" name="modulo" id="modulo" style="width: 100%;">
                     </select>
                   </div>
                 </div>
               </div>
               <div class="row">
-                <div class="col-12 col-md-12">
+                <div class="col-6 col-md-6">
+                  <div class="form-group">
+                    <label for="modulo">Concepto (*)</label>
+                    <select class="form-control select2" name="conceptotransaccion" id="conceptotransaccion" style="width: 100%;">
+                    </select>
+                  </div>
+                </div>
+                <div class="col-6 col-md-6">
                   <div class="form-group">
                     <label for="modulo">Tipo Concepto</label>
                     <input type="text" disabled class="form-control" id="tipoconceptotransaccion" name="tipoconceptotransaccion" value="" placeholder="Tipo concepto" />
@@ -175,8 +183,8 @@
     mostrarRegistros();
     enviarFormulario();
     eliminarRegistro();
-    llenarComboConcepto();
     consultarTipoConcepto();
+    llenarComboModulo();
   });
 
   var idiomaDataTable = {
@@ -207,20 +215,22 @@
       "colvis": "Visibilidad"
     }
   };
+
   var mostrarRegistros = function () {
     var table = $("#tablaDT").DataTable({
         ajax:{
           method: "POST",
-          url: "../process/pensionajax.php",
+          url: "../process/transaccionajax.php",
           data: {"accion":"read"}
         },
         columns: [
+          {data:"nombre_modulo"},
           {data:"nombre_tipo_concepto"},
           {data:"nombre_concepto_transaccion"},
           {data:"nombre"},
           {data:"nombre_cliente"},
           {data:"fecha_registro"},
-          {data:"monto"},
+          {data: "monto", render: $.fn.dataTable.render.number( ',', '.', 2, '$') },
           {data:6}, //En la posición 6 está la descripción de la transacción.
           {data:null, "defaultContent": "<button class='editar btn btn-primary' data-toggle='modal' data-target='#modalActualizar'><i class=\"fa fa-edit\"></i></button> " +
               "<button class='eliminar btn btn-danger' data-toggle='modal' data-target='#modalEliminar'><i class=\"far fa-trash-alt\"></i></button>" }
@@ -239,18 +249,60 @@
   var obtenerdatosDT = function (table) {
     $('#tablaDT tbody').on('click', 'tr', function() {
       var data = table.row(this).data();
+      console.log("MODULO:"+ data.id_modulo);
+      console.log("idconcepto:"+ data.id_concepto_transaccion);
+      console.log("concepto:"+ data.nombre_concepto_transaccion);
       var ideliminar = $('#idEliminar').val(data.id_transaccion);
       var idactualizar = $("#idActualizar").val(data.id_transaccion);
       var idcliente = $("#idcliente").val(data.id_cliente);
       $('#imagencliente').attr("src","../../upload/images/client/"+data.imagen);
-      var concepto = $("#conceptotransaccion option[value='"+ data.id_concepto_transaccion +"']").attr("selected",true);
-      var concepto = $("#conceptotransaccion").val(data.id_concepto_transaccion).trigger('change.select2');
       var nombrecliente = $("#nombrecliente").val(data.nombre_cliente);
       var appat = $("#appat").val(data[24]); //En la posición 24 está el apellido paterno del cliente
       var apmat = $("#apmat").val(data[25]); //En la posición 25 está el apellido materno del cliente
       var monto = $("#monto").val(data.monto);
       var tipoconcepto = $("#tipoconceptotransaccion").val(data.nombre_tipo_concepto + "("+ data.signo_concepto +")");
       var descripcion = $("#descripcion").val(data[6]); //En la posición 25 está la descripción de la transacción
+
+      var modulo = $("#modulo option[value='"+ data.id_modulo +"']").attr("selected",true);
+      var modulo2 = $("#modulo").val(data.id_modulo).trigger('change.select2');
+
+      //Metodo para llenar el combobox de los conceptos y al mismo tiempo dejar seleccionado el ID que viene en la fila del datatable.
+      llenarComboConceptobyidModuloandSelect(data.id_modulo, data.id_concepto_transaccion);
+    });
+  }
+
+  var llenarComboModulo = function () {
+    $.ajax({
+      type: "POST",
+      url: "../process/moduloajax.php",
+      data: {'accion':'read'}, //El idmodulo 1 es de pensiones
+      success: function(data) {
+        data = JSON.parse(data);
+        $.each(data, function (i, row) {
+          $('#modulo').append("<option value='" + data[i]['id_modulo'] + "'>"+ data[i]['nombre_modulo'] +"</option>");
+        });
+      }
+    });
+  }
+
+  var llenarComboConceptobyidModuloandSelect = function (idmodulo, idselect) {
+    $('#conceptotransaccion').html("");
+    $.ajax({
+      type: "POST",
+      url: "../process/conceptoajax.php",
+      data: {'accion':'readbyidmodulo','idmodulo':idmodulo},
+      success: function(data) {
+        data = JSON.parse(data);
+        $.each(data, function (i, row) {
+          $('#conceptotransaccion').append("<option value='" + data[i]['id_concepto_transaccion'] + "'>"+ data[i]['nombre_concepto_transaccion'] +"</option>");
+        });
+        $.each(data, function (i, row) {
+          $('#tipoconceptotransaccion').val(data[i]['nombre_tipo_concepto'] + "(" +data[i]['signo_concepto'] + ")" );
+          return false;
+        });
+        $('#conceptotransaccion').val(idselect);
+        $('#conceptotransaccion').change();
+      }
     });
   }
 
@@ -258,8 +310,9 @@
     $.ajax({
       type: "POST",
       url: "../process/conceptoajax.php",
-      data: {'accion':'readbymodulo','idmodulo':'1'},
+      data: {'accion':'read'},
       success: function(data) {
+        console.log(data);
         data = JSON.parse(data);
         $.each(data, function (i, row) {
           $('#conceptotransaccion').append("<option value='" + data[i]['id_concepto_transaccion'] + "'>"+ data[i]['nombre_concepto_transaccion'] +"</option>");
@@ -279,6 +332,7 @@
         url: "../process/conceptoajax.php",
         data: {'accion':'readbyidconcepto','idconceptotransaccion': $('#conceptotransaccion').val()},
         success: function(data) {
+          console.log(data);
           data = JSON.parse(data);
           $('#tipoconceptotransaccion').val(data.nombre_tipo_concepto + "(" +data.signo_concepto + ")" );
         }
@@ -289,7 +343,7 @@
     $("#btnEliminar").click(function () {
       $.ajax({
           type: "POST",
-          url: "../process/pensionajax.php",
+          url: "../process/transaccionajax.php",
           data: {"accion":"delete", "idtransaccion": $('#idEliminar').val()},
           success: function(data) {
             if(data == 'ok') {
@@ -298,7 +352,7 @@
                 "El registro de pensión ha sido eliminado de manera correcta",
                 "success"
               ).then(function() {
-                window.location = "pensionconsultarview.php";
+                window.location = "transaccionconsultarview.php";
               });
             } else {
               Swal.fire(
@@ -318,22 +372,21 @@
         var datos = $('#form').serialize() + "&accion=update";
         $.ajax({
           type: "POST",
-          url: "../process/pensionajax.php",
+          url: "../process/transaccionajax.php",
           data: datos,
           success: function(data){
-            console.log(data);
             if(data == 'ok') {
               Swal.fire(
                 "¡Éxito!",
-                "El registro de la pensión ha sido actualizado de manera correcta",
+                "La transacción ha sido actualizada de manera correcta",
                 "success"
               ).then(function() {
-                window.location = "pensionconsultarview.php";
+                window.location = "transaccionconsultarview.php";
               });
             } else {
               Swal.fire(
                 "¡Error!",
-                "Ha ocurrido un error al actualizar el registro de la pensión. ",
+                "Ha ocurrido un error al actualizar la transacción. ",
                 "error"
               );
             }
@@ -371,6 +424,13 @@
       }
     });
   }
+
+  var cambiarComboConceptoByModulo = $("#modulo").change(function () {
+    var idmodulo = $("#modulo").val();
+    $('#conceptotransaccion').html("");
+    llenarComboConceptobyidModulo(idmodulo);
+  });
+
   // Add the following code if you want the name of the file appear on select
   $(".custom-file-input").on("change", function() {
     var fileName = $(this).val().split("\\").pop();

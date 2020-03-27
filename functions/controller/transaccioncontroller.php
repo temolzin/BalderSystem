@@ -1,11 +1,27 @@
 <?php
   require_once 'crudinterface.php';
   require_once 'conexion.php';
-  class Pension implements Crud {
+  class Transaccion implements Crud {
     public $conex;
 
     public function __construct() {
       $this->conex = Conexion::getInstance();
+    }
+
+    //Metoodo que regresa las transacciones hechas en el módulo consultado
+    public function readbyidmodulo($idmodulo)
+    {
+      $query = "SELECT * FROM transaccion t INNER JOIN usuario u ON t.id_usuario = u.id_usuario 
+                INNER JOIN cliente cl ON t.id_cliente = cl.id_cliente
+                INNER JOIN conceptotransaccion ct ON t.id_concepto_transaccion = ct.id_concepto_transaccion
+                INNER JOIN tipoconceptotransaccion tct ON ct.id_tipo_concepto_transaccion = tct.id_tipo_concepto_transaccion
+                INNER JOIN modulo m ON ct.id_modulo = m.id_modulo
+                WHERE t.activo = 1 and m.id_modulo = " . $idmodulo;
+      $objTransaccion = null;
+      foreach ($this->conex->consultar($query) as $key => $value) {
+        $objTransaccion["data"][] = $value;
+      }
+      echo json_encode($objTransaccion, JSON_UNESCAPED_UNICODE);
     }
 
     public function read()
@@ -14,27 +30,45 @@
                 INNER JOIN cliente cl ON t.id_cliente = cl.id_cliente
                 INNER JOIN conceptotransaccion ct ON t.id_concepto_transaccion = ct.id_concepto_transaccion
                 INNER JOIN tipoconceptotransaccion tct ON ct.id_tipo_concepto_transaccion = tct.id_tipo_concepto_transaccion
+                INNER JOIN modulo m ON ct.id_modulo = m.id_modulo
                 WHERE t.activo = 1";
-      $objPension = null;
+      $objTransaccion = null;
       foreach ($this->conex->consultar($query) as $key => $value) {
-        $objPension["data"][] = $value;
+        $objTransaccion["data"][] = $value;
       }
-      echo json_encode($objPension, JSON_UNESCAPED_UNICODE);
+      echo json_encode($objTransaccion, JSON_UNESCAPED_UNICODE);
     }
 
-    //Metodo que regresa las últimas transacciones limitadas por el parámetro LIMITE
-    public function readbylimit($limite)
+    //Metodo que regresa las últimas transacciones limitadas por el parámetro LIMITE y el id del modulo.
+    public function readbyidmoduloandlimit($idmodulo, $limite)
     {
       $query = "SELECT * FROM transaccion t INNER JOIN usuario u ON t.id_usuario = u.id_usuario 
                 INNER JOIN cliente cl ON t.id_cliente = cl.id_cliente
                 INNER JOIN conceptotransaccion ct ON t.id_concepto_transaccion = ct.id_concepto_transaccion
                 INNER JOIN tipoconceptotransaccion tct ON ct.id_tipo_concepto_transaccion = tct.id_tipo_concepto_transaccion
-                WHERE t.activo = 1 ORDER BY t.id_transaccion DESC LIMIT " . $limite;
-      $objPension = null;
+                INNER JOIN modulo m ON ct.id_modulo = m.id_modulo
+                WHERE t.activo = 1 and m.id_modulo = $idmodulo ORDER BY t.id_transaccion DESC LIMIT " . $limite;
+      $objTransaccion = null;
+
       foreach ($this->conex->consultar($query) as $key => $value) {
-        $objPension[] = $value;
+        $objTransaccion[] = $value;
       }
-      echo json_encode($objPension, JSON_UNESCAPED_UNICODE);
+      echo json_encode($objTransaccion, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function readbyidmoduloandidcliente($idmodulo, $idcliente)
+    {
+      $query = "SELECT * FROM transaccion t INNER JOIN usuario u ON t.id_usuario = u.id_usuario 
+                INNER JOIN cliente cl ON t.id_cliente = cl.id_cliente
+                INNER JOIN conceptotransaccion ct ON t.id_concepto_transaccion = ct.id_concepto_transaccion
+                INNER JOIN tipoconceptotransaccion tct ON ct.id_tipo_concepto_transaccion = tct.id_tipo_concepto_transaccion
+                INNER JOIN modulo m ON ct.id_modulo = m.id_modulo
+                WHERE t.activo = 1 and  m.id_modulo = $idmodulo and t.id_cliente = " .$idcliente;
+      $objTransaccion = null;
+      foreach ($this->conex->consultar($query) as $key => $value) {
+        $objTransaccion["data"][] = $value;
+      }
+      echo json_encode($objTransaccion, JSON_UNESCAPED_UNICODE);
     }
 
     public function readbyidcliente($idcliente)
@@ -43,13 +77,30 @@
                 INNER JOIN cliente cl ON t.id_cliente = cl.id_cliente
                 INNER JOIN conceptotransaccion ct ON t.id_concepto_transaccion = ct.id_concepto_transaccion
                 INNER JOIN tipoconceptotransaccion tct ON ct.id_tipo_concepto_transaccion = tct.id_tipo_concepto_transaccion
+                INNER JOIN modulo m ON ct.id_modulo = m.id_modulo
                 WHERE t.activo = 1 and t.id_cliente = " .$idcliente;
-      $objPension = null;
+      $objTransaccion = null;
       foreach ($this->conex->consultar($query) as $key => $value) {
-        $objPension["data"][] = $value;
+        $objTransaccion["data"][] = $value;
       }
-      echo json_encode($objPension, JSON_UNESCAPED_UNICODE);
+      echo json_encode($objTransaccion, JSON_UNESCAPED_UNICODE);
     }
+    //Metodo que regresa el objeto del cliente para ver el perfil del cliente por idmodulo y idcliente
+    public function readbyidmoduloandidclientearray($idmodulo, $idcliente)
+    {
+      $query = "SELECT * FROM transaccion t INNER JOIN usuario u ON t.id_usuario = u.id_usuario 
+                INNER JOIN cliente cl ON t.id_cliente = cl.id_cliente
+                INNER JOIN conceptotransaccion ct ON t.id_concepto_transaccion = ct.id_concepto_transaccion
+                INNER JOIN tipoconceptotransaccion tct ON ct.id_tipo_concepto_transaccion = tct.id_tipo_concepto_transaccion
+                INNER JOIN modulo m ON ct.id_modulo = m.id_modulo
+                WHERE t.activo = 1 and m.id_modulo = $idmodulo and t.id_cliente = " .$idcliente;
+      $objTransaccion = null;
+      foreach ($this->conex->consultar($query) as $key => $value) {
+        $objTransaccion[] = $value;
+      }
+      echo json_encode($objTransaccion, JSON_UNESCAPED_UNICODE);
+    }
+
     //Metodo que regresa el objeto del cliente para ver el perfil del cliente
     public function readbyidclientearray($idcliente)
     {
@@ -57,18 +108,19 @@
                 INNER JOIN cliente cl ON t.id_cliente = cl.id_cliente
                 INNER JOIN conceptotransaccion ct ON t.id_concepto_transaccion = ct.id_concepto_transaccion
                 INNER JOIN tipoconceptotransaccion tct ON ct.id_tipo_concepto_transaccion = tct.id_tipo_concepto_transaccion
-                WHERE t.activo = 1 and t.id_cliente = " .$idcliente;
-      $objPension = null;
+                INNER JOIN modulo m ON ct.id_modulo = m.id_modulo
+                WHERE t.activo = 1 AND t.id_cliente = $idcliente";
+      $objTransaccion = null;
       foreach ($this->conex->consultar($query) as $key => $value) {
-        $objPension[] = $value;
+        $objTransaccion[] = $value;
       }
-      echo json_encode($objPension, JSON_UNESCAPED_UNICODE);
+      echo json_encode($objTransaccion, JSON_UNESCAPED_UNICODE);
     }
 
     /*
-     * Método que devuelve las transacciones hechas o recibidas por MES
+     * Método que devuelve las transacciones hechas o recibidas por MES y por idmodulo
      * */
-    public function readbyidtipoconcepto($idtipoconcepto)
+    public function readbyidmoduloandidtipoconcepto($idmodulo, $idtipoconcepto)
     {
       $query = "SELECT 
               SUM(IF(MONTH(fecha_registro)=1,monto,0)) As 'Enero',
@@ -83,11 +135,14 @@
               SUM(IF(MONTH(fecha_registro)=10,monto,0)) As 'Octubre',
               SUM(IF(MONTH(fecha_registro)=11,monto,0)) As 'Noviembre',
               SUM(IF(MONTH(fecha_registro)=12,monto,0)) As 'Diciembre'
-               FROM transaccion t INNER JOIN conceptotransaccion ct ON 
-              t.id_concepto_transaccion = ct.id_concepto_transaccion
-              INNER JOIN tipoconceptotransaccion tct ON
-              ct.id_tipo_concepto_transaccion = tct.id_tipo_concepto_transaccion 
-              WHERE ct.id_tipo_concepto_transaccion = " . $idtipoconcepto;
+                FROM transaccion t 
+                INNER JOIN conceptotransaccion ct ON 
+                t.id_concepto_transaccion = ct.id_concepto_transaccion
+                INNER JOIN modulo m ON ct.id_modulo = m.id_modulo
+                INNER JOIN tipoconceptotransaccion tct ON
+                ct.id_tipo_concepto_transaccion = tct.id_tipo_concepto_transaccion 
+                WHERE m.id_modulo = $idmodulo AND ct.id_tipo_concepto_transaccion = $idtipoconcepto";
+
       $objTransaccion = null;
       foreach ($this->conex->consultar($query) as $key => $value) {
         $objTransaccion = $value;
@@ -99,6 +154,7 @@
     public function insert($data)
     {
       $idconceptotransaccion = $data['idconceptotransaccion'];
+      $idmodulo = $data['idmodulo'];
       $idusuario = $data['idusuario'];
       $idcliente = $data['idcliente'];
       $monto = $data['monto'];
@@ -106,6 +162,7 @@
 
       $valoresInsertar = array(
         ':idconceptotransaccion' => $idconceptotransaccion,
+        ':idmodulo' => $idmodulo,
         ':idusuario' => $idusuario,
         ':idcliente' => $idcliente,
         ':monto' => $monto,

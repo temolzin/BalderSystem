@@ -39,9 +39,9 @@
   else if($accion == "read") {
     echo $concepto->read();
   }
-  else if($accion == "readbymodulo") {
+  else if($accion == "readbyidmodulo") {
     $idmodulo = $_POST['idmodulo'];
-    echo $concepto->readbymodulo($idmodulo);
+    echo $concepto->readbyidmodulo($idmodulo);
   }
   else if($accion == "readbyidconcepto") {
     $idconceptotransaccion = $_POST['idconceptotransaccion'];
