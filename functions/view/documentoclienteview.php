@@ -34,7 +34,6 @@
           </form>
 
           <div id = "divcontainer" name="divcontainer" style="display: none">
-            <form role="form" id="form" name="form">
               <div class="card-body">
                 <div class="row">
                   <div class="col-sm-12">
@@ -70,12 +69,14 @@
                     </div>
                   </div>
                 </div>
-            </form>
           </div>
+
+          <hr class="bg-gradient-navy">
 
           <div class="row">
             <div class="col-12">
-              <div class="card">
+              <div>
+<!--              <div class="card">-->
                 <div class="card-header">
                   <h3 class="card-title">Documentos</h3>
                 </div>
@@ -105,8 +106,60 @@
       <!--/.col (left) -->
       <!--/.col (right) -->
     </div>
+    </div>
     <!-- /.row -->
   </div><!-- /.container-fluid -->
+
+  <!-- Modal Subir Documento-->
+  <div class="modal fade" id="modalSubirDocumento" tabindex="-1" role="dialog" aria-labelledby="modalSubirDocumento" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+      <div class="modal-content">
+        <div class="card-primary">
+          <div class="card-header">
+          <h3 class="card-title">Subir Documento <small> &nbsp; (*) Campos requeridos</small></h3>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <!-- /.card-header -->
+        <!-- form start -->
+        <form role="form" id="formSubirDocumento" name="formSubirDocumento">
+          <input type="hidden" id="iddocumento" name="iddocumento"/>
+          <input type="hidden" id="idclientedoc" name="idclientedoc"/>
+          <input type="hidden" id="nombrecompletocliente" name="nombrecompletocliente"/>
+          <input type="hidden" id="idusuario" name="idusuario" value="<?php echo $menu->idusuario; ?>"/>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-12 col-md-12">
+                <div class="form-group">
+                  <label>Documento (*)</label>
+                  <div class="custom-file">
+                    <input type="file" accept="application/pdf" class="custom-file-input" id="documentocliente" name="documentocliente" lang="es">
+                    <label class="custom-file-label" for="documentocliente">Selecciona Documento</label>
+                  </div>
+                </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12 col-md-12">
+                  <div class="form-group">
+                    <label for="observacion">Observación </label>
+                    <textarea name="observacion" id="observacion" class="form-control" placeholder="Observación" value=""></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- /.card-body -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+              <button type="submit" class="btn btn-primary">Subir Documento</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
 <?php
   $menu->footer();
@@ -114,7 +167,7 @@
 <script>
   $(document).ready(function () {
     enviarFormularioIdcliente();
-    mostrarRegistros();
+    enviarFormularioSubirDocumento();
   });
 
   var enviarFormularioIdcliente = function () {
@@ -128,11 +181,15 @@
           success: function(data) {
             try {
               data = JSON.parse(data);
+              $('#idclientedoc').val(data.id_cliente);
               $('#imagencliente').attr("src", "../../upload/images/client/" + data.imagen);
-              $('#nombrecliente').val(data.nombre_cliente);
-              $('#appat').val(data.ap_pat);
-              $('#apmat').val(data.ap_mat);
+              var nombrecliente = $('#nombrecliente').val(data.nombre_cliente);
+              var appat = $('#appat').val(data.ap_pat);
+              var apmat = $('#apmat').val(data.ap_mat);
+              //Se manda el nombre completo del cliente seleccionado al modal de subir documento
+              $('#nombrecompletocliente').val(data.ap_pat + "_" + data.ap_mat + "_" + data.nombre_cliente);
               document.getElementById('divcontainer').style.display = 'block';
+              mostrarDocumentos(data.id_cliente);
             } catch (e) {
               document.getElementById('divcontainer').style.display = 'none';
               Swal.fire(
@@ -170,6 +227,74 @@
     });
   }
 
+  var enviarFormularioSubirDocumento = function () {
+    $.validator.setDefaults({
+      submitHandler: function () {
+        var form_data = new FormData();
+        var documentocliente = $('#documentocliente').prop('files')[0];
+        var iddocumento = document.getElementById('iddocumento');
+        var idclientedoc = document.getElementById('idclientedoc');
+        var idusuario = document.getElementById('idusuario');
+        var observacion = document.getElementById('observacion');
+
+        form_data.append('documentocliente', documentocliente);
+        form_data.append('iddocumento', iddocumento.value);
+        form_data.append('idcliente', idclientedoc.value);
+        form_data.append('idusuario', idusuario.value);
+        form_data.append('observacion', observacion.value);
+        form_data.append('nombrecompletocliente', document.getElementById('nombrecompletocliente').value);
+        form_data.append('accion', "insert");
+
+        $.ajax({
+          type: "POST",
+          url: "../process/documentoclienteajax.php",
+          dataType: 'text',  // what to expect back from the PHP script, if anything
+          cache: false,
+          contentType: false,
+          processData: false,
+          data: form_data,
+          success: function(data) {
+            if(data == "ok") {
+              Swal.fire(
+                "¡Éxito!",
+                "Se ha subido el archivo de manera correcta",
+                "success"
+              );
+            } else {
+              Swal.fire(
+                "¡Error!",
+                "Ha ocurrido un error al subir el archivo. " + data,
+                "error"
+              );
+            }
+          }
+        });
+      }
+    });
+    $('#formSubirDocumento').validate({
+      rules: {
+        documentocliente: {
+          required: true
+        }
+      },
+      messages: {
+        documentocliente: {
+          required: "Selecciona un archivo"
+        }
+      },
+      errorElement: 'span',
+      errorPlacement: function (error, element) {
+        error.addClass('invalid-feedback');
+        element.closest('.form-group').append(error);
+      },
+      highlight: function (element, errorClass, validClass) {
+        $(element).addClass('is-invalid');
+      },
+      unhighlight: function (element, errorClass, validClass) {
+        $(element).removeClass('is-invalid');
+      }
+    });
+  }
 
   var idiomaDataTable = {
     "sProcessing":     "Procesando...",
@@ -199,20 +324,29 @@
       "colvis": "Visibilidad"
     }
   };
-  var mostrarRegistros = function () {
+  var mostrarDocumentos = function (idcliente) {
     var table = $("#tablaDT").DataTable({
       ajax:{
         method: "POST",
-        url: "../process/documentoajax.php",
-        data: {"accion":"read"}
+        url: "../process/documentoclienteajax.php",
+        data: {"accion":"readdocumentos", "idcliente" : idcliente}
       },
       columns: [
         {data:"nombre_documento"},
-        {data:null, "defaultContent": "<img class='text-center img-fluid' width='40px' height='40px' src='../../dist/img/icons/error.png'>" },
-        {data:null, "defaultContent": "<button class='editar btn btn-primary' data-toggle='modal' data-target='#modalActualizar'><i class=\"fa fa-cloud-upload-alt\"></i></button>" }
+        {
+          render: function (data, type, row) {
+            if(row.docup == null) {
+              return "<img class='text-center img-fluid' width='40px' height='40px' src='../../dist/img/icons/error.png'>";
+            } else {
+              return "<img class='text-center img-fluid' width='40px' height='40px' src='../../dist/img/icons/ok.png'>";
+            }
+          }
+        },
+        {data:null, "defaultContent": "<button class='editar btn btn-primary' data-toggle='modal' data-target='#modalSubirDocumento'><i class=\"fa fa-cloud-upload-alt\"></i></button>" }
       ],
       responsive: true,
       language: idiomaDataTable,
+      destroy: true,
       lengthChange: true,
       dom: 'fltip'
     });
@@ -224,10 +358,7 @@
   var obtenerdatosDT = function (table) {
     $('#tablaDT tbody').on('click', 'tr', function() {
       var data = table.row(this).data();
-      var ideliminar = $('#idEliminar').val(data.id_documento);
       var iddocumento = $("#iddocumento").val(data.id_documento);
-      var nombre_documento = $("#nombre").val(data.nombre_documento);
-      var descripcion = $("#descripcion").val(data.descripcion);
     });
   }
 

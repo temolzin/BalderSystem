@@ -114,10 +114,13 @@ CREATE TABLE cliente(
 CREATE TABLE documentocliente(
     id_documento int,
     id_cliente int,
+    id_usuario int,
+    fecha_registro datetime,
     observacion text,
     url_documento text,
     primary key (id_cliente, id_documento),
     foreign key (id_cliente) references cliente(id_cliente),
+    foreign key (id_usuario) references usuario(id_usuario),
     foreign key (id_documento) references documento(id_documento)
 );
 

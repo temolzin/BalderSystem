@@ -212,13 +212,13 @@ class Menu {
                       </a>
                     </li>
                     <li class="nav-item">
-                      <a href="clienteconsultarview.php" class="nav-link ' .$activeClienteVer.'">
+                      <a href="clienteconsultarview.php" class="nav-link ' .$activeClienteVer. '">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Ver Clientes</p>
                       </a>
                     </li>
                     <li class="nav-item">
-                      <a href="clientesubirdocumentoview.php" class="nav-link ' .$activeSubirDocumento.'">
+                      <a href="documentoclienteview.php" class="nav-link ' .$activeSubirDocumento.'">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Cargar documentos</p>
                       </a>
