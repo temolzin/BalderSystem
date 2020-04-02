@@ -50,7 +50,7 @@
   else if($accion == "read") {
     echo $documentoCliente->read();
   }
-  else if($accion == "readdocumentos") {
+  else if($accion == "readdocumentosbyidcliente") {
     $idcliente = $_POST['idcliente'];
     echo $documentoCliente->readdocumentosbyidcliente($idcliente);
   }

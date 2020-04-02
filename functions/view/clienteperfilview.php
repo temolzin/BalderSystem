@@ -21,6 +21,8 @@
       $telefono = $_POST['telefono'];
       $observacion = $_POST['observacion'];
       $nombreCompletoCliente = $nombre . " " . $appat . " " . $apmat;
+      //Variable para saber como se llama la carpeta donde se encuentran los documentos de los clientes.
+      $nombreCompletoClienteDocumentos = $apmat . "_" . $apmat . "_" . $nombre;
 ?>
 <!-- Main content -->
 <section class="content">
@@ -138,7 +140,7 @@
                 <tr>
                   <th>Documento</th>
                   <th>Estatus</th>
-                  <th></th>
+                  <th>Descargar</th>
                 </tr>
                 </thead>
               </table>
@@ -229,16 +231,32 @@
   }
   var mostrarRegistrosDocumento = function () {
       var table1 = $("#tablaDTDocumento").DataTable({
-        destroy: true,
         ajax:{
           method: "POST",
-          url: "../process/documentoajax.php",
-          data: {"accion":"read"}
+          url: "../process/documentoclienteajax.php",
+          data: {"accion":"readdocumentosbyidcliente", "idcliente" :  "<?php echo $idcliente;?>"}
         },
         columns: [
           {data:"nombre_documento"},
-          {data:null, "defaultContent": "<img class='text-center img-fluid' width='40px' height='40px' src='../../dist/img/icons/error.png'>" },
-          {data:null, "defaultContent": "<button class='editar btn btn-primary' data-toggle='modal' data-target='#modalActualizar'><i class=\"fa fa-cloud-download-alt\"></i></button>" }
+          {
+            render: function (data, type, row) {
+              if(row.docup == null) {
+                return "<img class='text-center img-fluid' width='40px' height='40px' src='../../dist/img/icons/error.png'>";
+              } else {
+                return "<img class='text-center img-fluid' width='40px' height='40px' src='../../dist/img/icons/ok.png'>";
+              }
+            }
+          },
+          {
+            render: function (data, type, row) {
+              console.log(row);
+              if(row.docup == null) {
+                return "<button class='editar btn btn-default' disabled='true'><i class=\"fa fa-cloud-download-alt\"></i></button>";
+              } else {
+                return "<a target='_blank' href='../../upload/documents/<?php echo $nombreCompletoClienteDocumentos;?>/"+row.urldocumento+"'><button class='editar btn btn-primary'><i class=\"fa fa-cloud-download-alt\"></i></button></a>";
+              }
+            }
+          }
         ],
         responsive: true,
         language: idiomaDataTable,

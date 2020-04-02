@@ -111,7 +111,7 @@
   </div><!-- /.container-fluid -->
 
   <!-- Modal Subir Documento-->
-  <div class="modal fade" id="modalSubirDocumento" tabindex="-1" role="dialog" aria-labelledby="modalSubirDocumento" aria-hidden="true">
+  <div class="modal fade" id="modalSubirDocumento" name="modalSubirDocumento" tabindex="-1" role="dialog" aria-labelledby="modalSubirDocumento" aria-hidden="true">
     <div class="modal-dialog " role="document">
       <div class="modal-content">
         <div class="card-primary">
@@ -181,6 +181,7 @@
           success: function(data) {
             try {
               data = JSON.parse(data);
+              mostrarDocumentos(data.id_cliente);
               $('#idclientedoc').val(data.id_cliente);
               $('#imagencliente').attr("src", "../../upload/images/client/" + data.imagen);
               var nombrecliente = $('#nombrecliente').val(data.nombre_cliente);
@@ -189,7 +190,6 @@
               //Se manda el nombre completo del cliente seleccionado al modal de subir documento
               $('#nombrecompletocliente').val(data.ap_pat + "_" + data.ap_mat + "_" + data.nombre_cliente);
               document.getElementById('divcontainer').style.display = 'block';
-              mostrarDocumentos(data.id_cliente);
             } catch (e) {
               document.getElementById('divcontainer').style.display = 'none';
               Swal.fire(
@@ -227,6 +227,7 @@
     });
   }
 
+  //Metodo que  envía por ajax el documento para que se sube en el servidor y en la base de datos
   var enviarFormularioSubirDocumento = function () {
     $.validator.setDefaults({
       submitHandler: function () {
@@ -259,7 +260,18 @@
                 "¡Éxito!",
                 "Se ha subido el archivo de manera correcta",
                 "success"
-              );
+              ).then(function () {
+                //Al dar clic en ok después de subir el documento se recarga el datatable y se oculta el modal de subirdocumento
+                $('#modalSubirDocumento').modal('hide');
+                $('#tablaDT').DataTable().clear();
+                $('#tablaDT').DataTable().ajax.reload();
+                $('.custom-file-input').siblings(".custom-file-label").addClass("selected").html('');
+                $('.custom-file-input').attr("placeholder", "Selecciona Documento");
+                $(".custom-file-input").on("change", function() {
+                  var fileName = $(this).val().split("//").pop();
+                  $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+                });
+              });
             } else {
               Swal.fire(
                 "¡Error!",
@@ -324,12 +336,13 @@
       "colvis": "Visibilidad"
     }
   };
+
   var mostrarDocumentos = function (idcliente) {
     var table = $("#tablaDT").DataTable({
       ajax:{
         method: "POST",
         url: "../process/documentoclienteajax.php",
-        data: {"accion":"readdocumentos", "idcliente" : idcliente}
+        data: {"accion":"readdocumentosbyidcliente", "idcliente" : idcliente}
       },
       columns: [
         {data:"nombre_documento"},
@@ -342,7 +355,15 @@
             }
           }
         },
-        {data:null, "defaultContent": "<button class='editar btn btn-primary' data-toggle='modal' data-target='#modalSubirDocumento'><i class=\"fa fa-cloud-upload-alt\"></i></button>" }
+        {
+          render: function (data, type, row) {
+            if (row.docup == null) {
+              return "<button class='editar btn btn-primary' data-toggle='modal' data-target='#modalSubirDocumento'><i class='fa fa-cloud-upload-alt'></i></button>";
+            } else {
+              return "<button class='editar btn btn-default' disabled='true' data-toggle='modal' data-target='#modalSubirDocumento'><i class='fa fa-cloud-upload-alt'></i></button>";
+            }
+          }
+        }
       ],
       responsive: true,
       language: idiomaDataTable,
@@ -351,14 +372,13 @@
       dom: 'fltip'
     });
 
-    table.buttons().container().appendTo('#tablaDT_wrapper .col-md-6:eq(0)');
     obtenerdatosDT(table);
   }
 
   var obtenerdatosDT = function (table) {
-    $('#tablaDT tbody').on('click', 'tr', function() {
+    $("#tablaDT tbody").on('click', 'tr', function() {
       var data = table.row(this).data();
-      var iddocumento = $("#iddocumento").val(data.id_documento);
+      $("#iddocumento").val(data.id_documento);
     });
   }
 

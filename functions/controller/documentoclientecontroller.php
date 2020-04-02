@@ -10,7 +10,7 @@
 
     public function readdocumentosbyidcliente($idcliente)
     {
-      $query = "select *, (select id_documento from documentocliente dc where doc.id_documento = dc.id_documento and id_cliente = $idcliente) as docup from documento doc
+      $query = "select *, (select url_documento from documentocliente dc where doc.id_documento = dc.id_documento and id_cliente = $idcliente) as urldocumento,(select id_documento from documentocliente dc where doc.id_documento = dc.id_documento and id_cliente = $idcliente) as docup from documento doc
                 WHERE activo = 1";
       $objDocumentoCliente = null;
       foreach ($this->conex->consultar($query) as $key => $value) {
