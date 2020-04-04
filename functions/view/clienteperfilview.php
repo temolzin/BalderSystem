@@ -121,10 +121,10 @@
           </div>
         <div class="row">
           <div class="col-lg-6 text-center">
-            <button class="btn btn-danger" id="btnEstadoCuentaPension"><i class="far fa-file-pdf"></i> Estado de Cuenta Pensión</button>
+            <a download="archivo.pdf" href="../process/reporteajax.php?idcliente=<?php echo $idcliente;?>&accion=reporteEstadoCuentaPension"><button class="btn btn-danger" name="btnEstadoCuentaPension" id="btnEstadoCuentaPension"><i class="far fa-file-pdf"></i> Estado de Cuenta Pensión</button></a>
           </div>
           <div class="col-lg-6 text-center">
-            <button class="btn btn-danger" id="btnEstadoCuentaPension"><i class="far fa-file-pdf"></i> Estado de Cuenta Préstamo</button>
+            <button class="btn btn-danger" id="btnEstadoCuentaPrestamo" name="btnEstadoCuentaPrestamo"><i class="far fa-file-pdf"></i> Estado de Cuenta Préstamo</button>
           </div>
         </div>
         <br>
@@ -165,6 +165,7 @@
   $(document).ready(function () {
     asignarCargosAbonos();
     mostrarRegistrosDocumento();
+    generarReporteEstadoCuentaPension();
   });
 
   var idiomaDataTable = {
@@ -290,5 +291,18 @@
       dom: 'Bfltip'
     });
     table.buttons().container().appendTo('#tablaDTPension_wrapper .col-md-6:eq(0)');
+  }
+
+  var generarReporteEstadoCuentaPension = function () {
+    $('#btnEstadoCuentaPension').click(function () {
+      $.ajax({
+        method: "POST",
+        url: "../process/reporteajax.php",
+        data: {"accion": "reporteEstadoCuentaPension", "idcliente": "<?php echo $idcliente;?>"},
+        success: function (data) {
+          console.log(data);
+        }
+      })
+    });
   }
   </script>

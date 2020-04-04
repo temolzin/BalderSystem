@@ -65,7 +65,7 @@
   else if($accion == "readbyidmoduloandidclientearray") {
     $idmodulo= $_POST['idmodulo'];
     $idcliente = $_POST['idcliente'];
-    echo $transaccion->readbyidmoduloandidclientearray($idmodulo, $idcliente);
+    echo $transaccion->readbyidmoduloandidclientejson($idmodulo, $idcliente);
   }
   else if($accion == "readbyidclientearray") {
     $idcliente = $_POST['idcliente'];

@@ -193,7 +193,7 @@
             '   <td><a>' + data[i].id_transaccion + '</a></td>' +
             '   <td>' + data[i].nombre_concepto_transaccion + '</td>' +
             '   <td>' +
-            '   <div class="sparkbar" data-color="#00a65a">$'+data[i].monto+'</div>' +
+            '   <div class="sparkbar" data-color="#00a65a">'+new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"}).format(data[i].monto)+'</div>' +
             '   </td>' +
             '   <td><span class="badge badge-'+tipoConcepto+'">'+data[i].nombre_tipo_concepto+'</span></td>' +
             '</tr>'

@@ -86,7 +86,7 @@
       echo json_encode($objTransaccion, JSON_UNESCAPED_UNICODE);
     }
     //Metodo que regresa el objeto del cliente para ver el perfil del cliente por idmodulo y idcliente
-    public function readbyidmoduloandidclientearray($idmodulo, $idcliente)
+    public function readbyidmoduloandidclientejson($idmodulo, $idcliente)
     {
       $query = "SELECT * FROM transaccion t INNER JOIN usuario u ON t.id_usuario = u.id_usuario 
                 INNER JOIN cliente cl ON t.id_cliente = cl.id_cliente
@@ -99,6 +99,23 @@
         $objTransaccion[] = $value;
       }
       echo json_encode($objTransaccion, JSON_UNESCAPED_UNICODE);
+    }
+
+    //Metodo que regresa el objeto del cliente y sus tranasacciones para sacar el reporte de Estado de Cuenta
+    public function readbyidmoduloandidclientearray($idmodulo, $idcliente)
+    {
+      $query = "SELECT * FROM transaccion t INNER JOIN usuario u ON t.id_usuario = u.id_usuario 
+                INNER JOIN cliente cl ON t.id_cliente = cl.id_cliente
+                INNER JOIN conceptotransaccion ct ON t.id_concepto_transaccion = ct.id_concepto_transaccion
+                INNER JOIN tipoconceptotransaccion tct ON ct.id_tipo_concepto_transaccion = tct.id_tipo_concepto_transaccion
+                INNER JOIN modulo m ON ct.id_modulo = m.id_modulo
+                INNER JOIN postal po ON cl.id_postal = po.id
+                WHERE t.activo = 1 and m.id_modulo = $idmodulo and t.id_cliente = " .$idcliente;
+      $objTransaccion = null;
+      foreach ($this->conex->consultar($query) as $key => $value) {
+        $objTransaccion[] = $value;
+      }
+      return $objTransaccion;
     }
 
     //Metodo que regresa el objeto del cliente para ver el perfil del cliente

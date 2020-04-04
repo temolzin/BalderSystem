@@ -92,7 +92,7 @@ table {
 
 table th,
 table td {
-  padding: 20px;
+  padding: 10px;
   background: #EEEEEE;
   text-align: center;
   border-bottom: 1px solid #FFFFFF;
@@ -116,7 +116,7 @@ table td h3{
 
 table .no {
   color: #FFFFFF;
-  font-size: 1.6em;
+  font-size: 1.4em;
   background: #57B223;
 }
 
@@ -132,6 +132,26 @@ table .qty {
 }
 
 table .total {
+  background: #57B223;
+  color: #FFFFFF;
+}
+
+table .deschead {
+  font-size: 1.4em;
+  text-align: left;
+}
+
+table .unithead {
+  font-size: 1.4em;
+  background: #DDDDDD;
+}
+
+table .qtyhead {
+  font-size: 1.4em;
+}
+
+table .totalhead {
+  font-size: 1.4em;
   background: #57B223;
   color: #FFFFFF;
 }
