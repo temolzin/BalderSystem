@@ -110,7 +110,7 @@
                 INNER JOIN tipoconceptotransaccion tct ON ct.id_tipo_concepto_transaccion = tct.id_tipo_concepto_transaccion
                 INNER JOIN modulo m ON ct.id_modulo = m.id_modulo
                 INNER JOIN postal po ON cl.id_postal = po.id
-                WHERE t.activo = 1 and m.id_modulo = $idmodulo and t.id_cliente = " .$idcliente;
+                WHERE t.activo = 1 and m.id_modulo = $idmodulo and t.id_cliente = " .$idcliente ." ORDER BY t.fecha_registro";
       $objTransaccion = null;
       foreach ($this->conex->consultar($query) as $key => $value) {
         $objTransaccion[] = $value;

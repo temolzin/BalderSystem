@@ -409,7 +409,7 @@
       $(".consultar").on('click', function () {
         $.post( "clienteperfilview.php", data,function( data ) {
           $('#contenedor').html(data);
-          $('#titulomenu').html('<h1>Perfil Cliente</h1>');
+          $('#titulomenu').html('<h1>Perfil Cliente <a href="clienteconsultarview.php"><button class="btn btn-primary"><i class="fas fa-arrow-circle-left"></i></button></a> </h1>');
         });
       });
 

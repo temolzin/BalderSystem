@@ -22,7 +22,7 @@
       $observacion = $_POST['observacion'];
       $nombreCompletoCliente = $nombre . " " . $appat . " " . $apmat;
       //Variable para saber como se llama la carpeta donde se encuentran los documentos de los clientes.
-      $nombreCompletoClienteDocumentos = $apmat . "_" . $apmat . "_" . $nombre;
+      $nombreCompletoClienteDocumentos = $appat . "_" . $apmat . "_" . $nombre;
 ?>
 <!-- Main content -->
 <section class="content">
@@ -121,10 +121,10 @@
           </div>
         <div class="row">
           <div class="col-lg-6 text-center">
-            <a download="archivo.pdf" href="../process/reporteajax.php?idcliente=<?php echo $idcliente;?>&accion=reporteEstadoCuentaPension"><button class="btn btn-danger" name="btnEstadoCuentaPension" id="btnEstadoCuentaPension"><i class="far fa-file-pdf"></i> Estado de Cuenta Pensión</button></a>
+            <a download="archivo.pdf" href="../process/reporteajax.php?idcliente=<?php echo $idcliente;?>&accion=reporteEstadoCuentaPension"><button disabled class="btn btn-danger" name="btnEstadoCuentaPension" id="btnEstadoCuentaPension"><i class="far fa-file-pdf"></i> Estado de Cuenta Pensión</button></a>
           </div>
           <div class="col-lg-6 text-center">
-            <button class="btn btn-danger" id="btnEstadoCuentaPrestamo" name="btnEstadoCuentaPrestamo"><i class="far fa-file-pdf"></i> Estado de Cuenta Préstamo</button>
+            <a download="archivo.pdf" href="../process/reporteajax.php?idcliente=<?php echo $idcliente;?>&accion=reporteEstadoCuentaPrestamo"><button disabled class="btn btn-danger" id="btnEstadoCuentaPrestamo" name="btnEstadoCuentaPrestamo"><i class="far fa-file-pdf"></i> Estado de Cuenta Préstamo</button></a>
           </div>
         </div>
         <br>
@@ -277,11 +277,21 @@
         data: {"accion": "readbyidcliente", "idcliente": "<?php echo $idcliente;?>"}
       },
       columns: [
-        {data:"nombre_modulo"},
+        {
+          render: function (data, type, row) {
+            if(row.nombre_modulo == "Préstamo") {
+              $('#btnEstadoCuentaPrestamo').attr("disabled", false);
+              return row.nombre_modulo;
+            } else if(row.nombre_modulo == "Pensión"){
+              $('#btnEstadoCuentaPension').attr("disabled", false);
+              return row.nombre_modulo;
+            }
+          }
+        },
         {data:"nombre_tipo_concepto"},
         {data:"nombre_concepto_transaccion"},
         {data:"fecha_registro"},
-        {data:"monto"},
+        {data:"monto", render: $.fn.dataTable.render.number( ',', '.', 2, '$') },
         {data:6} //En la posición 6 está la descripción de la transacción.
       ],
       responsive: true,
