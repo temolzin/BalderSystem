@@ -84,7 +84,8 @@ h2.name {
 }
 
 table {
-  width: 100%;
+  table-layout: auto;
+  width: auto;
   border-collapse: collapse;
   border-spacing: 0;
   margin-bottom: 20px;
@@ -92,7 +93,9 @@ table {
 
 table th,
 table td {
-  padding: 20px;
+  padding: 25px;
+  padding-bottom: 10px;
+  padding-top: 10px;
   background: #EEEEEE;
   text-align: center;
   border-bottom: 1px solid #FFFFFF;
@@ -110,14 +113,16 @@ table td {
 table td h3{
   color: #0E9BDD;
   /*color: #57B223;*/
-  font-size: 1.2em;
+  font-size: 1.0em;
   font-weight: normal;
   margin: 0 0 0.2em 0;
 }
 
 table .no {
   color: #FFFFFF;
-  font-size: 1.4em;
+  font-size: 0.9em;
+  text-align: left;
+  padding: 5px;
   /*background: #57B223;*/
   background: #0E9BDD;
 }
@@ -144,36 +149,38 @@ table .total {
 }
 
 table .deschead {
-  font-size: 1.4em;
+  font-size: 1.1em;
   text-align: left;
 }
 
 table .unithead {
-  font-size: 1.4em;
+  font-size: 1.1em;
   background: #DDDDDD;
 }
 
 table .datehead {
-  font-size: 1.4em;
+  font-size: 1.1em;
   background: #DDDDDD;
 }
 
 table .qtyhead {
-  font-size: 1.4em;
+  font-size: 1.1em;
 }
 
 table .totalhead {
-  font-size: 1.4em;
+  font-size: 1.1em;
   background: #0E9BDD;
   /*background: #57B223;*/
   color: #FFFFFF;
 }
-
+table td.dateTransaccion{
+  font-size: 0.8em;
+}
 table td.unit,
 table td.qty,
-table td.dateTransaccion,
+table td.desc,
 table td.total {
-  font-size: 1.2em;
+  font-size: 0.9em;
 }
 
 table tbody tr:last-child td {
@@ -184,7 +191,7 @@ table tfoot td {
   padding: 10px 20px;
   background: #FFFFFF;
   border-bottom: none;
-  font-size: 1.2em;
+  font-size: 1.0em;
   white-space: nowrap; 
   border-top: 1px solid #AAAAAA; 
 }
@@ -194,9 +201,29 @@ table tfoot tr:first-child td {
 }
 
 table tfoot tr:last-child td {
-  font-size: 1.4em;
+  font-size: 1.2em;
   /*border-top: 1px solid #57B223;*/
 }
+
+/*table td:last-child {*/
+/*  width: 20%;*/
+/*}*/
+table td:nth-child(1) {
+  width: 20%;
+}table td:nth-child(2) {
+  width: 50%;
+}table td:nth-child(3) {
+  width: 150%;
+}table td:nth-child(4) {
+  width: 60%;
+}table td:nth-child(5) {
+  width: 60%;
+}table td:nth-child(6) {
+  width: 60%;
+}
+/*table td:nth-child(6) {*/
+/*  width: 70%;*/
+/*}*/
 
 table tfoot tr td:first-child {
   border: none;

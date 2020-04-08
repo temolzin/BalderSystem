@@ -54,3 +54,7 @@
     $idcliente = $_POST['idcliente'];
     echo $documentoCliente->readdocumentosbyidcliente($idcliente);
   }
+  else if($accion == "readdocumentosbyidclientarray") {
+    $idcliente = $_POST['idcliente'];
+    echo $documentoCliente->readdocumentosbyidclientearray($idcliente);
+  }

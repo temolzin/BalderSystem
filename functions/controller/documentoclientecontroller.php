@@ -19,6 +19,24 @@
       echo json_encode($objDocumentoCliente, JSON_UNESCAPED_UNICODE);
     }
 
+    /*
+     * Metodo que retorna un arreglo con los documentos filtrados por el idcliente (Para el reporte de CheckListDocumentosCliente)
+     */
+    public function readdocumentosbyidclientearray($idcliente)
+    {
+      $query = "select *,
+                (select id_documento from documentocliente dc where doc.id_documento = dc.id_documento and id_cliente = $idcliente) as docup,
+                (select observacion from documentocliente dc where doc.id_documento = dc.id_documento and id_cliente = $idcliente) as observacion
+                from documento doc 
+                WHERE doc.activo = 1
+                ORDER BY  docup DESC";
+      $objDocumentoCliente = null;
+      foreach ($this->conex->consultar($query) as $key => $value) {
+        $objDocumentoCliente[] = $value;
+      }
+      return $objDocumentoCliente;
+    }
+
     public function read()
     {
       $query = "select * from documentocliente";

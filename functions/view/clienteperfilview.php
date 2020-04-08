@@ -148,7 +148,7 @@
             <!-- /.card-body -->
           </div>
         <div class="col-lg-12 text-center">
-          <button class="btn btn-danger" id="btnCheckListDocumentos"><i class="far fa-file-pdf"></i> CheckList Documentos</button>
+          <a download="archivo.pdf" href="../process/reporteajax.php?idcliente=<?php echo $idcliente;?>&accion=reporteDocumentoCliente"><button class="btn btn-danger" id="btnCheckListDocumentos"><i class="far fa-file-pdf"></i> CheckList Documentos</button></a>
         </div>
         <br>
         </div>
@@ -303,16 +303,31 @@
     table.buttons().container().appendTo('#tablaDTPension_wrapper .col-md-6:eq(0)');
   }
 
-  var generarReporteEstadoCuentaPension = function () {
-    $('#btnEstadoCuentaPension').click(function () {
-      $.ajax({
-        method: "POST",
-        url: "../process/reporteajax.php",
-        data: {"accion": "reporteEstadoCuentaPension", "idcliente": "<?php echo $idcliente;?>"},
-        success: function (data) {
-          console.log(data);
-        }
-      })
-    });
-  }
+  //Función para ver lo que retorna php al darle clic en el boton de generar reporte
+  //var generarReporteEstadoCuentaPension = function () {
+  //  $('#btnEstadoCuentaPension').click(function () {
+  //    $.ajax({
+  //      method: "POST",
+  //      url: "../process/reporteajax.php",
+  //      data: {"accion": "reporteEstadoCuentaPension", "idcliente": "<?php //echo $idcliente;?>//"},
+  //      success: function (data) {
+  //        console.log(data);
+  //      }
+  //    })
+  //  });
+  //}
+  //
+  ////Función para ver lo que retorna php al darle clic en el boton de generar reporte
+  //var generarReporteEstadoCuentaPension = function () {
+  //  $('#btnCheckListDocumentos').click(function () {
+  //    $.ajax({
+  //      method: "POST",
+  //      url: "../process/reporteajax.php",
+  //      data: {"accion": "reporteDocumentoCliente", "idcliente": "<?php //echo $idcliente;?>//"},
+  //      success: function (data) {
+  //        console.log(data);
+  //      }
+  //    })
+  //  });
+  //}
   </script>
