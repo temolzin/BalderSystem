@@ -100,9 +100,11 @@ table .service {
 }
 table .desc {
   text-align: center;
+  vertical-align: center;
 }
 table .no {
   text-align: center;
+  vertical-align: center;
   padding: 5px;
 }
 

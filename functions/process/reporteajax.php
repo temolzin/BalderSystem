@@ -1,29 +1,38 @@
 <?php
+  //Para cargar DOMPDF
   require '../../vendor/autoload.php';
   require '../../build/config/config.php';
-  require_once '../controller/transaccioncontroller.php';
-  require_once '../controller/documentoclientecontroller.php';
   use Dompdf\Dompdf;
-  $transaccion = new Transaccion();
   $accion = $_REQUEST['accion'];
   $idcliente = $_REQUEST['idcliente'];
 
-  if($accion == "reporteEstadoCuentaPension") {
+  //En caso que sea acción 1 significa pensión este ID lo manda el reporte generado desde el menú del sistema
+  if($accion == "reporteEstadoCuentaPension" or $accion == "1") {
+    require_once '../controller/transaccioncontroller.php';
+    $transaccion = new Transaccion();
     $datosConsulta = $transaccion->readbyidmoduloandidclientearray(1, $idcliente);
     $nombrePDF = "EstadodeCuentaPensión.pdf";
     $htmlPDF = headerPDF($datosConsulta);
     $htmlPDF .= contentPDF($datosConsulta);
     generarPDF($htmlPDF,$nombrePDF);
-  } else if($accion == "reporteEstadoCuentaPrestamo") {
+  }
+  //En caso que sea acción 2 significa préstamo este ID lo manda el reporte generado desde el menú del sistema
+  else if($accion == "reporteEstadoCuentaPrestamo" or $accion == "2") {
+    require_once '../controller/transaccioncontroller.php';
+    $transaccion = new Transaccion();
     $datosConsulta = $transaccion->readbyidmoduloandidclientearray(2, $idcliente);
     $nombrePDF = "EstadodeCuentaPrestamo.pdf";
     $htmlPDF = headerPDF($datosConsulta);
     $htmlPDF .= contentPDF($datosConsulta);
     generarPDF($htmlPDF,$nombrePDF);
-  } else if($accion == "reporteDocumentoCliente") {
+  }
+  else if($accion == "reporteDocumentoCliente") {
+    require_once '../controller/documentoclientecontroller.php';
+    require_once '../controller/clientecontroller.php';
     $documentoCliente = new DocumentoCliente();
+    $cliente = new Cliente();
     $datosConsulta = $documentoCliente->readdocumentosbyidclientearray($idcliente);
-    $htmlPDF = headerPDFDocumentClient($datosConsulta);
+    $htmlPDF = headerPDFDocumentClient($cliente->readbyidarray($idcliente));
     $htmlPDF .= contentPDFDocumentClient($datosConsulta);
     generarPDF($htmlPDF,"CheckListDocumentoCliente.pdf");
   }
@@ -61,9 +70,8 @@
                 <h2 class="name">Balder System</h2>
                 <div></div>
                 <div>55-35-09-29-65</div>
-                <div><a href="mailto:company@example.com">direccion@balder.com</a></div>
+                <div><a href="direccion@balder.com">direccion@balder.com</a></div>
                 <div class="date">Fecha de impresión: ' . $fechaActual . ', ' . $horaActual . '</div>
-              </div>
               </div>
             </header>
             <main>
@@ -181,7 +189,8 @@
 
   function generarPDF($html,$nombrePDF) {
     $dompdf = new Dompdf();
-    $dompdf->loadHtml($html, "UTF-8");
+    $html = mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8');
+    $dompdf->loadHtml($html);
     $dompdf->setPaper('A4', 'portrait');
     $dompdf->render();
 
@@ -204,9 +213,12 @@
     $fechaActual = strftime("%A, %d de %B de %Y");
 
     foreach ($datosConsulta as $key => $value) {
-
-      $documentosubido = $value['docup'];
-      $nombredocumento = $value['nombre_documento'];
+      $nombrecompletocliente = $value['nombre_cliente'] . " " . $value['ap_pat'] . " " . $value['ap_mat'];
+      $calle = $value['calle'];
+      $noexterior = $value['noexterior'];
+      $estado = $value['estado'];
+      $municipio = $value['municipio'];
+      $email = $value['email'];
 //      $nombreModulo = $value['nombre_modulo'];
 //      $nombreCliente = $value['nombre_cliente'] . ' '. $value['ap_pat'] . ' ' . $value['ap_mat'];
 //      $direccionCliente = $value['calle'] . ' No.Ext. ' . $value['noexterior'] . ', ' . $value['codigo'];
@@ -214,9 +226,9 @@
 //      $emailCliente = $value['email'];
     }
       $html = '<!DOCTYPE html>
-        <html lang="en">
+        <html lang="es">
           <head>
-            <meta charset="utf-8">
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
             <title>CheckList Documentos Balder System</title>
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"> 
             <style type="text/css"> 
@@ -231,22 +243,22 @@
                 <img src="../../dist/img/icons/faviconletter.png">
               </div>
               <h1>Documentación</h1>
-              <div id="details" class="clearfix">
-                <div id="company">
-                  <div>Balder System</div>
-                  <div></div>
-                  <div>55-35-09-29-65</div>
-                  <div><a href="mailto:company@example.com">direccion@balder.com</a></div>
-                  <br>
-                  <div class="date">Fecha de impresión: ' . $fechaActual . ', <br>' . $horaActual . '</div>
-                </div>
-                <div id="project">
-                  <div><span>PROJECT</span> Website development</div>
-                  <div><span>CLIENT</span> John Doe</div>
-                  <div><span>ADDRESS</span> 796 Silver Harbour, TX 79273, US</div>
-                  <div><span>EMAIL</span> <a href="mailto:john@example.com">john@example.com</a></div>
-                  <div><span>DATE</span> August 17, 2015</div>
-                  <div><span>DUE DATE</span> September 17, 2015</div>
+              <div>
+                <div id="details" class="clearfix">
+                  <div id="company">
+                    <div>Balder System</div>
+                    <div></div>
+                    <div>55-35-09-29-65</div>
+                    <div><a href="direccion@balder.com">direccion@balder.com</a></div>
+                    <br>
+                    <div class="date">Fecha de impresión: ' . $fechaActual . ', <br>' . $horaActual . '</div>
+                  </div>
+                  <div id="project">
+                    <div><span>CLIENTE</span> '.$nombrecompletocliente.'</div>
+                    <div><span>DIRECCIÓN</span> '.$calle . " No.Ext." .$noexterior . ", <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; " . $municipio . ", " .$estado .'</div>
+                    <div><span>EMAIL</span> <a href="'.$email.'">'.$email.'</a></div>
+                    <div><span>IMPRESIÓN</span> '.$fechaActual.', <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; ' . $horaActual . '</div>
+                  </div>
                 </div>
               </div>
             </header>
@@ -274,9 +286,9 @@
       $nombredocumento = $value['nombre_documento'];
       $observacion = $value['observacion'];
       if($value['docup'] == null) {
-        $cumple = '<img src="../../dist/img/icons/errorplano.png" width="28px" height="28px">';
+        $cumple = '<img align="center" src="../../dist/img/icons/errorplano.png" width="28px" height="28px">';
       } else {
-        $cumple = '<img src="../../dist/img/icons/ok.png" width="32px" height="32px">';
+        $cumple = '<img align="center" src="../../dist/img/icons/ok.png" width="32px" height="32px">';
       }
       $html .= '
                 <tr>

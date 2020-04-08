@@ -93,6 +93,12 @@ class Menu {
     } elseif ($active == 'subirdocumento') {
       $activeCliente = 'active';
       $activeSubirDocumento = 'active';
+    } elseif ($active == 'reporteestadocuenta') {
+      $activeReporte = 'active';
+      $activeReporteEstadoCuenta = 'active';
+    } elseif ($active == 'reportechecklist') {
+      $activeReporte = 'active';
+      $activeReporteCheckList = 'active';
     }
 
     echo '<!DOCTYPE html>
@@ -281,13 +287,13 @@ class Menu {
                   </a>
                   <ul class="nav nav-treeview">
                     <li class="nav-item '.$activeReporteCheckList.'">
-                      <a href="construccionview.php" class="nav-link">
+                      <a href="generarReporteCheckList.php" class="nav-link '.$activeReporteCheckList.'">
                         <i class="far fa-circle nav-icon"></i>
                         <p>CheckList</p>
                       </a>
                     </li>
-                    <li class="nav-item '.$activeReporteEstadoCuenta.'">
-                      <a href="construccionview.php" class="nav-link">
+                    <li class="nav-item">
+                      <a href="generarReporteEstadoCuentaView.php" class="nav-link '.$activeReporteEstadoCuenta.'">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Estado de cuenta</p>
                       </a>

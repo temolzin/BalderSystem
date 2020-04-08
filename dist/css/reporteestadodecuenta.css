@@ -18,7 +18,7 @@ body {
   position: relative;
   margin: 0 auto;
   color: #555555;
-  background: #FFFFFF; 
+  background: #FFFFFF;
   /*font-family: Arial, sans-serif; */
   font-size: 14px; 
   /*font-family: SourceSansPro;*/
@@ -122,7 +122,7 @@ table .no {
   color: #FFFFFF;
   font-size: 0.9em;
   text-align: left;
-  padding: 5px;
+  padding: 3px;
   /*background: #57B223;*/
   background: #0E9BDD;
 }
@@ -213,7 +213,7 @@ table td:nth-child(1) {
 }table td:nth-child(2) {
   width: 50%;
 }table td:nth-child(3) {
-  width: 150%;
+  width: 150px;
 }table td:nth-child(4) {
   width: 60%;
 }table td:nth-child(5) {
