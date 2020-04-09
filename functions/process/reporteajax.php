@@ -219,12 +219,14 @@
       $estado = $value['estado'];
       $municipio = $value['municipio'];
       $email = $value['email'];
-//      $nombreModulo = $value['nombre_modulo'];
-//      $nombreCliente = $value['nombre_cliente'] . ' '. $value['ap_pat'] . ' ' . $value['ap_mat'];
-//      $direccionCliente = $value['calle'] . ' No.Ext. ' . $value['noexterior'] . ', ' . $value['codigo'];
-//      $direccionEstadoCliente = $value['municipio']. ', ' . $value['estado'];
-//      $emailCliente = $value['email'];
+      $fechanacimiento = $value['fecha_nacimiento'];
     }
+    //Para imprimir la edad en años, meses y días
+    $fechaactual = date('d/m/Y');
+    $fechanacimiento = date('d/m/Y',strtotime($fechanacimiento));
+    $tiempo = tiempo_transcurrido($fechanacimiento, $fechaactual);
+    $edad = "$tiempo[0] años, $tiempo[1] meses y $tiempo[2] días";
+
       $html = '<!DOCTYPE html>
         <html lang="es">
           <head>
@@ -255,6 +257,7 @@
                   </div>
                   <div id="project">
                     <div><span>CLIENTE</span> '.$nombrecompletocliente.'</div>
+                    <div><span>EDAD</span> '.$edad.'</div>
                     <div><span>DIRECCIÓN</span> '.$calle . " No.Ext." .$noexterior . ", <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; " . $municipio . ", " .$estado .'</div>
                     <div><span>EMAIL</span> <a href="'.$email.'">'.$email.'</a></div>
                     <div><span>IMPRESIÓN</span> '.$fechaActual.', <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; ' . $horaActual . '</div>
@@ -276,7 +279,8 @@
       return $html;
   }
 
-  function contentPDFDocumentClient($datosConsulta) {
+  function contentPDFDocumentClient($datosConsulta)
+  {
     $cumple = "";
     $nombredocumento = "";
     $observacion = "";
@@ -285,17 +289,17 @@
     foreach ($datosConsulta as $key => $value) {
       $nombredocumento = $value['nombre_documento'];
       $observacion = $value['observacion'];
-      if($value['docup'] == null) {
+      if ($value['docup'] == null) {
         $cumple = '<img align="center" src="../../dist/img/icons/errorplano.png" width="28px" height="28px">';
       } else {
         $cumple = '<img align="center" src="../../dist/img/icons/ok.png" width="32px" height="32px">';
       }
       $html .= '
                 <tr>
-                    <td class="no">'.$i.'</td>
-                    <td class="service">'.$nombredocumento.'</td>
-                    <td class="desc">'.$cumple.'</td>
-                    <td class="unit">'.$observacion.'</td>
+                    <td class="no">' . $i . '</td>
+                    <td class="service">' . $nombredocumento . '</td>
+                    <td class="desc">' . $cumple . '</td>
+                    <td class="unit">' . $observacion . '</td>
                   </tr>';
       $i++;
     }
@@ -309,3 +313,122 @@
         </html>';
     return $html;
   }
+
+    # PARAMETROS:
+    # $fecha_nacimiento - Fecha de nacimiento de una persona.
+    #
+    # $fecha_control - Fecha actual o fecha a consultar.
+    #
+    #
+    # EJEMPLO:
+    # tiempo_transcurrido('22/06/1977', '04/05/2009');
+    #
+    function tiempo_transcurrido($fecha_nacimiento, $fecha_control)
+    {
+      $fecha_actual = $fecha_control;
+
+      if(!strlen($fecha_actual))
+      {
+        $fecha_actual = date('d/m/Y');
+      }
+
+      // separamos en partes las fechas
+      $array_nacimiento = explode ( "/", $fecha_nacimiento );
+      $array_actual = explode ( "/", $fecha_actual );
+
+      $anos =  $array_actual[2] - $array_nacimiento[2]; // calculamos años
+      $meses = $array_actual[1] - $array_nacimiento[1]; // calculamos meses
+      $dias =  $array_actual[0] - $array_nacimiento[0]; // calculamos días
+
+      //ajuste de posible negativo en $días
+      if ($dias < 0)
+      {
+        --$meses;
+
+        //ahora hay que sumar a $dias los dias que tiene el mes anterior de la fecha actual
+        switch ($array_actual[1]) {
+          case 1:
+            $dias_mes_anterior=31;
+            break;
+          case 2:
+            $dias_mes_anterior=31;
+            break;
+          case 3:
+            if (bisiesto($array_actual[2]))
+            {
+              $dias_mes_anterior=29;
+              break;
+            }
+            else
+            {
+              $dias_mes_anterior=28;
+              break;
+            }
+          case 4:
+            $dias_mes_anterior=31;
+            break;
+          case 5:
+            $dias_mes_anterior=30;
+            break;
+          case 6:
+            $dias_mes_anterior=31;
+            break;
+          case 7:
+            $dias_mes_anterior=30;
+            break;
+          case 8:
+            $dias_mes_anterior=31;
+            break;
+          case 9:
+            $dias_mes_anterior=31;
+            break;
+          case 10:
+            $dias_mes_anterior=30;
+            break;
+          case 11:
+            $dias_mes_anterior=31;
+            break;
+          case 12:
+            $dias_mes_anterior=30;
+            break;
+        }
+
+        $dias=$dias + $dias_mes_anterior;
+
+        if ($dias < 0)
+        {
+          --$meses;
+          if($dias == -1)
+          {
+            $dias = 30;
+          }
+          if($dias == -2)
+          {
+            $dias = 29;
+          }
+        }
+      }
+
+      //ajuste de posible negativo en $meses
+      if ($meses < 0)
+      {
+        --$anos;
+        $meses=$meses + 12;
+      }
+
+      $tiempo[0] = $anos;
+      $tiempo[1] = $meses;
+      $tiempo[2] = $dias;
+
+      return $tiempo;
+    }
+
+    function bisiesto($anio_actual){
+      $bisiesto=false;
+      //probamos si el mes de febrero del año actual tiene 29 días
+      if (checkdate(2,29,$anio_actual))
+      {
+        $bisiesto=true;
+      }
+      return $bisiesto;
+    }

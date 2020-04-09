@@ -4,6 +4,7 @@
       $nombre = $_POST['nombre_cliente'];
       $appat = $_POST['ap_pat'];
       $apmat = $_POST['ap_mat'];
+      $fechanacimiento = $_POST['fecha_nacimiento'];
       $genero = $_POST['nombre_genero'];
       $rfc = $_POST['rfc'];
       $curp = $_POST['curp'];
@@ -23,6 +24,126 @@
       $nombreCompletoCliente = $nombre . " " . $appat . " " . $apmat;
       //Variable para saber como se llama la carpeta donde se encuentran los documentos de los clientes.
       $nombreCompletoClienteDocumentos = $appat . "_" . $apmat . "_" . $nombre;
+
+      # PARAMETROS:
+      # $fecha_nacimiento - Fecha de nacimiento de una persona.
+      #
+      # $fecha_control - Fecha actual o fecha a consultar.
+      #
+      #
+      # EJEMPLO:
+      # tiempo_transcurrido('22/06/1977', '04/05/2009');
+      #
+      function tiempo_transcurrido($fecha_nacimiento, $fecha_control)
+      {
+        $fecha_actual = $fecha_control;
+
+        if(!strlen($fecha_actual))
+        {
+          $fecha_actual = date('d/m/Y');
+        }
+
+        // separamos en partes las fechas
+        $array_nacimiento = explode ( "/", $fecha_nacimiento );
+        $array_actual = explode ( "/", $fecha_actual );
+
+        $anos =  $array_actual[2] - $array_nacimiento[2]; // calculamos años
+        $meses = $array_actual[1] - $array_nacimiento[1]; // calculamos meses
+        $dias =  $array_actual[0] - $array_nacimiento[0]; // calculamos días
+
+        //ajuste de posible negativo en $días
+        if ($dias < 0)
+        {
+          --$meses;
+
+          //ahora hay que sumar a $dias los dias que tiene el mes anterior de la fecha actual
+          switch ($array_actual[1]) {
+            case 1:
+              $dias_mes_anterior=31;
+              break;
+            case 2:
+              $dias_mes_anterior=31;
+              break;
+            case 3:
+              if (bisiesto($array_actual[2]))
+              {
+                $dias_mes_anterior=29;
+                break;
+              }
+              else
+              {
+                $dias_mes_anterior=28;
+                break;
+              }
+            case 4:
+              $dias_mes_anterior=31;
+              break;
+            case 5:
+              $dias_mes_anterior=30;
+              break;
+            case 6:
+              $dias_mes_anterior=31;
+              break;
+            case 7:
+              $dias_mes_anterior=30;
+              break;
+            case 8:
+              $dias_mes_anterior=31;
+              break;
+            case 9:
+              $dias_mes_anterior=31;
+              break;
+            case 10:
+              $dias_mes_anterior=30;
+              break;
+            case 11:
+              $dias_mes_anterior=31;
+              break;
+            case 12:
+              $dias_mes_anterior=30;
+              break;
+          }
+
+          $dias=$dias + $dias_mes_anterior;
+
+          if ($dias < 0)
+          {
+            --$meses;
+            if($dias == -1)
+            {
+              $dias = 30;
+            }
+            if($dias == -2)
+            {
+              $dias = 29;
+            }
+          }
+        }
+
+        //ajuste de posible negativo en $meses
+        if ($meses < 0)
+        {
+          --$anos;
+          $meses=$meses + 12;
+        }
+
+        $tiempo[0] = $anos;
+        $tiempo[1] = $meses;
+        $tiempo[2] = $dias;
+
+        return $tiempo;
+      }
+
+      function bisiesto($anio_actual){
+        $bisiesto=false;
+        //probamos si el mes de febrero del año actual tiene 29 días
+        if (checkdate(2,29,$anio_actual))
+        {
+          $bisiesto=true;
+        }
+        return $bisiesto;
+    }
+
 ?>
 <!-- Main content -->
 <section class="content">
@@ -67,9 +188,7 @@
           <!-- /.card-header -->
           <div class="card-body">
             <strong><i class="fas fa-map-marker-alt mr-1"></i> Dirección</strong>
-
             <p class="text-muted"><?php echo $calle . ", " . $codigopostal . ", " . $colonia . ", " . $municipio . ", " . $estadoLocalidad; ?></p>
-
             <hr>
 
             <strong><i class="fas fa-user-tie mr-1"></i> Datos Físcales</strong>
@@ -85,6 +204,14 @@
               NSS: <?php echo $nss==""?"No Registrado":$nss?><br>
               Alta: <?php echo $altaimss?> <br>
               Baja: <?php echo $bajaimss?> <br>
+              Edad: <?php
+              //Para imprimir la edad en años, meses y días
+              $fechaactual = date('d/m/Y');
+              $fechanacimiento = date('d/m/Y',strtotime($fechanacimiento));
+              $tiempo = tiempo_transcurrido($fechanacimiento, $fechaactual);
+              $texto = "$tiempo[0] años con $tiempo[1] meses y $tiempo[2] días";
+              echo $texto;
+              ?> <br>
             </p>
 
             <hr>
@@ -165,7 +292,7 @@
   $(document).ready(function () {
     asignarCargosAbonos();
     mostrarRegistrosDocumento();
-    generarReporteEstadoCuentaPension();
+    // generarReporteEstadoCuentaPension();
   });
 
   var idiomaDataTable = {
