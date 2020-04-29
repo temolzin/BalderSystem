@@ -136,19 +136,19 @@
                 <div class="col-12 col-sm-6">
                   <div class="form-group">
                     <label>Calle (*)</label>
-                    <input type="text" class="form-control" id="calle" name="calle" placeholder="Número de Seguridad Social" value="" />
+                    <input type="text" class="form-control" id="calle" name="calle" placeholder="Calle" value="" />
                   </div>
                 </div>
                 <div class="col-6 col-sm-3">
                   <div class="form-group">
-                    <label>No. Exterior (*)</label>
-                    <input type="number" value="" class="form-control" id="noexterior" name="noexterior" placeholder="No. Exterior" />
+                    <label>No. Exterior</label>
+                    <input type="text" value="" class="form-control" id="noexterior" name="noexterior" placeholder="No. Exterior" />
                   </div>
                 </div>
                 <div class="col-6 col-sm-3">
                   <div class="form-group">
                     <label>No. Interior</label>
-                    <input type="number" value="" class="form-control" id="nointerior" name="nointerior" placeholder="No. Interior" />
+                    <input type="text" value="" class="form-control" id="nointerior" name="nointerior" placeholder="No. Interior" />
                   </div>
                 </div>
               </div>
@@ -351,9 +351,9 @@
         calle: {
           required: true
         },
-        noexterior: {
-          required: true
-        },
+        // noexterior: {
+        //   required: true
+        // },
         codigopostal: {
           required: true
         },
@@ -398,9 +398,9 @@
         calle: {
           required: "Ingresa la calle del domicilio",
         },
-        noexterior: {
-          required: "Ingresa el número exterior",
-        },
+        // noexterior: {
+        //   required: "Ingresa el número exterior",
+        // },
         codigopostal: {
           required: "Ingresa un número postal",
         },

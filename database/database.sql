@@ -1,8 +1,8 @@
-DROP DATABASE pensiones;
+DROP DATABASE baldersystem;
 
-CREATE DATABASE pensiones;
+CREATE DATABASE baldersystem;
 
-USE pensiones;
+USE baldersystem;
 
 CREATE TABLE postal (
   id int(11) primary key auto_increment,
@@ -24,19 +24,26 @@ CREATE TABLE modulo(
     descripcion text,
     activo boolean
 );
+CREATE TABLE moduloprivilegiousuario(
+    id_modulo_privilegio_usuario int primary key auto_increment,
+    nombre_modulo_privilegio varchar(100)
+);
 CREATE TABLE privilegiousuario(
     id_privilegio_usuario int primary key auto_increment,
-    nombre_privilegio varchar(100)
+    id_modulo_privilegio_usuario int,
+    nombre_privilegio varchar(100),
+    foreign key (id_modulo_privilegio_usuario) references moduloprivilegiousuario(id_modulo_privilegio_usuario)
 );
 CREATE TABLE tipousuario(
     id_tipo_usuario int primary key auto_increment,
     nombre_tipo_usuario varchar(100)
 );
 CREATE TABLE tipousuarioprivilegio(
-    id_tipo_usuario int primary key auto_increment,
+    id_tipo_usuario int auto_increment,
     id_privilegio_usuario int,
     foreign key (id_privilegio_usuario) references privilegiousuario(id_privilegio_usuario),
-    foreign key (id_tipo_usuario) references tipousuario(id_tipo_usuario)
+    foreign key (id_tipo_usuario) references tipousuario(id_tipo_usuario),
+    primary key (id_tipo_usuario, id_privilegio_usuario)
 );
 
 CREATE TABLE usuario(

@@ -30,7 +30,8 @@ class Menu {
     $this->idtipousuario = $_SESSION['user']['id_tipo_usuario'];
   }
 
-  function header($active, $title) {
+  function header($active, $title)
+  {
 
     $activeInicio = "";
     $activeCliente = "";
@@ -39,6 +40,9 @@ class Menu {
     $activeUsuario = "";
     $activeUsuarioVer = "";
     $activeUsuarioReg = "";
+    $activeRolUsuario = "";
+    $activeRolUsuarioVer = "";
+    $activeRolUsuarioReg = "";
     $activeConceptos = "";
     $activeConceptosVer = "";
     $activeConceptosReg = "";
@@ -84,6 +88,12 @@ class Menu {
     } elseif ($active == 'usuariover') {
       $activeUsuario = 'active';
       $activeUsuarioVer = 'active';
+    } elseif ($active == 'rolusuarioreg') {
+      $activeRolUsuario = 'active';
+      $activeRolUsuarioReg = 'active';
+    } elseif ($active == 'rolusuariover') {
+      $activeRolUsuario = 'active';
+      $activeRolUsuarioVer = 'active';
     } elseif ($active == 'transaccionreg') {
       $activeTransaccion = 'active';
       $activeTransaccionReg = 'active';
@@ -287,13 +297,13 @@ class Menu {
                   </a>
                   <ul class="nav nav-treeview">
                     <li class="nav-item '.$activeReporteCheckList.'">
-                      <a href="generarReporteCheckList.php" class="nav-link '.$activeReporteCheckList.'">
+                      <a href="reportechecklist.php" class="nav-link '.$activeReporteCheckList. '">
                         <i class="far fa-circle nav-icon"></i>
                         <p>CheckList</p>
                       </a>
                     </li>
                     <li class="nav-item">
-                      <a href="generarReporteEstadoCuentaView.php" class="nav-link '.$activeReporteEstadoCuenta.'">
+                      <a href="reporteestadocuentaview.php" class="nav-link ' .$activeReporteEstadoCuenta.'">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Estado de cuenta</p>
                       </a>
@@ -365,6 +375,29 @@ class Menu {
                       <a href="usuarioconsultarview.php" class="nav-link ' .$activeUsuarioVer. '">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Ver Usuarios</p>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <li class="nav-item has-treeview">
+                  <a href="#" class="nav-link ' .$activeRolUsuario.'">
+                    <i class="nav-icon fas fa-user-cog"></i>
+                    <p>
+                      Rol Usuarios
+                      <i class="right fas fa-angle-left"></i>
+                    </p>
+                  </a>
+                  <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                      <a href="rolusuarioregistrarview.php" class="nav-link '.$activeRolUsuarioReg. '">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Registrar Rol</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="rolusuarioconsultarview.php" class="nav-link ' .$activeRolUsuarioVer. '">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Ver Rol Usuarios</p>
                       </a>
                     </li>
                   </ul>
@@ -588,6 +621,8 @@ class Menu {
       <script src="../../plugins/datatables-buttons/js/buttons.html5.min.js"></script>
       <script src="../../plugins/datatables-buttons/js/buttons.print.min.js"></script>
       <script src="../../plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+      <!-- iCheck for checkboxes and radio inputs -->
+      <link rel="stylesheet" href="../../plugins/icheck-bootstrap/icheck-bootstrap.min.css">
       <!-- Select2 -->
       <script src="../../plugins/select2/js/select2.full.min.js"></script>
       

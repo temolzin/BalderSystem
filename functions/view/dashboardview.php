@@ -117,7 +117,7 @@
                   </div>
                   <!-- /.card-body -->
                   <div class="card-footer text-center">
-                    <a href="clienteconsultarview.php">Ver todos los usuarios</a>
+                    <a href="clienteconsultarview.php">Ver todos los clientes</a>
                   </div>
                   <!-- /.card-footer -->
                 </div>
@@ -160,7 +160,7 @@
       data: {"accion":"readbylimit","limit":"6"},
       success: function (data) {
         data = JSON.parse(data);
-        $('#labelNuevosClientes').text("6 Nuevos Clientes");
+        $('#labelNuevosClientes').text("Nuevos Clientes");
         $.each(data, function (i, row) {
           $('#listaClientesNuevos').append(
             '<li style="width: 50%"> ' +

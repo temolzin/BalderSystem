@@ -78,6 +78,6 @@
     'normal' => $fontDir . '/DejaVuSerif',
   ),
   'sourcesanspro' => array(
-    'normal' => $fontDir . '/sourcesanspro-normal_7667bf511b1f23c4f8c47bee2f66336b',
+    'normal' => $fontDir . '/sourcesanspro-normal_f9d8bc835555be5662bb598bff70471a',
   ),
 ) ?>
