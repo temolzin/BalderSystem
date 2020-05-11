@@ -14,7 +14,7 @@
                 INNER JOIN tipoconceptotransaccion tct ON ct.id_tipo_concepto_transaccion = tct.id_tipo_concepto_transaccion WHERE ct.activo = 1";
       $objConcepto = null;
       foreach ($this->conex->consultar($query) as $key => $value) {
-        $objConcepto[] = $value;
+        $objConcepto['data'][] = $value;
       }
       echo json_encode($objConcepto, JSON_UNESCAPED_UNICODE);
     }

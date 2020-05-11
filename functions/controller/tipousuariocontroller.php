@@ -177,10 +177,10 @@
                 INNER JOIN tipousuarioprivilegio tup ON pu.id_privilegio_usuario = tup.id_privilegio_usuario 
                 INNER JOIN tipousuario tu ON tup.id_tipo_usuario = tu.id_tipo_usuario 
                 WHERE tu.id_tipo_usuario = " . $idtipousuario;
-      $objpostal = null;
+      $objPrivilegio = null;
       foreach ($this->conex->consultar($query) as $key => $value) {
-        $objpostal[] = $value;
+        $objPrivilegio[] = $value;
       }
-      echo json_encode($objpostal);
+      echo json_encode($objPrivilegio);
     }
   }

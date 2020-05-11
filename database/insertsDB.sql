@@ -109,7 +109,7 @@ INSERT INTO tipoconceptotransaccion VALUES(
 
 INSERT INTO moduloprivilegiousuario VALUES (
     1,
-    'Modulos'
+    'Modulo'
 );
 INSERT INTO moduloprivilegiousuario VALUES (
     2,
@@ -117,27 +117,27 @@ INSERT INTO moduloprivilegiousuario VALUES (
 );
 INSERT INTO moduloprivilegiousuario VALUES (
     3,
-    'Clientes'
+    'Cliente'
 );
 INSERT INTO moduloprivilegiousuario VALUES (
     4,
-    'Transacciones'
+    'Transaccion'
 );
 INSERT INTO moduloprivilegiousuario VALUES (
     5,
-    'Reportes'
+    'Reporte'
 );
 INSERT INTO moduloprivilegiousuario VALUES (
     6,
-    'Documentos'
+    'Documento'
 );
 INSERT INTO moduloprivilegiousuario VALUES (
     7,
-    'Conceptos'
+    'Concepto'
 );
 INSERT INTO moduloprivilegiousuario VALUES (
     8,
-    'Usuarios'
+    'Usuario'
 );
 INSERT INTO moduloprivilegiousuario VALUES (
     9,
@@ -192,111 +192,116 @@ INSERT INTO privilegiousuario VALUES (
 );
 INSERT INTO privilegiousuario VALUES (
     10,
-    4,
-    'Consultar'
+    3,
+    'CargarDocumentos'
 );
 INSERT INTO privilegiousuario VALUES (
     11,
     4,
-    'Registrar'
+    'Consultar'
 );
 INSERT INTO privilegiousuario VALUES (
     12,
     4,
-    'Editar'
+    'Registrar'
 );
 INSERT INTO privilegiousuario VALUES (
     13,
     4,
-    'Eliminar'
+    'Editar'
 );
 INSERT INTO privilegiousuario VALUES (
     14,
-    5,
-    'Estado de cuenta'
+    4,
+    'Eliminar'
 );
 INSERT INTO privilegiousuario VALUES (
     15,
     5,
-    'CheckList Documentos'
+    'Estado de cuenta'
 );
 INSERT INTO privilegiousuario VALUES (
     16,
-    6,
-    'Consultar'
+    5,
+    'CheckList Documentos'
 );
 INSERT INTO privilegiousuario VALUES (
     17,
     6,
-    'Registrar'
+    'Consultar'
 );
 INSERT INTO privilegiousuario VALUES (
     18,
     6,
-    'Editar'
+    'Registrar'
 );
 INSERT INTO privilegiousuario VALUES (
     19,
     6,
-    'Eliminar'
+    'Editar'
 );
 INSERT INTO privilegiousuario VALUES (
     20,
-    7,
-    'Consultar'
+    6,
+    'Eliminar'
 );
 INSERT INTO privilegiousuario VALUES (
     21,
     7,
-    'Registrar'
+    'Consultar'
 );
 INSERT INTO privilegiousuario VALUES (
     22,
     7,
-    'Editar'
+    'Registrar'
 );
 INSERT INTO privilegiousuario VALUES (
     23,
     7,
-    'Eliminar'
+    'Editar'
 );
 INSERT INTO privilegiousuario VALUES (
     24,
-    8,
-    'Consultar'
+    7,
+    'Eliminar'
 );
 INSERT INTO privilegiousuario VALUES (
     25,
     8,
-    'Registrar'
+    'Consultar'
 );
 INSERT INTO privilegiousuario VALUES (
     26,
     8,
-    'Editar'
+    'Registrar'
 );
 INSERT INTO privilegiousuario VALUES (
     27,
     8,
-    'Eliminar'
+    'Editar'
 );
 INSERT INTO privilegiousuario VALUES (
     28,
-    9,
-    'Consultar'
+    8,
+    'Eliminar'
 );
 INSERT INTO privilegiousuario VALUES (
     29,
     9,
-    'Registrar'
+    'Consultar'
 );
 INSERT INTO privilegiousuario VALUES (
     30,
     9,
-    'Editar'
+    'Registrar'
 );
 INSERT INTO privilegiousuario VALUES (
     31,
+    9,
+    'Editar'
+);
+INSERT INTO privilegiousuario VALUES (
+    32,
     9,
     'Eliminar'
 );

@@ -359,8 +359,8 @@
         {data:"curp"},
         {data:"fecha_nacimiento"},
         {data:null, "defaultContent": "<button class='consultar btn btn-info'><i class=\"fas fa-search\"></i></button> " +
-            "<button class='editar btn btn-primary'  data-toggle='modal' data-target='#modalActualizar'><i class=\"fa fa-edit\"></i></button>	" +
-            "<button class='eliminar btn btn-danger' data-toggle='modal' data-target='#modalEliminar'><i class=\"far fa-trash-alt\"></i></button>" }
+            "<button class='editar btn btn-primary' <?php echo  $menu->privilegioClienteEditar?> data-toggle='modal' data-target='#modalActualizar'><i class=\"fa fa-edit\"></i></button>	" +
+            "<button class='eliminar btn btn-danger'  <?php echo  $menu->privilegioClienteEliminar?> data-toggle='modal' data-target='#modalEliminar'><i class=\"far fa-trash-alt\"></i></button>" }
       ],
       responsive: true,
       language: idiomaDataTable,

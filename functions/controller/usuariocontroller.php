@@ -124,11 +124,18 @@
      */
     public function readbyidandpass($id, $pass) {
       session_start();
-      $query = "SELECT * FROM usuario u INNER JOIN tipousuario tu ON u.id_tipo_usuario = tu.id_tipo_usuario WHERE username = '" . $id . "' and password = '" . $pass ."'";
+      $query = "SELECT * FROM usuario u INNER JOIN tipousuario tu ON u.id_tipo_usuario = tu.id_tipo_usuario 
+                INNER JOIN tipousuarioprivilegio tup ON tu.id_tipo_usuario = tup.id_tipo_usuario
+                WHERE username = '" . $id . "' and password = '" . $pass ."'";
 
+      $idtipousuario = "";
       foreach ($this->conex->consultar($query) as $key => $value) {
+        $idtipousuario = $value['id_tipo_usuario'];
         $_SESSION['user'] = $value;
       }
+
+      $this->readprivilegiobytipousuario($idtipousuario);
+
       //Se agregan la sesión al ingresar datos correctos
       $_SESSION['user']['nombrecompleto'] = $_SESSION['user']['nombre'] . " " . $_SESSION['user']['ap_pat'] . " " . $_SESSION['user']['ap_mat'];
       $_SESSION['user']['nombremedio'] = $_SESSION['user']['nombre'] . " " . $_SESSION['user']['ap_pat'];
@@ -149,8 +156,26 @@
       }
     }
 
+    //Añade a la sesión los privilegios con los que cuenta el usuario al iniciar sesión
+    public function readprivilegiobytipousuario($idtipousuario) {
+      $query = "SELECT nombre_modulo_privilegio, nombre_privilegio 
+                FROM moduloprivilegiousuario mpu 
+                INNER JOIN privilegiousuario pu
+                ON mpu.id_modulo_privilegio_usuario = pu.id_modulo_privilegio_usuario
+                INNER JOIN tipousuarioprivilegio tup 
+                ON pu.id_privilegio_usuario = tup.id_privilegio_usuario
+                WHERE tup.id_tipo_usuario = $idtipousuario";
+
+
+      foreach ($this->conex->consultar($query) as $key => $value) {
+        $_SESSION['user']['nombre_modulo_privilegio'][] = $value['nombre_modulo_privilegio'];
+        $_SESSION['user']['nombre_privilegio'][] = $value['nombre_privilegio'];
+      }
+
+    }
+
     /*
-   * Método para leer el usuario y asignarselo a la sesión
+   * Método para leer el usuario y asignarselo a la sesión se utiliza cuando el usuario actualiza su perfil
    */
     public function readbyidprofile($id) {
       session_start();
@@ -163,5 +188,4 @@
       $_SESSION['user']['nombrecompleto'] = $_SESSION['user']['nombre'] . " " . $_SESSION['user']['ap_pat'] . " " . $_SESSION['user']['ap_mat'];
       $_SESSION['user']['nombremedio'] = $_SESSION['user']['nombre'] . " " . $_SESSION['user']['ap_pat'];
     }
-
   }

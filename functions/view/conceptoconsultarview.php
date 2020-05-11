@@ -185,9 +185,8 @@
         buttons: ['copy','excel','csv','pdf','colvis'],
         dom: 'Bfltip'
       });
-
+    obtenerdatosDT(table);
       table.buttons().container().appendTo('#tablaDT_wrapper .col-md-6:eq(0)');
-      obtenerdatosDT(table);
   }
 
   var obtenerdatosDT = function (table) {
