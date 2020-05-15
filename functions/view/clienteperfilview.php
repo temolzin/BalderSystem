@@ -1,4 +1,7 @@
 <?php
+      session_start();
+      $privilegioModuloPrestamo = $_SESSION['user']['privilegioModuloPrestamo'];
+      $privilegioModuloPension = $_SESSION['user']['privilegioModuloPension'];
       $imagenCliente = $_POST['imagen'];
       $idcliente = $_POST['id_cliente'];
       $nombre = $_POST['nombre_cliente'];
@@ -159,20 +162,55 @@
                    src="../../upload/images/client/<?php echo $imagenCliente;?>"
                    alt="User profile picture">
             </div>
+            <?php
+            //*********************Se verifica que privilegios de módulo o modulos cuenta el usuario para hacer la consulta************************
+            $accion = "";
+            //Variable para mandar a llamar el metodo array para que sume los totales de cargos y abonos del perfil del cliente
+            $accionSumatoria = "";
+            $idmodulo = "";
+            //Se valida para que cuando no tenga ese privilegio el usuario no se muestren los totales de la pensión ó el préstamo.
+            $cargoPrestamo = "hola";
+            $cargoPension = "hola";
+            if($privilegioModuloPrestamo == true && $privilegioModuloPension == true) {
+              $accion = "readbyidcliente";
+              $accionSumatoria = "readbyidclientearray";
+              $idmodulo = "";
+            } else if($privilegioModuloPrestamo == false && $privilegioModuloPension == true) {
+              $accion = "readbyidmoduloandidcliente";
+              $accionSumatoria = "readbyidmoduloandidclientearray";
+              $idmodulo = ', "idmodulo" : "1"';
+              $cargoPrestamo = "style='display:none'";
+            } else if($privilegioModuloPrestamo == true && $privilegioModuloPension == false) {
+              $accion = "readbyidmoduloandidcliente";
+              $accionSumatoria = "readbyidmoduloandidclientearray";
+              $idmodulo = ', "idmodulo" : "2"';
+              $cargoPension = "style='display:none'";
+            }
 
+            ?>
             <h3 class="profile-username text-center"><?php echo $nombre?></h3>
 
             <p class="text-muted text-center"><?php echo $appat . " " .$apmat?></p>
             <p class="text-muted text-center">ID Cliente: <?php echo $idcliente?></p>
 
-            <ul class="list-group list-group-unbordered mb-3">
+            <ul class="list-group list-group-unbordered mb-3" <?php echo $cargoPension?>>
               <li class="text-center list-group-item">
                 <b>Pensión</b> <br>
               </li>
               <li class="list-group-item">
-                <b>Cargos</b> <a id="cargo" name="cargo" class="float-right">$0.0</a> <br>
-                <b>Abonos</b> <a id="abono" name="abono" class="float-right">$0.0</a> <br>
-                <b>Total</b> <a id="total" name="total" class="float-right">$0.0</a>
+                <b>Cargos</b> <a id="cargoPension" name="cargoPension" class="float-right">$0.0</a> <br>
+                <b>Abonos</b> <a id="abonoPension" name="abonoPension" class="float-right">$0.0</a> <br>
+                <b>Total</b> <a id="totalPension" name="totalPension" class="float-right">$0.0</a>
+              </li>
+            </ul>
+            <ul class="list-group list-group-unbordered mb-3" <?php echo $cargoPrestamo?>>
+              <li class="text-center list-group-item">
+                <b>Préstamo</b> <br>
+              </li>
+              <li class="list-group-item">
+                <b>Cargos</b> <a id="cargoPrestamo" name="cargoPrestamo" class="float-right">$0.0</a> <br>
+                <b>Abonos</b> <a id="abonoPrestamo" name="abonoPrestamo" class="float-right">$0.0</a> <br>
+                <b>Total</b> <a id="totalPrestamo" name="totalPrestamo" class="float-right">$0.0</a>
               </li>
             </ul>
           </div>
@@ -248,10 +286,10 @@
           </div>
         <div class="row">
           <div class="col-lg-6 text-center">
-            <a download="archivo.pdf" href="../process/reporteajax.php?idcliente=<?php echo $idcliente;?>&accion=reporteEstadoCuentaPension"><button disabled class="btn btn-danger" name="btnEstadoCuentaPension" id="btnEstadoCuentaPension"><i class="far fa-file-pdf"></i> Estado de Cuenta Pensión</button></a>
+            <a download="archivo.pdf" href="../process/reporteajax.php?idcliente=<?php echo $idcliente;?>&accion=reporteEstadoCuentaPension"><button style="display: none" class="btn btn-danger" name="btnEstadoCuentaPension" id="btnEstadoCuentaPension"><i class="far fa-file-pdf"></i> Estado de Cuenta Pensión</button></a>
           </div>
           <div class="col-lg-6 text-center">
-            <a download="archivo.pdf" href="../process/reporteajax.php?idcliente=<?php echo $idcliente;?>&accion=reporteEstadoCuentaPrestamo"><button disabled class="btn btn-danger" id="btnEstadoCuentaPrestamo" name="btnEstadoCuentaPrestamo"><i class="far fa-file-pdf"></i> Estado de Cuenta Préstamo</button></a>
+            <a download="archivo.pdf" href="../process/reporteajax.php?idcliente=<?php echo $idcliente;?>&accion=reporteEstadoCuentaPrestamo"><button style="display: none" class="btn btn-danger" id="btnEstadoCuentaPrestamo" name="btnEstadoCuentaPrestamo"><i class="far fa-file-pdf"></i> Estado de Cuenta Préstamo</button></a>
           </div>
         </div>
         <br>
@@ -328,24 +366,42 @@
       $.ajax({
         method: "POST",
         url: "../process/transaccionajax.php",
-        data: {"accion": "readbyidclientearray", "idcliente": "<?php echo $idcliente;?>"},
+        data: {"accion": "<?php echo $accionSumatoria;?>", "idcliente": "<?php echo $idcliente;?>" <?php echo $idmodulo;?>},
         success: function (data) {
           try {
             data = JSON.parse(data);
-            var cargo = 0.0;
-            var abono = 0.0;
-            var total = 0.0;
+            //Variables para mostrar los totales de cargos y abonos del perfil del usuario
+            var cargoPrestamo = 0.0;
+            var abonoPrestamo = 0.0;
+            var totalPrestamo = 0.0;
+            var cargoPension = 0.0;
+            var abonoPension = 0.0;
+            var totalPension = 0.0;
             $.each(data, function (i, row) {
-              if (data[i]['nombre_tipo_concepto'] === 'Cargo') {
-                cargo += parseFloat(data[i]['monto']);
-              } else {
-                abono += parseFloat(data[i]['monto']);
+              if(data[i]['nombre_modulo'] === 'Préstamo') {
+                if (data[i]['nombre_tipo_concepto'] === 'Cargo') {
+                  cargoPrestamo += parseFloat(data[i]['monto']);
+                } else {
+                  abonoPrestamo += parseFloat(data[i]['monto']);
+                }
+                totalPrestamo = cargoPrestamo - abonoPrestamo;
+                $('#cargoPrestamo').text("$" + cargoPrestamo);
+                $('#abonoPrestamo').text("$" + abonoPrestamo);
+                $('#totalPrestamo').text("$" + totalPrestamo);
+              }
+              else if(data[i]['nombre_modulo'] === 'Pensión') {
+                if (data[i]['nombre_tipo_concepto'] === 'Cargo') {
+                  cargoPension += parseFloat(data[i]['monto']);
+                } else {
+                  abonoPension += parseFloat(data[i]['monto']);
+                }
+                totalPension = cargoPension - abonoPension;
+                $('#cargoPension').text("$" + cargoPension);
+                $('#abonoPension').text("$" + abonoPension);
+                $('#totalPension ').text("$" + totalPension);
               }
             });
-            total = cargo - abono;
-            $('#cargo').text("$" + cargo);
-            $('#abono').text("$" + abono);
-            $('#total').text("$" + total);
+
             mostrarRegistrosTransaccion();
           } catch (e) {
             var table = $("#tablaDTPension").DataTable({
@@ -401,16 +457,16 @@
       ajax:{
         method: "POST",
         url: "../process/transaccionajax.php",
-        data: {"accion": "readbyidcliente", "idcliente": "<?php echo $idcliente;?>"}
+        data: {"accion": "<?php echo $accion;?>", "idcliente": "<?php echo $idcliente;?>" <?php echo $idmodulo;?>}
       },
       columns: [
         {
           render: function (data, type, row) {
             if(row.nombre_modulo == "Préstamo") {
-              $('#btnEstadoCuentaPrestamo').attr("disabled", false);
+              $('#btnEstadoCuentaPrestamo').show();
               return row.nombre_modulo;
-            } else if(row.nombre_modulo == "Pensión"){
-              $('#btnEstadoCuentaPension').attr("disabled", false);
+            } else if(row.nombre_modulo == "Pensión") {
+              $('#btnEstadoCuentaPension').show();
               return row.nombre_modulo;
             }
           }

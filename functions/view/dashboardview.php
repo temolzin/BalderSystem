@@ -6,7 +6,20 @@
 ?>
   <div class="content">
     <div class="container-fluid">
-      <div class="row">
+      <?php
+        if($menu->privilegioInicioUltimasTransacciones == "style='display:none'" && $menu->privilegioInicioUltimosClientes == "style='display:none'" && $menu->privilegioInicioGraficas == "style='display:none'") {
+          echo '
+          <br><br>
+          <div class="row">
+            <br><br>
+            <div class="col-lg-12 text-center">
+              <img src="../../dist/img/img-01.png" alt=""><br><br>
+            </div>
+          </div>
+          ';
+        }
+      ?>
+      <div class="row" <?php echo $menu->privilegioInicioGraficas?>>
         <div class="col-lg-6">
           <div class="card">
             <div class="card-header">
@@ -55,7 +68,7 @@
 
       <div class="row">
         <!-- /.col-md-6 -->
-          <div class="col-lg-6">
+          <div class="col-lg-<?php echo $menu->privilegioInicioUltimosClientes == "style='display:none'" ? "12" : "6";?>" <?php echo $menu->privilegioInicioUltimasTransacciones?>>
             <div class="card">
               <div class="card-header border-transparent">
                 <h3 class="card-title">Últimas transacciones</h3>
@@ -95,7 +108,7 @@
               <!-- /.card-footer -->
             </div>
           </div>
-          <div class="col-lg-6">
+          <div class="col-lg-<?php echo $menu->privilegioInicioUltimasTransacciones == "style='display:none'" ? "12" : "6";?>" <?php echo $menu->privilegioInicioUltimosClientes?>>
             <div class="card">
                   <div class="card-header">
                     <h3 class="card-title">Últimos Clientes</h3>

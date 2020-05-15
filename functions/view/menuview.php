@@ -13,10 +13,15 @@ class Menu {
   //Variable para la conexión a la base de datos.
   public $conex;
   //Variables para almacenar los privilegios del tipo de usuario
+  public $privilegioModuloPension, $privilegioModuloPrestamo;
+  public $privilegioInicioGraficas, $privilegioInicioUltimasTransacciones, $privilegioInicioUltimosClientes;
   public $privilegioCliente, $privilegioClienteConsultar, $privilegioClienteRegistrar, $privilegioClienteEditar, $privilegioClienteEliminar, $privilegioClienteCargaDocumentos;
   public $privilegioTransaccion, $privilegioTransaccionConsultar, $privilegioTransaccionRegistrar, $privilegioTransaccionEditar, $privilegioTransaccionEliminar;
-  public $privilegioDocumento, $privilegioDocumentoConsultar, $privilegioDocumentoRegistrar, $privilegioDocumentoEditar, $privilegioDocumentoEliminar;
   public $privilegioReporte, $privilegioReporteCheckList, $privilegioReporteEstadoCuenta;
+  public $privilegioDocumento, $privilegioDocumentoConsultar, $privilegioDocumentoRegistrar, $privilegioDocumentoEditar, $privilegioDocumentoEliminar;
+  public $privilegioConcepto, $privilegioConceptoConsultar, $privilegioConceptoRegistrar, $privilegioConceptoEditar, $privilegioConceptoEliminar;
+  public $privilegioUsuario, $privilegioUsuarioConsultar, $privilegioUsuarioRegistrar, $privilegioUsuarioEditar, $privilegioUsuarioEliminar;
+  public $privilegioTipoUsuario, $privilegioTipoUsuarioConsultar, $privilegioTipoUsuarioRegistrar, $privilegioTipoUsuarioEditar, $privilegioTipoUsuarioEliminar;
   public function __construct()
   {
     $this->conex = Conexion::getInstance();
@@ -41,87 +46,171 @@ class Menu {
 
   function header($active, $title)
   {
+    //**********************VARIABLES PARA LOS PRIVILEGIOS DEL USUARIO**************************/
+    //Modulo MODULO
+    $this->privilegioModuloPension = false;
+    $this->privilegioModuloPrestamo = false;
+    //Modulo Inicio
+    $this->privilegioInicioGraficas = "style='display:none'";
+    $this->privilegioInicioUltimosClientes = "style='display:none'";
+    $this->privilegioInicioUltimasTransacciones = "style='display:none'";
     //Módulo Cliente
-    $this->privilegioCliente = "d-lg-none";
-    $this->privilegioClienteConsultar = "d-lg-none";
-    $this->privilegioClienteRegistrar = "d-lg-none";
-    $this->privilegioClienteCargaDocumentos = "d-lg-none";
-    $this->privilegioClienteEditar = "disabled";
-    $this->privilegioClienteEliminar = "disabled";
+    $this->privilegioCliente = "style='display:none'";
+    $this->privilegioClienteConsultar = "style='display:none'";
+    $this->privilegioClienteRegistrar = "style='display:none'";
+    $this->privilegioClienteCargaDocumentos = "style='display:none'";
+    $this->privilegioClienteEditar = "style='display:none'";
+    $this->privilegioClienteEliminar = "style='display:none'";
     //Módulo Transacción
-    $this->privilegioTransaccion = "d-lg-none";
-    $this->privilegioTransaccionConsultar = "d-lg-none";
-    $this->privilegioTransaccionRegistrar = "d-lg-none";
-    $this->privilegioTransaccionEditar = "disabled";
-    $this->privilegioTransaccionEliminar = "disabled";
+    $this->privilegioTransaccion = "style='display:none'";
+    $this->privilegioTransaccionConsultar = "style='display:none'";
+    $this->privilegioTransaccionRegistrar = "style='display:none'";
+    $this->privilegioTransaccionEditar = "style='display:none'";
+    $this->privilegioTransaccionEliminar = "style='display:none'";
     //Modulo Reportes
-    $this->privilegioReporte = "d-lg-none";
-    $this->privilegioReporteCheckList = "d-lg-none";
-    $this->privilegioReporteEstadoCuenta = "d-lg-none";
+    $this->privilegioReporte = "style='display:none'";
+    $this->privilegioReporteCheckList = "style='display:none'";
+    $this->privilegioReporteEstadoCuenta = "style='display:none'";
     //Módulo Documento
-    $this->privilegioDocumento = "d-lg-none";
-    $this->privilegioDocumentoConsultar = "d-lg-none";
-    $this->privilegioDocumentoRegistrar = "d-lg-none";
-    $this->privilegioDocumentoEditar = "disabled";
-    $this->privilegioDocumentoEliminar = "disabled";
+    $this->privilegioDocumento = "style='display:none'";
+    $this->privilegioDocumentoConsultar = "style='display:none'";
+    $this->privilegioDocumentoRegistrar = "style='display:none'";
+    $this->privilegioDocumentoEditar = "style='display:none'";
+    $this->privilegioDocumentoEliminar = "style='display:none'";
+    //Módulo Concepto
+    $this->privilegioConcepto = "style='display:none'";
+    $this->privilegioConceptoConsultar = "style='display:none'";
+    $this->privilegioConceptoRegistrar = "style='display:none'";
+    $this->privilegioConceptoEditar = "style='display:none'";
+    $this->privilegioConceptoEliminar = "style='display:none'";
+    //Módulo Usuario
+    $this->privilegioUsuario = "style='display:none'";
+    $this->privilegioUsuarioConsultar = "style='display:none'";
+    $this->privilegioUsuarioRegistrar = "style='display:none'";
+    $this->privilegioUsuarioEditar = "style='display:none'";
+    $this->privilegioUsuarioEliminar = "style='display:none'";
+    //Módulo TtpoUsuario
+    $this->privilegioTipoUsuario = "style='display:none'";
+    $this->privilegioTipoUsuarioConsultar = "style='display:none'";
+    $this->privilegioTipoUsuarioRegistrar = "style='display:none'";
+    $this->privilegioTipoUsuarioEditar = "style='display:none'";
+    $this->privilegioTipoUsuarioEliminar = "style='display:none'";
 
-    foreach ($this->moduloprivilegiousuario as $moduloprivilegio) {
-      foreach ($this->privilegiousuario as $privusuario) {
-        //Módulo Cliente
-        if($moduloprivilegio == "Cliente" && $privusuario == "Consultar") {
-          $this->privilegioCliente= "";
-          $this->privilegioClienteConsultar = "";
-        } else if($moduloprivilegio == "Cliente" && $privusuario == "Registrar") {
-          $this->privilegioCliente= "";
-          $this->privilegioClienteRegistrar = "";
-        } else if($moduloprivilegio == "Cliente" && $privusuario == "Eliminar") {
-          $this->privilegioCliente= "";
-          $this->privilegioClienteEliminar = "";
-        } else if($moduloprivilegio == "Cliente" && $privusuario == "Editar") {
-          $this->privilegioCliente= "";
-          $this->privilegioClienteEditar = "";
-        } else if($moduloprivilegio == "Cliente" && $privusuario == "CargarDocumentos") {
-          $this->privilegioCliente= "";
-          $this->privilegioClienteCargaDocumentos = "";
-        }
-        //Módulo Transacción
-        if ($moduloprivilegio == "Transaccion" && $privusuario == "Consultar") {
-          $this->privilegioTransaccion = "";
-          $this->privilegioTransaccionConsultar = "";
-        } else if($moduloprivilegio == "Transaccion" && $privusuario == "Registrar") {
-          $this->privilegioTransaccion = "";
-          $this->privilegioTransaccionRegistrar = "";
-        } else if($moduloprivilegio == "Transaccion" && $privusuario == "Eliminar") {
-          $this->privilegioTransaccion = "";
-          $this->privilegioTransaccionEliminar = "";
-        } else if($moduloprivilegio == "Transaccion" && $privusuario == "Editar") {
-          $this->privilegioTransaccion = "";
-          $this->privilegioTransaccionEditar = "";
-        }
-        //Módulo Reportes
-        if ($moduloprivilegio == "Reporte" && $privusuario == "CheckList Documentos") {
-          $this->privilegioReporte = "";
-          $this->privilegioReporteCheckList = "";
-        } else if($moduloprivilegio == "Reporte" && $privusuario == "Estado de cuenta") {
-          $this->privilegioReporte = "";
-          $this->privilegioReporteEstadoCuenta = "";
-        }
-        //Módulo Documentos
-        if ($moduloprivilegio == "Documento" && $privusuario == "Consultar") {
-          $this->privilegioDocumento = "";
-          $this->privilegioDocumentoConsultar = "";
-        } else if($moduloprivilegio == "Documento" && $privusuario == "Registrar") {
-          $this->privilegioDocumento = "";
-          $this->privilegioDocumentoRegistrar = "";
-        } else if($moduloprivilegio == "Documento" && $privusuario == "Eliminar") {
-          $this->privilegioDocumento = "";
-          $this->privilegioDocumentoEliminar = "";
-        } else if($moduloprivilegio == "Documento" && $privusuario == "Editar") {
-          $this->privilegioDocumento = "";
-          $this->privilegioDocumentoEditar = "";
-        }
+    /***************************FOREACH QUE RECORRE LOS PRIVILEGIOS DEL USUARIO REGISTRADOS EN LA BASE DE DATOS **********************/
+    foreach ($this->privilegiousuario as $privusuario) {
+      //Modulo MODULO
+      if($privusuario == "ModuloPension") {
+        $this->privilegioModuloPension = true;
+      } else if($privusuario == "ModuloPrestamo") {
+        $this->privilegioModuloPrestamo = true;
+      }
+      $_SESSION['user']['privilegioModuloPension'] = $this->privilegioModuloPension;
+      $_SESSION['user']['privilegioModuloPrestamo'] = $this->privilegioModuloPrestamo;
+      //Modulo Inicio
+      if($privusuario == "InicioUltimasTransacciones") {
+        $this->privilegioInicioUltimasTransacciones= "";
+      } else if($privusuario == "InicioUltimosClientes") {
+        $this->privilegioInicioUltimosClientes = "";
+      } else if($privusuario == "InicioGraficas") {
+        $this->privilegioInicioGraficas= "";
+      }
+      //Módulo Cliente
+      if($privusuario == "ConsultarCliente") {
+        $this->privilegioCliente= "";
+        $this->privilegioClienteConsultar = "";
+      } else if($privusuario == "RegistrarCliente") {
+        $this->privilegioCliente= "";
+        $this->privilegioClienteRegistrar = "";
+      } else if($privusuario == "EliminarCliente") {
+        $this->privilegioCliente= "";
+        $this->privilegioClienteEliminar = "";
+      } else if($privusuario == "EditarCliente") {
+        $this->privilegioCliente= "";
+        $this->privilegioClienteEditar = "";
+      } else if($privusuario == "CargarDocumentosCliente") {
+        $this->privilegioCliente= "";
+        $this->privilegioClienteCargaDocumentos = "";
+      }
+      //Módulo Transacción
+      if ($privusuario == "ConsultarTransaccion") {
+        $this->privilegioTransaccion = "";
+        $this->privilegioTransaccionConsultar = "";
+      } else if($privusuario == "RegistrarTransaccion") {
+        $this->privilegioTransaccion = "";
+        $this->privilegioTransaccionRegistrar = "";
+      } else if($privusuario == "EliminarTransaccion") {
+        $this->privilegioTransaccion = "";
+        $this->privilegioTransaccionEliminar = "";
+      } else if($privusuario == "EditarTransaccion") {
+        $this->privilegioTransaccion = "";
+        $this->privilegioTransaccionEditar = "";
+      }
+      //Módulo Reportes
+      if ($privusuario == "CheckListReporte") {
+        $this->privilegioReporte = "";
+        $this->privilegioReporteCheckList = "";
+      } else if($privusuario == "EstadoCuentaReporte") {
+        $this->privilegioReporte = "";
+        $this->privilegioReporteEstadoCuenta = "";
+      }
+      //Módulo Documentos
+      if ($privusuario == "ConsultarDocumento") {
+        $this->privilegioDocumento = "";
+        $this->privilegioDocumentoConsultar = "";
+      } else if($privusuario == "RegistrarDocumento") {
+        $this->privilegioDocumento = "";
+        $this->privilegioDocumentoRegistrar = "";
+      } else if($privusuario == "EliminarDocumento") {
+        $this->privilegioDocumento = "";
+        $this->privilegioDocumentoEliminar = "";
+      } else if($privusuario == "EditarDocumento") {
+        $this->privilegioDocumento = "";
+        $this->privilegioDocumentoEditar = "";
+      }
+      //Módulo Conceptos
+      if ($privusuario == "ConsultarConcepto") {
+        $this->privilegioConcepto = "";
+        $this->privilegioConceptoConsultar = "";
+      } else if($privusuario == "RegistrarConcepto") {
+        $this->privilegioConcepto = "";
+        $this->privilegioConceptoRegistrar = "";
+      } else if($privusuario == "EliminarConcepto") {
+        $this->privilegioConcepto = "";
+        $this->privilegioConceptoEliminar = "";
+      } else if($privusuario == "EditarConcepto") {
+        $this->privilegioConcepto = "";
+        $this->privilegioConceptoEditar = "";
+      }
+      //Módulo Usuarios
+      if ($privusuario == "ConsultarUsuario") {
+        $this->privilegioUsuario = "";
+        $this->privilegioUsuarioConsultar = "";
+      } else if($privusuario == "RegistrarUsuario") {
+        $this->privilegioUsuario = "";
+        $this->privilegioUsuarioRegistrar = "";
+      } else if($privusuario == "EliminarUsuario") {
+        $this->privilegioUsuario = "";
+        $this->privilegioUsuarioEliminar = "";
+      } else if($privusuario == "EditarUsuario") {
+        $this->privilegioUsuario = "";
+        $this->privilegioUsuarioEditar = "";
+      }
+      //Módulo TipoUsuario
+      if ($privusuario == "ConsultarTipoUsuario") {
+        $this->privilegioTipoUsuario = "";
+        $this->privilegioTipoUsuarioConsultar = "";
+      } else if($privusuario == "RegistrarTipoUsuario") {
+        $this->privilegioTipoUsuario = "";
+        $this->privilegioTipoUsuarioRegistrar = "";
+      } else if($privusuario == "EliminarTipoUsuario") {
+        $this->privilegioTipoUsuario = "";
+        $this->privilegioTipoUsuarioEliminar = "";
+      } else if($privusuario == "EditarTipoUsuario") {
+        $this->privilegioTipoUsuario = "";
+        $this->privilegioTipoUsuarioEditar = "";
       }
     }
+
     $activeInicio = "";
     $activeCliente = "";
     $activeClienteVer = "";
@@ -288,7 +377,7 @@ class Menu {
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                   <div class="image">
                     <img src="'.$this->urlimagen.'" class="img-circle elevation-2" alt="User Image">
-                  </div>
+                  </div class="image">
                   <div class="info">
                     <a href="#" class="d-block">'.$this->nombreMedio.'</a>
                   </div>
@@ -301,7 +390,7 @@ class Menu {
                     </p>
                   </a>
                 </li>
-                <li class="nav-item has-treeview ' . $this->privilegioCliente . '" >
+                <li class="nav-item has-treeview" ' . $this->privilegioCliente . ' >
                   <a href="#" class="nav-link '.$activeCliente. '">
                     <i class="nav-icon fas fa-users"></i>
                     <p>
@@ -310,19 +399,19 @@ class Menu {
                     </p>
                   </a>
                   <ul class="nav nav-treeview">
-                    <li class="nav-item '.$this->privilegioClienteRegistrar.'">
+                    <li class="nav-item" '.$this->privilegioClienteRegistrar.'>
                       <a href="clienteregistrarview.php" class="nav-link ' .$activeClienteReg. '">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Registrar Cliente</p>
                       </a>
                     </li>
-                    <li class="nav-item '.$this->privilegioClienteConsultar.'">
+                    <li class="nav-item" '.$this->privilegioClienteConsultar.'>
                       <a href="clienteconsultarview.php" class="nav-link ' .$activeClienteVer. '">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Ver Clientes</p>
                       </a>
                     </li>
-                    <li class="nav-item '.$this->privilegioClienteCargaDocumentos.'">
+                    <li class="nav-item" '.$this->privilegioClienteCargaDocumentos.'>
                       <a href="documentoclienteview.php" class="nav-link ' .$activeSubirDocumento.'">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Cargar documentos</p>
@@ -330,7 +419,7 @@ class Menu {
                     </li>
                   </ul>
                 </li>
-                <li class="nav-item has-treeview '.$this->privilegioTransaccion.' ">
+                <li class="nav-item has-treeview" '.$this->privilegioTransaccion.'>
                   <a href="#" class="nav-link '.$activeTransaccion.'">
                     <i class="nav-icon fas fa-dollar-sign"></i>
                     <p>
@@ -339,13 +428,13 @@ class Menu {
                     </p>
                   </a>
                   <ul class="nav nav-treeview">
-                    <li class="nav-item '.$this->privilegioTransaccionRegistrar.'">
+                    <li class="nav-item" '.$this->privilegioTransaccionRegistrar.'>
                       <a href="transaccionregistrarview.php" class="nav-link '.$activeTransaccionReg.'">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Registrar Transaccion</p>
                       </a>
                     </li>
-                    <li class="nav-item '.$this->privilegioTransaccionConsultar.'">
+                    <li class="nav-item" '.$this->privilegioTransaccionConsultar.'>
                       <a href="transaccionconsultarview.php" class="nav-link '.$activeTransaccionVer.'">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Ver Transacciones</p>
@@ -376,7 +465,7 @@ class Menu {
                     </li>
                   </ul>
                 </li> -->
-                <li class="nav-item has-treeview '.$this->privilegioReporte.'">
+                <li class="nav-item has-treeview" '.$this->privilegioReporte.'>
                   <a href="#" class="nav-link '.$activeReporte.'">
                     <i class="nav-icon fas fa-file-pdf"></i>
                     <p>
@@ -385,13 +474,13 @@ class Menu {
                     </p>
                   </a>
                   <ul class="nav nav-treeview">
-                    <li class="nav-item ' .$this->privilegioReporteCheckList.'">
+                    <li class="nav-item" ' .$this->privilegioReporteCheckList.'>
                       <a href="reportechecklist.php" class="nav-link '.$activeReporteCheckList. '">
                         <i class="far fa-circle nav-icon"></i>
                         <p>CheckList</p>
                       </a>
                     </li>
-                    <li class="nav-item '.$this->privilegioClienteCargaDocumentos.'">
+                    <li class="nav-item" '.$this->privilegioClienteCargaDocumentos.'>
                       <a href="reporteestadocuentaview.php" class="nav-link ' .$activeReporteEstadoCuenta.'">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Estado de cuenta</p>
@@ -399,7 +488,7 @@ class Menu {
                     </li>
                   </ul>
                 </li>
-                <li class="nav-item has-treeview '.$this->privilegioDocumento.'">
+                <li class="nav-item has-treeview" '.$this->privilegioDocumento.'>
                   <a href="#" class="nav-link '.$activeDocumento.'">
                     <i class="nav-icon fas fa-folder"></i>
                     <p>
@@ -408,13 +497,13 @@ class Menu {
                     </p>
                   </a>
                   <ul class="nav nav-treeview">
-                    <li class="nav-item '.$this->privilegioDocumentoRegistrar.'">
+                    <li class="nav-item" '.$this->privilegioDocumentoRegistrar.'>
                       <a href="documentoregistrarview.php" class="nav-link '.$activeDocumentoReg. '">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Registrar Documento</p>
                       </a>
                     </li>
-                    <li class="nav-item '.$this->privilegioDocumentoConsultar.'">
+                    <li class="nav-item" '.$this->privilegioDocumentoConsultar.'>
                       <a href="documentoconsultarview.php" class="nav-link ' .$activeDocumentoVer. '">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Ver Documentos</p>
@@ -422,7 +511,7 @@ class Menu {
                     </li>
                   </ul>
                 </li>
-                <li class="nav-item has-treeview">
+                <li class="nav-item has-treeview" '.$this->privilegioConcepto.'>
                   <a href="#" class="nav-link ' .$activeConceptos.'">
                     <i class="nav-icon fas fa-cogs"></i>
                     <p>
@@ -431,13 +520,13 @@ class Menu {
                     </p>
                   </a>
                   <ul class="nav nav-treeview">
-                    <li class="nav-item">
+                    <li class="nav-item" '.$this->privilegioConceptoRegistrar.'>
                       <a href="conceptoregistrarview.php" class="nav-link  '.$activeConceptosReg. '">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Registrar Concepto</p>
                       </a>
                     </li>
-                    <li class="nav-item ">
+                    <li class="nav-item" '.$this->privilegioConceptoConsultar.'>
                       <a href="conceptoconsultarview.php" class="nav-link ' .$activeConceptosVer. '">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Ver Conceptos</p>
@@ -445,7 +534,7 @@ class Menu {
                     </li>
                   </ul>
                 </li>
-                <li class="nav-item has-treeview">
+                <li class="nav-item has-treeview" '.$this->privilegioUsuario.'>
                   <a href="#" class="nav-link ' .$activeUsuario.'">
                     <i class="nav-icon fas fa-users-cog"></i>
                     <p>
@@ -454,13 +543,13 @@ class Menu {
                     </p>
                   </a>
                   <ul class="nav nav-treeview">
-                    <li class="nav-item">
+                    <li class="nav-item" '.$this->privilegioUsuarioRegistrar.'>
                       <a href="usuarioregistrarview.php" class="nav-link '.$activeUsuarioReg. '">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Registrar Usuarios</p>
                       </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" '.$this->privilegioUsuarioConsultar.'>
                       <a href="usuarioconsultarview.php" class="nav-link ' .$activeUsuarioVer. '">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Ver Usuarios</p>
@@ -468,7 +557,7 @@ class Menu {
                     </li>
                   </ul>
                 </li>
-                <li class="nav-item has-treeview">
+                <li class="nav-item has-treeview" '.$this->privilegioTipoUsuario.'>
                   <a href="#" class="nav-link ' .$activeRolUsuario.'">
                     <i class="nav-icon fas fa-user-cog"></i>
                     <p>
@@ -477,13 +566,13 @@ class Menu {
                     </p>
                   </a>
                   <ul class="nav nav-treeview">
-                    <li class="nav-item">
+                    <li class="nav-item" '.$this->privilegioTipoUsuarioRegistrar.'>
                       <a href="rolusuarioregistrarview.php" class="nav-link '.$activeRolUsuarioReg. '">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Registrar Rol</p>
                       </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" '.$this->privilegioTipoUsuarioConsultar.'>
                       <a href="rolusuarioconsultarview.php" class="nav-link ' .$activeRolUsuarioVer. '">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Ver Rol Usuarios</p>

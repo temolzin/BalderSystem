@@ -19,6 +19,19 @@
       echo json_encode($objConcepto, JSON_UNESCAPED_UNICODE);
     }
 
+    //Metodo que regresa un json con formato de datatable para llenar la tabla de conceptos según los módulos que tenga permiso(privilegio) el usuario
+    public function readbyidmodulodatatable($idmodulo)
+    {
+      $query = "SELECT * FROM conceptotransaccion ct INNER JOIN modulo m ON ct.id_modulo = m.id_modulo 
+                INNER JOIN tipoconceptotransaccion tct ON ct.id_tipo_concepto_transaccion = tct.id_tipo_concepto_transaccion 
+                WHERE ct.activo = 1 and ct.id_modulo = " . $idmodulo;
+      $objConcepto = null;
+      foreach ($this->conex->consultar($query) as $key => $value) {
+        $objConcepto['data'][] = $value;
+      }
+      echo json_encode($objConcepto, JSON_UNESCAPED_UNICODE);
+    }
+
     public function readbyidmodulo($idmodulo)
     {
       $query = "SELECT * FROM conceptotransaccion ct INNER JOIN modulo m ON ct.id_modulo = m.id_modulo 
@@ -26,7 +39,7 @@
                 WHERE ct.activo = 1 and ct.id_modulo = " . $idmodulo;
       $objConcepto = null;
       foreach ($this->conex->consultar($query) as $key => $value) {
-        $objConcepto[] = $value;
+        $objConcepto['data'][] = $value;
       }
       echo json_encode($objConcepto, JSON_UNESCAPED_UNICODE);
     }

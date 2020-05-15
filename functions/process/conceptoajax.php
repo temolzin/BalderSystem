@@ -43,6 +43,11 @@
     $idmodulo = $_POST['idmodulo'];
     echo $concepto->readbyidmodulo($idmodulo);
   }
+  //Metodo que regresa un json con formato de datatable para llenar la tabla de conceptos según los módulos que tenga permiso(privilegio) el usuario
+  else if($accion == "readbyidmodulodatatable") {
+    $idmodulo = $_POST['idmodulo'];
+    echo $concepto->readbyidmodulodatatable($idmodulo);
+  }
   else if($accion == "readbyidconcepto") {
     $idconceptotransaccion = $_POST['idconceptotransaccion'];
     echo $concepto->readbyidconcepto($idconceptotransaccion);

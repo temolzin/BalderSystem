@@ -141,169 +141,299 @@ INSERT INTO moduloprivilegiousuario VALUES (
 );
 INSERT INTO moduloprivilegiousuario VALUES (
     9,
-    'Rol Usuario'
+    'TipoUsuario'
 );
 
 /*INSERT privilegios de usuario*/
 INSERT INTO privilegiousuario VALUES (
     1,
     1,
-    'Pensión'
+    'ModuloPension'
 );
 INSERT INTO privilegiousuario VALUES (
     2,
     1,
-    'Préstamo'
+    'ModuloPrestamo'
 );
 INSERT INTO privilegiousuario VALUES (
     3,
     2,
-    'Gráficas'
+    'InicioGraficas'
 );
 INSERT INTO privilegiousuario VALUES (
     4,
     2,
-    'Últimas transacciones'
+    'InicioUltimasTransacciones'
 );
 INSERT INTO privilegiousuario VALUES (
     5,
     2,
-    'Últimos clientes'
+    'InicioUltimosClientes'
 );
 INSERT INTO privilegiousuario VALUES (
     6,
     3,
-    'Consultar'
+    'ConsultarCliente'
 );
 INSERT INTO privilegiousuario VALUES (
     7,
     3,
-    'Registrar'
+    'RegistrarCliente'
 );
 INSERT INTO privilegiousuario VALUES (
     8,
     3,
-    'Editar'
+    'EditarCliente'
 );
 INSERT INTO privilegiousuario VALUES (
     9,
     3,
-    'Eliminar'
+    'EliminarCliente'
 );
 INSERT INTO privilegiousuario VALUES (
     10,
     3,
-    'CargarDocumentos'
+    'CargarDocumentosCliente'
 );
 INSERT INTO privilegiousuario VALUES (
     11,
     4,
-    'Consultar'
+    'ConsultarTransaccion'
 );
 INSERT INTO privilegiousuario VALUES (
     12,
     4,
-    'Registrar'
+    'RegistrarTransaccion'
 );
 INSERT INTO privilegiousuario VALUES (
     13,
     4,
-    'Editar'
+    'EditarTransaccion'
 );
 INSERT INTO privilegiousuario VALUES (
     14,
     4,
-    'Eliminar'
+    'EliminarTransaccion'
 );
 INSERT INTO privilegiousuario VALUES (
     15,
     5,
-    'Estado de cuenta'
+    'EstadoCuentaReporte'
 );
 INSERT INTO privilegiousuario VALUES (
     16,
     5,
-    'CheckList Documentos'
+    'CheckListReporte'
 );
 INSERT INTO privilegiousuario VALUES (
     17,
     6,
-    'Consultar'
+    'ConsultarDocumento'
 );
 INSERT INTO privilegiousuario VALUES (
     18,
     6,
-    'Registrar'
+    'RegistrarDocumento'
 );
 INSERT INTO privilegiousuario VALUES (
     19,
     6,
-    'Editar'
+    'EditarDocumento'
 );
 INSERT INTO privilegiousuario VALUES (
     20,
     6,
-    'Eliminar'
+    'EliminarDocumento'
 );
 INSERT INTO privilegiousuario VALUES (
     21,
     7,
-    'Consultar'
+    'ConsultarConcepto'
 );
 INSERT INTO privilegiousuario VALUES (
     22,
     7,
-    'Registrar'
+    'RegistrarConcepto'
 );
 INSERT INTO privilegiousuario VALUES (
     23,
     7,
-    'Editar'
+    'EditarConcepto'
 );
 INSERT INTO privilegiousuario VALUES (
     24,
     7,
-    'Eliminar'
+    'EliminarConcepto'
 );
 INSERT INTO privilegiousuario VALUES (
     25,
     8,
-    'Consultar'
+    'ConsultarUsuario'
 );
 INSERT INTO privilegiousuario VALUES (
     26,
     8,
-    'Registrar'
+    'RegistrarUsuario'
 );
 INSERT INTO privilegiousuario VALUES (
     27,
     8,
-    'Editar'
+    'EditarUsuario'
 );
 INSERT INTO privilegiousuario VALUES (
     28,
     8,
-    'Eliminar'
+    'EliminarUsuario'
 );
 INSERT INTO privilegiousuario VALUES (
     29,
     9,
-    'Consultar'
+    'ConsultarTipoUsuario'
 );
 INSERT INTO privilegiousuario VALUES (
     30,
     9,
-    'Registrar'
+    'RegistrarTipoUsuario'
 );
 INSERT INTO privilegiousuario VALUES (
     31,
     9,
-    'Editar'
+    'EditarTipoUsuario'
 );
 INSERT INTO privilegiousuario VALUES (
     32,
     9,
-    'Eliminar'
+    'EliminarTipoUsuario'
 );
+/*INSERT Privilegios del tipo de usuario*/
+INSERT INTO tipousuarioprivilegio VALUES (
+    1,
+    1
+);
+INSERT INTO tipousuarioprivilegio VALUES (
+    1,
+    2
+);
+INSERT INTO tipousuarioprivilegio VALUES (
+    1,
+    3
+);
+INSERT INTO tipousuarioprivilegio VALUES (
+    1,
+    4
+);
+INSERT INTO tipousuarioprivilegio VALUES (
+    1,
+    5
+);
+INSERT INTO tipousuarioprivilegio VALUES (
+    1,
+    6
+);
+INSERT INTO tipousuarioprivilegio VALUES (
+    1,
+    7
+);
+INSERT INTO tipousuarioprivilegio VALUES (
+    1,
+    8
+);
+INSERT INTO tipousuarioprivilegio VALUES (
+    1,
+    9
+);
+INSERT INTO tipousuarioprivilegio VALUES (
+    1,
+    10
+);
+INSERT INTO tipousuarioprivilegio VALUES (
+    1,
+    11
+);
+INSERT INTO tipousuarioprivilegio VALUES (
+    1,
+    12
+);
+INSERT INTO tipousuarioprivilegio VALUES (
+    1,
+    13
+);
+INSERT INTO tipousuarioprivilegio VALUES (
+    1,
+    14
+);
+INSERT INTO tipousuarioprivilegio VALUES (
+    1,
+    15
+);
+INSERT INTO tipousuarioprivilegio VALUES (
+    1,
+    16
+);
+INSERT INTO tipousuarioprivilegio VALUES (
+    1,
+    17
+);
+INSERT INTO tipousuarioprivilegio VALUES (
+    1,
+    18
+);
+INSERT INTO tipousuarioprivilegio VALUES (
+    1,
+    19
+);
+INSERT INTO tipousuarioprivilegio VALUES (
+    1,
+    20
+);
+INSERT INTO tipousuarioprivilegio VALUES (
+    1,
+    21
+);
+INSERT INTO tipousuarioprivilegio VALUES (
+    1,
+    22
+);
+INSERT INTO tipousuarioprivilegio VALUES (
+    1,
+    23
+);
+INSERT INTO tipousuarioprivilegio VALUES (
+    1,
+    24
+);
+INSERT INTO tipousuarioprivilegio VALUES (
+    1,
+    25
+);
+INSERT INTO tipousuarioprivilegio VALUES (
+    1,
+    26
+);
+INSERT INTO tipousuarioprivilegio VALUES (
+    1,
+    27
+);
+INSERT INTO tipousuarioprivilegio VALUES (
+    1,
+    28
+);
+INSERT INTO tipousuarioprivilegio VALUES (
+    1,
+    29
+);
+INSERT INTO tipousuarioprivilegio VALUES (
+    1,
+    30
+);
+INSERT INTO tipousuarioprivilegio VALUES (
+    1,
+    31
+);
+INSERT INTO tipousuarioprivilegio VALUES (
+    1,
+    32
+);
+
 
 

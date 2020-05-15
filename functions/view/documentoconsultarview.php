@@ -142,8 +142,8 @@
         columns: [
           {data:"nombre_documento"},
           {data:"descripcion"},
-          {data:null, "defaultContent": "<button class='editar btn btn-primary' data-toggle='modal' data-target='#modalActualizar'><i class=\"fa fa-edit\"></i></button> " +
-              "<button class='eliminar btn btn-danger' data-toggle='modal' data-target='#modalEliminar'><i class=\"far fa-trash-alt\"></i></button>" }
+          {data:null, "defaultContent": "<button class='editar btn btn-primary' <?php echo $menu->privilegioDocumentoEditar?> data-toggle='modal' data-target='#modalActualizar'><i class=\"fa fa-edit\"></i></button> " +
+              "<button class='eliminar btn btn-danger' data-toggle='modal' <?php echo $menu->privilegioDocumentoEliminar?> data-target='#modalEliminar'><i class=\"far fa-trash-alt\"></i></button>" }
         ],
         responsive: true,
         language: idiomaDataTable,

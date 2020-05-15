@@ -215,13 +215,27 @@
       "colvis": "Visibilidad"
     }
   };
-
+  <?php
+    //*********************Se verifica que privilegios de módulo o modulos cuenta el usuario para hacer la consulta************************
+    $accion = "";
+    $idmodulo = "";
+    if($menu->privilegioModuloPrestamo == true && $menu->privilegioModuloPension == true) {
+      $accion = "read";
+      $idmodulo = "";
+    } else if($menu->privilegioModuloPrestamo == false && $menu->privilegioModuloPension == true) {
+      $accion = "readbyidmodulo";
+      $idmodulo = ', "idmodulo" : "1"';
+    } else if($menu->privilegioModuloPrestamo == true && $menu->privilegioModuloPension == false) {
+      $accion = "readbyidmodulo";
+      $idmodulo = ', "idmodulo" : "2"';
+    }
+  ?>
   var mostrarRegistros = function () {
     var table = $("#tablaDT").DataTable({
         ajax:{
           method: "POST",
           url: "../process/transaccionajax.php",
-          data: {"accion":"read"}
+          data: {"accion":"<?php echo $accion;?>" <?php echo $idmodulo?>}
         },
         columns: [
           {data:"nombre_modulo"},
@@ -232,8 +246,8 @@
           {data:"fecha_registro"},
           {data: "monto", render: $.fn.dataTable.render.number( ',', '.', 2, '$') },
           {data:6}, //En la posición 6 está la descripción de la transacción.
-          {data:null, "defaultContent": "<button class='editar btn btn-primary' data-toggle='modal' data-target='#modalActualizar'><i class=\"fa fa-edit\"></i></button> " +
-              "<button class='eliminar btn btn-danger' data-toggle='modal' data-target='#modalEliminar'><i class=\"far fa-trash-alt\"></i></button>" }
+          {data:null, "defaultContent": "<button class='editar btn btn-primary' <?php echo $menu->privilegioTransaccionEditar?> data-toggle='modal' data-target='#modalActualizar'><i class=\"fa fa-edit\"></i></button> " +
+              "<button class='eliminar btn btn-danger' data-toggle='modal' <?php echo $menu->privilegioTipoUsuarioEliminar?> data-target='#modalEliminar'><i class=\"far fa-trash-alt\"></i></button>" }
         ],
         responsive: true,
         language: idiomaDataTable,

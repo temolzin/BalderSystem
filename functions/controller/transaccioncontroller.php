@@ -56,6 +56,7 @@
       echo json_encode($objTransaccion, JSON_UNESCAPED_UNICODE);
     }
 
+    //Metodo que regresa las transacciones hechas por el cliente delimitado por el idmodulo
     public function readbyidmoduloandidcliente($idmodulo, $idcliente)
     {
       $query = "SELECT * FROM transaccion t INNER JOIN usuario u ON t.id_usuario = u.id_usuario 
@@ -85,6 +86,7 @@
       }
       echo json_encode($objTransaccion, JSON_UNESCAPED_UNICODE);
     }
+
     //Metodo que regresa el objeto del cliente para ver el perfil del cliente por idmodulo y idcliente
     public function readbyidmoduloandidclientejson($idmodulo, $idcliente)
     {

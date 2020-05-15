@@ -139,8 +139,8 @@
           columns: [
             {data:"id_tipo_usuario"},
             {data:"nombre_tipo_usuario"},
-            {data:null, "defaultContent": "<button class='editar btn btn-primary' data-toggle='modal' data-target='#modalActualizar'><i class=\"fa fa-edit\"></i></button> " +
-                "<button class='eliminar btn btn-danger' data-toggle='modal' disabled data-target='#modalEliminar'><i class=\"far fa-trash-alt\"></i></button>" }
+            {data:null, "defaultContent": "<button class='editar btn btn-primary' <?php echo $menu->privilegioTipoUsuarioEditar?> data-toggle='modal' data-target='#modalActualizar'><i class=\"fa fa-edit\"></i></button> " +
+                "<button class='eliminar btn btn-danger' data-toggle='modal' style='display: none;' data-target='#modalEliminar'><i class=\"far fa-trash-alt\"></i></button>" }
           ],
           responsive: true,
           language: idiomaDataTable,
@@ -217,6 +217,9 @@
                     if(rowC.id_modulo_privilegio_usuario == row.id_modulo_privilegio_usuario) {
                       checkPrivilegio = "checked";
                     }
+                    if(row.nombre_modulo_privilegio == "Inicio") {
+                      checkPrivilegio = "checked";
+                    }
                   });
                 }
               });
@@ -224,7 +227,7 @@
                 '                    <div class="icheck-primary">\n' +
                 '                      <input type="checkbox" ' + checkPrivilegio +' name="mod'+row.id_modulo_privilegio_usuario +'" id="mod'+row.id_modulo_privilegio_usuario +'">\n' +
                 '                      <label for="mod' + row.id_modulo_privilegio_usuario +'">\n' +
-                row.nombre_modulo_privilegio +
+                                          row.nombre_modulo_privilegio +
                 '                      </label>\n' +
                 '                    </div>\n' +
                 '                  </div>';

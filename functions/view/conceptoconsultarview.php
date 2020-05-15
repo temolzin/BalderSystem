@@ -164,20 +164,35 @@
       "colvis": "Visibilidad"
     }
   };
+  <?php
+  //*********************Se verifica que privilegios de módulo o modulos cuenta el usuario para hacer la consulta************************
+  $accion = "";
+  $idmodulo = "";
+  if($menu->privilegioModuloPrestamo == true && $menu->privilegioModuloPension == true) {
+    $accion = "read";
+    $idmodulo = "";
+  } else if($menu->privilegioModuloPrestamo == false && $menu->privilegioModuloPension == true) {
+    $accion = "readbyidmodulodatatable";
+    $idmodulo = ', "idmodulo" : "1"';
+  } else if($menu->privilegioModuloPrestamo == true && $menu->privilegioModuloPension == false) {
+    $accion = "readbyidmodulodatatable";
+    $idmodulo = ', "idmodulo" : "2"';
+  }
+  ?>
   var mostrarRegistros = function () {
     var table = $("#tablaDT").DataTable({
         ajax:{
           method: "POST",
           url: "../process/conceptoajax.php",
-          data: {"accion":"read"}
+          data: {"accion": "<?php echo $accion;?>" <?php echo $idmodulo?>}
         },
         columns: [
           {data:"nombre_modulo"},
           {data:"nombre_tipo_concepto"},
           {data:"nombre_concepto_transaccion"},
           {data:"descripcion"},
-          {data:null, "defaultContent": "<button class='editar btn btn-primary' data-toggle='modal' data-target='#modalActualizar'><i class=\"fa fa-edit\"></i></button> " +
-              "<button class='eliminar btn btn-danger' data-toggle='modal' data-target='#modalEliminar'><i class=\"far fa-trash-alt\"></i></button>" }
+          {data:null, "defaultContent": "<button class='editar btn btn-primary' <?php echo $menu->privilegioConceptoEditar?> data-toggle='modal' data-target='#modalActualizar'><i class=\"fa fa-edit\"></i></button> " +
+              "<button class='eliminar btn btn-danger' data-toggle='modal' <?php echo $menu->privilegioConceptoEliminar?> data-target='#modalEliminar'><i class=\"far fa-trash-alt\"></i></button>" }
         ],
         responsive: true,
         language: idiomaDataTable,
