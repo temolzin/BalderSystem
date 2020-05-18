@@ -137,7 +137,18 @@
   $(document).ready(function () {
     enviarFormulario();
     enviarFormularioIdcliente();
-    llenarComboConcepto(1); // se inicia con 1 ya que el módulo 1 es pensión y es el que sale por defecto
+    <?php
+    //*********************Se verifica que privilegios de módulo o modulos cuenta el usuario para hacer la consulta************************
+    $idmodulo = "";
+    if($menu->privilegioModuloPrestamo == true && $menu->privilegioModuloPension == true) {
+      $idmodulo = "1";
+    } else if($menu->privilegioModuloPrestamo == false && $menu->privilegioModuloPension == true) {
+      $idmodulo = '1';
+    } else if($menu->privilegioModuloPrestamo == true && $menu->privilegioModuloPension == false) {
+      $idmodulo = '2';
+    }
+    ?>
+    llenarComboConcepto(<?php echo $idmodulo?>); // se inicia con 1 ya que el módulo 1 es pensión y es el que sale por defecto
     llenarComboModulo();
     consultarTipoConcepto();
   });
@@ -166,11 +177,26 @@
     llenarComboConcepto(idmodulo);
   });
 
+  <?php
+  //*********************Se verifica que privilegios de módulo o modulos cuenta el usuario para hacer la consulta************************
+  $accion = "";
+  $idmodulo = "";
+  if($menu->privilegioModuloPrestamo == true && $menu->privilegioModuloPension == true) {
+    $accion = "read";
+    $idmodulo = "";
+  } else if($menu->privilegioModuloPrestamo == false && $menu->privilegioModuloPension == true) {
+    $accion = "readbyidmodulo";
+    $idmodulo = ', "idmodulo" : "1"';
+  } else if($menu->privilegioModuloPrestamo == true && $menu->privilegioModuloPension == false) {
+    $accion = "readbyidmodulo";
+    $idmodulo = ', "idmodulo" : "2"';
+  }
+  ?>
   var llenarComboModulo = function () {
     $.ajax({
       type: "POST",
       url: "../process/moduloajax.php",
-      data: {'accion':'read'}, //El idmodulo 1 es de pensiones
+      data: {'accion':"<?php echo $accion;?>" <?php echo $idmodulo?>}, //El idmodulo 1 es de pensiones
       success: function(data) {
         data = JSON.parse(data);
         $.each(data, function (i, row) {

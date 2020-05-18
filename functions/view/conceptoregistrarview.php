@@ -23,7 +23,17 @@
                     <label for="modulo">Modulo</label>
                     <select class="custom-select" name="modulo" id="modulo">
                       <?php
-                      $query = "select * from modulo";
+
+                      //*********************Se verifica que privilegios de módulo o modulos cuenta el usuario para hacer la consulta************************
+                      $query = "";
+                      if ($menu->privilegioModuloPrestamo == true && $menu->privilegioModuloPension == true) {
+                        $query = "select * from modulo";
+                      } else if ($menu->privilegioModuloPrestamo == false && $menu->privilegioModuloPension == true) {
+                        $query = "select * from modulo where id_modulo = 1";
+                      } else if ($menu->privilegioModuloPrestamo == true && $menu->privilegioModuloPension == false) {
+                        $query = "select * from modulo where id_modulo = 2";
+                      }
+
                       foreach ($menu->conex->consultar($query) as $key => $value) {
                         echo '<option value="'.$value['id_modulo'].'">' . $value['nombre_modulo'] . '</option>';
                       }

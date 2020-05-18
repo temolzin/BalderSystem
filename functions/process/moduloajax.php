@@ -7,7 +7,7 @@
   if($accion == 'read') {
     echo $objModulo->read();
   }
-  if($accion == 'readByIdModulo') {
+  if($accion == 'readbyidmodulo') {
     $idmodulo = $_POST['idmodulo'];
     echo $objModulo->readbyidmodulo($idmodulo);
   }

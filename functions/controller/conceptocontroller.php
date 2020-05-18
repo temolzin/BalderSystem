@@ -39,7 +39,7 @@
                 WHERE ct.activo = 1 and ct.id_modulo = " . $idmodulo;
       $objConcepto = null;
       foreach ($this->conex->consultar($query) as $key => $value) {
-        $objConcepto['data'][] = $value;
+        $objConcepto[] = $value;
       }
       echo json_encode($objConcepto, JSON_UNESCAPED_UNICODE);
     }
