@@ -480,7 +480,7 @@ class Menu {
                         <p>CheckList</p>
                       </a>
                     </li>
-                    <li class="nav-item" '.$this->privilegioClienteCargaDocumentos.'>
+                    <li class="nav-item" '.$this->privilegioReporteEstadoCuenta.'>
                       <a href="reporteestadocuentaview.php" class="nav-link ' .$activeReporteEstadoCuenta.'">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Estado de cuenta</p>
