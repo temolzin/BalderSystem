@@ -1,7 +1,6 @@
-# Hoolman Web Page
+# Balder System
 
-Hoolman web page,
-is the init page of the hoolman mark.
+Balder System is a software for manage transactions, especially loans.
 
 ## Preview
 
@@ -14,7 +13,7 @@ is the init page of the hoolman mark.
 
 For execute this project you need.
 
-	PHP Server (xampp, wamp, lamp)
+- PHP Server (xampp, wamp, lamp)
 	
 
 ### Install 🔧
