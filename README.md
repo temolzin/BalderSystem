@@ -5,18 +5,24 @@ is the init page of the hoolman mark.
 
 ## Preview
 
-[![Preview Hoolman Web Page](https://github.com/temolzin/hoolmanwebpage/blob/master/img/initpage.png)](https://github.com/temolzin/hoolmanwebpage/blob/master/img/initpage.png)
+[![Preview Balder Start Web Page](https://github.com/temolzin/BalderSystem/blob/master/dist/img/initpage.png)](https://github.com/temolzin/BalderSystem/blob/master/dist/img/initpage.png)
+
+[![Preview Balder Login Page](https://github.com/temolzin/BalderSystem/blob/master/dist/img/loginpage.png)](https://github.com/temolzin/BalderSystem/blob/master/dist/img/loginpage.png)
+
 
 ### Pre-requiriments 📋
 
-Only you need download like zip or install git in your pc
+For execute this project you need.
+
+	PHP Server (xampp, wamp, lamp)
+	
 
 ### Install 🔧
 
 For download you need have git installed, after you must execute this command for install the project 
 
 ```
-git clone https://github.com/temolzin/hoolmanpage.git
+git clone https://github.com/temolzin/BalderSystem.git
 ```
 
 ## Author ✒️
@@ -27,6 +33,6 @@ git clone https://github.com/temolzin/hoolmanpage.git
 
 ## License 📄
 
-This project contain a MIT License, can you see the file in [LICENSE.md](https://github.com/temolzin/hoolmanwebpage/blob/master/LICENSE)
+This project contain a MIT License, can you see the file in [LICENSE.md](https://github.com/temolzin/BalderSystem/blob/master/LICENSE)
 
 
