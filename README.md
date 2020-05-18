@@ -1,3 +1,5 @@
+[![BalderSystem Logo](https://github.com/temolzin/BalderSystem/blob/master/dist/img/img-01.png)](https://github.com/temolzin/BalderSystem/blob/master/dist/img/img-01.png)
+
 # Balder System
 
 Balder System is a software for manage transactions, especially loans.
