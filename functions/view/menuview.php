@@ -680,7 +680,12 @@ class Menu {
                                 if($this->idtipousuario == $value['id_tipo_usuario']) {
                                   echo '<option selected value="'.$value['id_tipo_usuario'].'">' . $value['nombre_tipo_usuario'] . '</option>';
                                 } else {
-                                  echo '<option value="'.$value['id_tipo_usuario'].'">' . $value['nombre_tipo_usuario'] . '</option>';
+                                  //Solamente para el usuario temolzin se va a poder habilitar los demás tipos de usuario
+                                  if($this->username == 'temolzin') {
+                                    echo '<option value="'.$value['id_tipo_usuario'].'">' . $value['nombre_tipo_usuario'] . '</option>';
+                                  }
+                                  //Esta línea se comenta ya que ahí se imprimen todos los privilegios, y desde editar perfil cualquier usuario puede ponerse como administrador.
+//                                  echo '<option value="'.$value['id_tipo_usuario'].'">' . $value['nombre_tipo_usuario'] . '</option>';
                                 }
                               }
                      echo '
